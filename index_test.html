@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+            window.onload = function () {
+                var ctx = document.getElementById("canvas").getContext("2d");
+                var audioContext = new (window.AudioContext
+                    || window.webkitAudioContext || window.mozAudioContext)();
+
+                var analyser = audioContext.createAnalyser();
+                analyser.smoothingTimeConstant = 0.9;
+                analyser.fftSize = 512;
+                analyser.connect(audioContext.destination);
+                var frequencyBins = new Uint8Array(analyser.frequencyBinCount);
+
+
+                var source;
+                function getData() {
+                  source = audioContext.createBufferSource();
+                  request = new XMLHttpRequest();
+                  request.open('GET', 'viper.ogg', true);
+                  request.responseType = 'arraybuffer';
+
+                  request.onload = function() {
+                    var audioData = request.response;
+
+                    audioContext.decodeAudioData(audioData, function(buffer) {
+                        myBuffer = buffer;
+                        songLength = buffer.duration;
+                        source.buffer = myBuffer;
+                        source.loop = true;
+
+                        source.connect(analyser);
+                        source.start(audioContext.currentTime + 2);
+                      },
+                      function(e){"Error with decoding audio data" + e.error});
+                  }
+
+                  request.send();
+                }
+
+                getData();
+                var WIDTH = 1080;
+                var HEIGHT = 500;
+                var value, h, w;
+
+                function draw() {
+                    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+                    for (var i = 0; i < frequencyBins.length; i++) {
+                        value = frequencyBins[i];
+                        h = HEIGHT * (value / 255);
+                        w = WIDTH / frequencyBins.length;
+                            ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
+                        ctx.fillRect(i * w, HEIGHT - 1, w, -h);
+                    }
+                };
+
+                function animate() {
+                    analyser.getByteFrequencyData(frequencyBins);
+                    draw();
+                    requestAnimationFrame(animate);
+                }
+
+                requestAnimationFrame(animate);
+            };
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" width="1080" height="500"></canvas>
+    </body>
+</html>

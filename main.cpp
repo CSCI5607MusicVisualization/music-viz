@@ -10,6 +10,7 @@
 //New concepts to understand: File loading, Model storage
 
 #include "glad/glad.h"  //Include order can matter here
+#include "SDL2_mixer/SDL_mixer.h"
 #if defined(__APPLE__) || defined(__linux__)
  #include <SDL2/SDL.h>
  #include <SDL2/SDL_opengl.h>
