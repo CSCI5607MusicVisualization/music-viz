@@ -65,7 +65,7 @@ function main() {
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
         analyser.getByteFrequencyData(buffer);
 
-        let pitchBuffer = buffer;
+        let pitchBuffer = buffer.slice(0);
         for (var i = 0; i < pitchBuffer.length; i++) {                    
             pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
         }
@@ -81,7 +81,7 @@ function main() {
         
         rms = Math.sqrt(rms / (buffer.length))
         console.log(20 * Math.log10(rms));                
-        rms = 20 * Math.log10(rms);                   
+        // rms = 20 * Math.log10(rms);                   
         /* rms now has the value we want. */
         draw();
         requestAnimationFrame(animate);
