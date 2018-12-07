@@ -10,19 +10,18 @@
                 var audioContext = new (window.AudioContext
                     || window.webkitAudioContext || window.mozAudioContext)();
 
-                var analyser = audioContext.createAnalyser();
+                var analyser; 
+                analyser  = audioContext.createAnalyser();
                 analyser.smoothingTimeConstant = 0.9;
                 analyser.fftSize = 512;
                 analyser.connect(audioContext.destination);
-                
                 var frequencyBins = new Uint8Array(analyser.frequencyBinCount);
-
 
                 var source;
                 function getData() {
                   source = audioContext.createBufferSource();
                   request = new XMLHttpRequest();
-                  request.open('GET', 'viper.ogg', true);
+                  request.open('GET', 'christmas.ogg', true);
                   request.responseType = 'arraybuffer';
 
                   request.onload = function() {
@@ -61,6 +60,7 @@
 
                 function animate() {
                     analyser.getByteFrequencyData(frequencyBins);
+                    console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
                     draw();
                     requestAnimationFrame(animate);
                 }
