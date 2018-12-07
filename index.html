@@ -16,12 +16,13 @@
                 analyser.fftSize = 512;
                 analyser.connect(audioContext.destination);
                 var frequencyBins = new Uint8Array(analyser.frequencyBinCount);
+                let buffer = new Uint8Array(analyser.fftSize);
 
                 var source;
                 function getData() {
                   source = audioContext.createBufferSource();
                   request = new XMLHttpRequest();
-                  request.open('GET', 'christmas.ogg', true);
+                  request.open('GET', 'viper.ogg', true);
                   request.responseType = 'arraybuffer';
 
                   request.onload = function() {
@@ -60,7 +61,17 @@
 
                 function animate() {
                     analyser.getByteFrequencyData(frequencyBins);
-                    console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
+                    // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
+                    analyser.getByteFrequencyData(buffer);
+                    /* RMS stands for Root Mean Square, basically the root square of the
+                    * average of the square of each value. */
+                    var rms = 0;
+                    for (var i = 0; i < buffer.length; i++) {
+                        rms += buffer[i] * buffer[i];
+                    }
+                    rms = Math.sqrt(rms / (buffer.length))
+                    /* rms now has the value we want. */
+                    console.log(20 * Math.log10(rms));
                     draw();
                     requestAnimationFrame(animate);
                 }
