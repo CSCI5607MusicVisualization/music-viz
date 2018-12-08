@@ -1,6 +1,102 @@
 var cubeRotation = 0.0;
+var rms = 0.0;
+var r = 0.;
+var g = 0.;
+var b = 0.;
 
 main();
+
+function pickColor(v)
+{
+  var a, b, c;
+  // console.log("v: ", v);
+  if (v > 38. && v < 39.) {
+  a = 0.;
+  b = 1.;
+  c = 0.;
+  }
+
+  else if (v > 40) {
+    a = 1.;
+    b = 0.;
+    c = 0.;
+
+  } else {
+    a = 0.;
+    b = 0.;
+    c = 1.;
+  }
+
+  // console.log(a, b, c);
+
+  return [a, b, c];
+}
+
+
+//  console.log(rms);
+//  const faceColors = [
+//    [r,  g,  b,  1.0],    // Front face: white
+//    [r,  g,  b,  1.0],    // Back face: red
+//    [r,  g,  b,  1.0],    // Top face: green
+//    [r,  g,  b,  1.0],    // Bottom face: blue
+//    [r,  g,  b,  1.0],    // Right face: yellow
+//    [r,  g,  b,  1.0],    // Left face: purple
+//  ];
+
+function minA(array)
+{
+  min = Infinity;
+
+  for (i = 0; i < array.length; i++)
+  {
+    if (array[i] == Infinity)
+    {
+
+    }
+    else
+    {
+      if (array[i] < min)
+      {
+        min = array[i];
+      }
+    }
+
+  }
+
+  return min;
+
+}
+
+function maxA(array)
+{
+  max = -Infinity;
+
+  for (i = 0; i < array.length; i++)
+  {
+    if (array[i] == -Infinity)
+    {
+
+    }
+    else
+    {
+      if (array[i] > max)
+      {
+        max = array[i];
+      }
+    }
+
+  }
+
+  return max;
+
+}
+
+function normalize(value, min, max)
+{
+  return (value - min) / (max - min);
+}
+
+
 
 //
 // Start here
@@ -23,7 +119,7 @@ function main() {
     function getData() {
       source = audioContext.createBufferSource();
       request = new XMLHttpRequest();
-      request.open('GET', 'faith.ogg', true);
+      request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
 
       request.onload = function() {
@@ -80,9 +176,15 @@ function main() {
         }
         
         rms = Math.sqrt(rms / (buffer.length))
-        console.log(20 * Math.log10(rms));                
-        // rms = 20 * Math.log10(rms);                   
-        /* rms now has the value we want. */
+        rms = 20 * Math.log10(rms);
+        vals = pickColor(rms);
+        r = vals[0];
+        g = vals[1];
+        b = vals[2];
+
+        // console.log("COLOR: ", r, g, b);
+        
+
         draw();
         requestAnimationFrame(animate);
     }
@@ -232,12 +334,27 @@ function initBuffers(gl) {
   // for each face.
 
   const faceColors = [
-    [1.0,  1.0,  1.0,  1.0],    // Front face: white
-    [1.0,  0.0,  0.0,  1.0],    // Back face: red
-    [0.0,  1.0,  0.0,  1.0],    // Top face: green
-    [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
-    [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
-    [1.0,  0.0,  1.0,  1.0],    // Left face: purple
+    // [r, g, b,  1.0],    // Front face: white
+    // [r, g, b,  1.0],    // Front face: white
+    // [r, g, b,  1.0],    // Front face: white
+    // [r, g, b,  1.0],    // Front face: white
+    // [r, g, b,  1.0],    // Front face: white
+    // [r, g, b,  1.0],    // Front face: white
+
+    [1., 1., 1., 1.0],    // Front face: white
+    [1., 1., 1., 1.0],    // Front face: white
+    [1., 1., 1., 1.0],    // Front face: white
+    [1., 1., 1., 1.0],    // Front face: white
+    [1., 1., 1., 1.0],    // Front face: white
+    [1., 1., 1., 1.0],    // Front face: white
+  
+
+    // [1.0,  1.0,  1.0,  1.0],    // Front face: white
+    // [1.0,  0.0,  0.0,  1.0],    // Back face: red
+    // [0.0,  1.0,  0.0,  1.0],    // Top face: green
+    // [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
+    // [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
+    // [1.0,  0.0,  1.0,  1.0],    // Left face: purple
   ];
 
   // Convert the array of colors into a table for all the vertices.
@@ -290,7 +407,7 @@ function initBuffers(gl) {
 // Draw the scene.
 //
 function drawScene(gl, programInfo, buffers, deltaTime) {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+  gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
