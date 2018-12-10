@@ -116,12 +116,15 @@ function main() {
     let buffer = new Uint8Array(analyser.frequencyBinCount);
 
     var source;
+    var meter;
     function getData() {
       source = audioContext.createBufferSource();
+      meter = createAudioMeter(audioContext);
+      source.connect(meter);      
       request = new XMLHttpRequest();
       request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
-
+      
       request.onload = function() {
         var audioData = request.response;
 
@@ -147,6 +150,7 @@ function main() {
 
     function draw() {
         ctx.clearRect(0, 0, WIDTH, HEIGHT);
+        console.log(meter.volume);
         for (var i = 0; i < frequencyBins.length; i++) {
             value = frequencyBins[i];
             h = HEIGHT * (value / 255);
