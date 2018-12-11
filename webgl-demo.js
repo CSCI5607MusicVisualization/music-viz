@@ -292,7 +292,7 @@ function main() {
     const deltaTime = now - then;
     then = now;
 
-    drawScene(gl, programInfo, buffers, deltaTime);
+    drawScene(gl, programInfo, buffers, shaderProgram, deltaTime);
 
     requestAnimationFrame(render);
   }
@@ -320,37 +320,16 @@ function initBuffers(shaderProgram, gl) {
   // create and initialize the vertex, vertex normal, and texture coordinate buffers
   // and save on to the mesh object
   var objStr = document.getElementById('my_cube.obj').innerHTML;  
-  var mesh = new OBJ.Mesh(data);  
+  var mesh = new OBJ.Mesh(objStr);  
   OBJ.initMeshBuffers(gl, mesh);
-   
-  // now to render the mesh
-  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.vertexBuffer);
-  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, mesh.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-   
-  // it's possible that the mesh doesn't contain
-  // any texture coordinates (e.g. suzanne.obj in the development branch).
-  // in this case, the texture vertexAttribArray will need to be disabled
-  // before the call to drawElements
-  if(!mesh.textures.length){
-    gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
-  }
-  else{
-    // if the texture vertexAttribArray has been previously
-    // disabled, then it needs to be re-enabled
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureBuffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, mesh.textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
-  }
-   
-  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
-  gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, mesh.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
+  console.log(mesh);
+  return mesh;
 }
 
 //
 // Draw the scene.
 //
-function drawScene(gl, programInfo, buffers, deltaTime) {
+function drawScene(gl, programInfo, mesh, shaderProgram, deltaTime) {
   gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -387,7 +366,6 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
   // Now move the drawing position a bit to where we want to
   // start drawing the square.
-
   mat4.translate(modelViewMatrix,     // destination matrix
                  modelViewMatrix,     // matrix to translate
                  [-0.0, 0.0, -6.0]);  // amount to translate
@@ -400,66 +378,30 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
               cubeRotation * .7,// amount to rotate in radians
               [0, 1, 0]);       // axis to rotate around (X)
 
-  // Tell WebGL how to pull out the positions from the position
-  // buffer into the vertexPosition attribute
-  {
-    const numComponents = 3;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexPosition,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
-    gl.enableVertexAttribArray(
-        programInfo.attribLocations.vertexPosition);
+  // now to render the mesh
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.vertexBuffer);
+  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, mesh.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+   
+  // it's possible that the mesh doesn't contain
+  // any texture coordinates (e.g. suzanne.obj in the development branch).
+  // in this case, the texture vertexAttribArray will need to be disabled
+  // before the call to drawElements
+  if(!mesh.textures.length){
+    gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
   }
-
-  // Tell WebGL how to pull out the colors from the color buffer
-  // into the vertexColor attribute.
-  {
-    const numComponents = 4;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexColor,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
-    gl.enableVertexAttribArray(
-        programInfo.attribLocations.vertexColor);
+  else{
+    // if the texture vertexAttribArray has been previously
+    // disabled, then it needs to be re-enabled
+    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh.textureBuffer);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, mesh.textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
   }
-
-  // Tell WebGL which indices to use to index the vertices
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
-
-  // Tell WebGL to use our program when drawing
-
-  gl.useProgram(programInfo.program);
-
-  // Set the shader uniforms
-
-  gl.uniformMatrix4fv(
-      programInfo.uniformLocations.projectionMatrix,
-      false,
-      projectionMatrix);
-  gl.uniformMatrix4fv(
-      programInfo.uniformLocations.modelViewMatrix,
-      false,
-      modelViewMatrix);
+   
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh.normalBuffer);
+  gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, mesh.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
   {
-    const vertexCount = 36;
+    const vertexCount = mesh.vertexBuffer.length;
     const type = gl.UNSIGNED_SHORT;
     const offset = 0;
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
