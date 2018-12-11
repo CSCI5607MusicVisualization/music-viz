@@ -1,3 +1,9 @@
+// INITIALIZE DEPENDANCIES
+var fs = require('fs');
+
+var OBJ = require('webgl-obj-loader');
+
+
 var cubeRotation = 0.0;
 var rms = 0.0;
 var r = 0.;
@@ -96,13 +102,20 @@ function normalize(value, min, max)
   return (value - min) / (max - min);
 }
 
-
-
 //
 // Start here
 //
 function main() {
+
   window.onload = function () {
+    var meshPath = './models/tree01.obj';
+    
+    fs.readFile(__dirname + '/models/tree01.obj', 'utf8', function (err, data) {
+      if (err) return console.error(err);
+      var mesh = new OBJ.Mesh(data);
+      console.log(mesh);
+    });
+
     var ctx = document.getElementById("canvas").getContext("2d");
     var audioContext = new (window.AudioContext
         || window.webkitAudioContext || window.mozAudioContext)();
@@ -150,7 +163,7 @@ function main() {
 
     function draw() {
         ctx.clearRect(0, 0, WIDTH, HEIGHT);
-        console.log(meter.volume);
+        // console.log(meter.volume)
         for (var i = 0; i < frequencyBins.length; i++) {
             value = frequencyBins[i];
             h = HEIGHT * (value / 255);
@@ -173,18 +186,18 @@ function main() {
         
         /* RMS stands for Root Mean Square, basically the root square of the
         * average of the square of each value. */
-
-        var rms = 0;
-        for (var i = 0; i < buffer.length; i++) {
-            rms += buffer[i] * buffer[i];
-        }
+        // Something is wrong with this so we are opting to use a volume-meter file instead. 
+        // var rms = 0;
+        // for (var i = 0; i < buffer.length; i++) {
+        //     rms += buffer[i] * buffer[i];
+        // }
         
-        rms = Math.sqrt(rms / (buffer.length))
-        rms = 20 * Math.log10(rms);
-        vals = pickColor(rms);
-        r = vals[0];
-        g = vals[1];
-        b = vals[2];
+        // rms = Math.sqrt(rms / (buffer.length))
+        // rms = 20 * Math.log10(rms);
+        // vals = pickColor(rms);
+        // r = vals[0];
+        // g = vals[1];
+        // b = vals[2];
 
         // console.log("COLOR: ", r, g, b);
         

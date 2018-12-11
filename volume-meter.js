@@ -88,7 +88,7 @@ function volumeAudioProcess( event ) {
 
     // ... then take the square root of the sum.
     var rms =  Math.sqrt(sum / bufLength);
-	console.log(rms);		
+	// console.log(rms);		
 
     // Now smooth this out with the averaging factor applied
     // to the previous sample - take the max here because we
