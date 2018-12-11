@@ -1,0 +1,65 @@
+<script type="text/javascript" src="lib/gl-utils.js"></script>
+
+<body onload="main()">
+  <canvas id="hello-canvas" style="border: none;" width="500" height="500"></canvas>
+  <p><a href="http://vinjn.github.io/">HOME</a>
+</body>
+
+<script id="hello-vs" type="x-shader/x-vertex">
+    attribute vec3 aPos;
+
+    void main(){
+        gl_Position = vec4(aPos, 1.0);
+    }
+</script>
+
+<script id="hello-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    void main(){
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    }
+</script>
+
+<script type="text/javascript">    
+
+    function main() {
+        var canvas = document.getElementById("hello-canvas");
+        initGL(canvas);
+        
+        var program = getProgram(gl, "hello-vs", "hello-fs");
+
+        gl.useProgram(program);
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        
+        program.attrPos = gl.getAttribLocation(program, "aPos");
+        gl.enableVertexAttribArray(program.attrPos);
+        
+        var vb = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+        var len = 0.5;
+        var vertices = [
+             0.0,  len,  0.0,
+            -len, -len,  0.0,
+             len, -len,  0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        vb.itemSize = 3;
+        vb.numItems = 3;
+
+        gl.clearColor(0.8, 0.8, 0.8, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST);
+
+        gl.vertexAttribPointer(program.attrPos, vb.itemSize, gl.FLOAT, false, 0, 0);
+
+        gl.drawArrays(gl.TRIANGLES, 0, vb.numItems);
+    }
+    
+</script>
+
+

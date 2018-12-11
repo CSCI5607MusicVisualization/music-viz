@@ -1,0 +1,140 @@
+<head>
+	<style>
+		body {
+			margin: 0px;
+		}
+	</style>
+</head>
+<body>
+	<script src="lib/three.js"></script>
+	<script src="lib/three.plugins/Detector.js"></script>
+	<script src="lib/three.plugins/libs/stats.min.js"></script>
+	<script src="lib/three.plugins/libs/dat.gui.min.js"></script>
+	<script>
+	if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+	var renderer;
+	var scene, sun;
+	var camera;
+	var stats, gui;
+
+	var uniforms;
+	var params = {
+		color: "#ffffff",
+		rotateSpeed: 0.005,
+	};
+	var material;
+
+	function setup () {
+		renderer = new THREE.WebGLRenderer({antialias: true});
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		scene = new THREE.Scene();
+		scene.add( new THREE.AmbientLight( 0xffffff ) );
+
+		camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+		camera.position.z = 100;
+
+		gui = new dat.GUI();
+
+		var geometry = new THREE.SphereGeometry(20, 30, 30);
+		geometry.computeTangents();
+		if (false) {
+			material = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( "assets/Earth_Night.jpg" )});
+		} else {
+			material = createNormalMapMtrl();
+		}
+		sun = new THREE.Mesh(geometry, material);
+		scene.add(sun);
+
+		stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		document.body.appendChild( stats.domElement );
+
+		var kSize = 100;
+		gui.add( sun.position, 'x', -kSize, kSize);
+		gui.add( sun.position, 'y', -kSize, kSize);
+		gui.add( sun.position, 'z', -kSize, kSize);
+		gui.add( params, 'rotateSpeed', 0.0001, 0.1);
+		gui.add( material, 'wireframe');
+		gui.addColor( params, 'color').onChange(function (clr){
+			material.color = new THREE.Color(clr);
+		});
+		// gui.add( uniforms[ "uNormalScale" ], 'value', -20, 20);
+
+		var light = new THREE.DirectionalLight( 0xFFFFFF, 0.5 );
+		light.position.set( 0, 0, 10 );
+		scene.add( light );
+
+		var light = new THREE.HemisphereLight( 0x1F1F1F, 0.3 );
+		light.position.set( 0, 500, 0 );
+		scene.add( light );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+
+		draw();
+	}
+
+	function createNormalMapMtrl (argument) {
+
+		var ambient = 0x050505, diffuse = 0x331100, specular = 0xffffff, shininess = 10, scale = 23;
+
+		// normal map shader
+
+		var shader = THREE.ShaderLib[ "normalmap" ];
+		uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+
+		uniforms[ "enableAO" ].value = false;
+		uniforms[ "enableDiffuse" ].value = true;
+		uniforms[ "enableSpecular" ].value = false;
+		uniforms[ "enableReflection" ].value = false;
+		uniforms[ "enableDisplacement" ].value = false;
+
+		uniforms[ "tDiffuse" ].value = THREE.ImageUtils.loadTexture( "assets/Earth_Night.jpg" );
+		uniforms[ "tNormal" ].value = THREE.ImageUtils.loadTexture( "assets/Earth_NormalMap.png" );
+		// uniforms[ "tAO" ].value = THREE.ImageUtils.loadTexture( "textures/normal/ninja/ao.jpg" );
+
+		// uniforms[ "tDisplacement" ].value = THREE.ImageUtils.loadTexture( "textures/normal/ninja/displacement.jpg" );
+		uniforms[ "uDisplacementBias" ].value = - 0.428408;
+		uniforms[ "uDisplacementScale" ].value = 2.436143;
+
+		uniforms[ "uNormalScale" ].value.y = -10;
+
+		// uniforms[ "uDiffuseColor" ].value.setHex( diffuse );
+		uniforms[ "uSpecularColor" ].value.setHex( specular );
+		// uniforms[ "uAmbientColor" ].value.setHex( ambient );
+
+		uniforms[ "uShininess" ].value = shininess;
+
+		// uniforms[ "tCube" ].value = reflectionCube;
+		uniforms[ "uReflectivity" ].value = 0.1;
+
+		uniforms[ "uDiffuseColor" ].value.convertGammaToLinear();
+		uniforms[ "uSpecularColor" ].value.convertGammaToLinear();
+		uniforms[ "uAmbientColor" ].value.convertGammaToLinear();
+
+		var parameters = { fragmentShader: shader.fragmentShader, vertexShader: shader.vertexShader, uniforms: uniforms, lights: true, fog: false };
+		return new THREE.ShaderMaterial( parameters );
+	}
+
+	function draw() {
+		requestAnimationFrame(draw);
+
+		sun.rotation.y -= params.rotateSpeed;
+
+		renderer.render(scene, camera);
+		stats.update();			
+	};
+
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
+	setup();
+	</script>
+</body>	

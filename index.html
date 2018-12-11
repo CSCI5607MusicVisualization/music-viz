@@ -4,13 +4,39 @@
     <meta charset="utf-8">
     <title>WebGL Demo</title>
     <link rel="stylesheet" href="webgl.css" type="text/css">
+
+    <script id="vs" type="not-js">
+      attribute vec3 vPosition;
+      attribute vec3 vColor;
+      varying vec3 fColor;
+      uniform mat4 uMVP;
+
+      void main(void) {
+        gl_Position = uMVP * vec4(vPosition, 1.0);
+	    fColor = vColor;
+      }
+    </script>
+
+    <script id="fs" type="not-js">
+      precision highp float;
+      varying vec3 fColor;
+
+      void main(void) {
+	     gl_FragColor = vec4(fColor, 1.0);
+      }
+    </script>
+
   </head>
 
-  <body>
-    <canvas id="glcanvas" width="640" height="480"></canvas>
-    <canvas id="canvas" width="1080" height="500"></canvas>
+  <body onload="start();">
+    <canvas id="mycanvas" width="500" height="500"></canvas><br>
+    <input id="slider1" type="range" min="-100" max="100" />
+    <input id="slider2" type="range" min="-100" max="100" />
+
+    <script src="http://graphics.cs.wisc.edu/JS/twgl-full.min.js"></script>
+    <script src="gl-matrix.js"></script>
+    <script src="wisc.js"></script>
+
   </body>
 
-  <script src="gl-matrix.js"></script>
-  <script src="webgl-demo.js"></script>
-</html>
+  </html>
