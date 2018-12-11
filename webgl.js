@@ -100,8 +100,8 @@ function initAudio() {
     function animate() {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
-        analyser.getFloatTimeDomainData(buffer);
-
+        //analyser.getFloatTimeDomainData(buffer);
+        analyser.getByteFrequencyData(buffer);
         // let pitchBuffer = buffer.slice(0);
         // for (var i = 0; i < pitchBuffer.length; i++) {                    
         //     pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
