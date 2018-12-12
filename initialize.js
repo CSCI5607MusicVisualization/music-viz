@@ -1,9 +1,9 @@
 
 var redValue = 0.0;
 var blueValue = 1.0;
-var PointredValue = 0.0;
+var PointredValue = 1.0;
 var PointblueValue = 1.0;
-var PointgreenValue = 1.0;
+var PointgreenValue = 0.0;
 
 var alpha = 1.0;
 
@@ -359,17 +359,17 @@ function drawSprctrum(gl, buffers,totalnum)
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [1.0, blueValue, redValue, alpha]);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 1.0, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i<=totalnum/2) //128
     {
-      PointredValue = PointredValue+0.002;
+      //PointredValue = PointredValue+0.002;
       //PointblueValue =PointblueValue-0.002;
       redValue=redValue+0.002;
       blueValue=blueValue-0.002;
     }else
     {
-      PointredValue = PointredValue-0.002;
+      //PointredValue = PointredValue-0.002;
       //PointblueValue = PointblueValue+0.002;
       redValue=redValue-0.002;
       blueValue=blueValue+0.002;
@@ -402,15 +402,17 @@ function drawPoint(gl, buffers,totalnum)
   
   for (var i=0; i<totalnum; i++) 
   {
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointgreenValue, PointblueValue, PointredValue, alpha]);//PointgreenValue
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue,PointgreenValue, PointblueValue,alpha]);//PointgreenValue
     if (i<=totalnum/2) 
     {
-      PointgreenValue=PointgreenValue-0.002;
-      PointblueValue =PointblueValue-0.002;
+      PointredValue = PointredValue -0.004
+      PointgreenValue=PointgreenValue+0.002;
+      PointblueValue =PointblueValue-0.004;
     }else
     {
-      PointgreenValue=PointgreenValue+0.002;
-      PointblueValue=PointblueValue+0.002;
+      PointredValue = PointredValue +0.004
+      PointgreenValue=PointgreenValue - 0.002;
+      PointblueValue=PointblueValue + 0.004;
     }
     alpha-=0.001;
     gl.drawArrays(gl.POINTS, i, 1);
