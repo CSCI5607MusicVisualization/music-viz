@@ -203,10 +203,12 @@ function initAudio() {
         //ctx.clearRect(0, 0, WIDTH, HEIGHT);
         // console.log(meter.volume)
         var xstart=-1.0;
-        var delta = 0.002;//SpecCanvas.width/frequencyBins.length
-        for (var i = 0; i < frequencyBins.length; i++) 
+        var delta =4.0/frequencyBins.length;// 0.002
+        var j= 0;
+        for (var i = 0; i < 6*frequencyBins.length;) 
         {
-            value = frequencyBins[i];
+            value = frequencyBins[j];
+            j++;
             h = (value / 255);
             //console.log("frequencyBins is:",value);
             // w = WIDTH / frequencyBins.length;
@@ -224,20 +226,9 @@ function initAudio() {
             {
                 xstart=-1.0;
             }
-            // arr[i++]=R*Math.cos(2*PI/NUM*k);     //circle
-            // arr[i++]=R*Math.sin(2*PI/NUM*k);
-            // arr[i++]=0.0;
-            
-            // arr[i++]=(R+value)*Math.cos(2*PI/NUM*k);     //spectrum
-            // arr[i++]=(R+value)*Math.sin(2*PI/NUM*k);
-            // arr[i++]=0.0;
-           // console.log("Spectrum: ",arr[i-6], arr[i-5], arr[i-4],arr[i-3],arr[i-2],arr[i-1]);
-            // k++;
-            // if (k>NUM) 
-            // {
-            //     k=0;     //store N points
-            // }
+   
         }
+        console.log("arr data is:",arr);
         var Spectrumbuffers = Array2Buffers(ctx,arr);
         drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
     };
@@ -337,11 +328,11 @@ function drawSprctrum(gl, buffers,totalnum)
   //gl.useProgram(programInfo.program);
   
   //console.log("totalnum is:",totalnum);
-  for (var i=0; i<totalnum; i+=2) //istart 2000+istart
+  for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
     gl.uniform4fv(SpectrumProgram.OutcolorVec4, [redValue, 1.0, blueValue, alpha]);
-    //console.log("buffer number is:",buffers[i],buffers[i+1]);
-    if (i<=totalnum/2) //1000+istart
+    //console.log("buffer number is:",buffers);
+    if (i<=totalnum/2) //128
     {
         redValue=redValue+0.002;
         blueValue=blueValue-0.002;
