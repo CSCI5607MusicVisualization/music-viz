@@ -4,8 +4,10 @@
 var X = 0, Y = 1, Z = 2, H = 3, P = 4;
 // gl context
 var gl;
+var ctx;
 // the canvas we're working with
 var canvas;
+var SpecCanvas;
 // application var holder
 var app = {};
   // mesh holder
@@ -71,5 +73,10 @@ var app = {};
 
 
 var shaderProgram;
+var SpectrumProgram;
 var light = 0;
 var angle = 0;
+
+const PI=3.1415926;
+const R=0.5;  //radius
+const NUM=1000;
