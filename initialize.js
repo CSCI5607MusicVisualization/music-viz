@@ -1,4 +1,7 @@
 
+var redValue = 0.0;
+var blueValue = 1.0;
+var alpha = 1.0;
 
 function initGL(canvas,SpecCanvas) 
 {
@@ -199,7 +202,7 @@ function initAudio() {
     {
         //ctx.clearRect(0, 0, WIDTH, HEIGHT);
         // console.log(meter.volume)
-        var xstart=0.0;
+        var xstart=-1.0;
         var delta = 0.002;//SpecCanvas.width/frequencyBins.length
         for (var i = 0; i < frequencyBins.length; i++) 
         {
@@ -217,9 +220,9 @@ function initAudio() {
             arr[i++]=h;
             arr[i++]=0.0;
             xstart=xstart+delta;
-            if (xstart>SpecCanvas.width/2) 
+            if (xstart>1.0) 
             {
-                xstart=0.0;
+                xstart=-1.0;
             }
             // arr[i++]=R*Math.cos(2*PI/NUM*k);     //circle
             // arr[i++]=R*Math.sin(2*PI/NUM*k);
@@ -332,9 +335,7 @@ function drawSprctrum(gl, buffers,totalnum)
   
   //sleep(999);  
   //gl.useProgram(programInfo.program);
-  var redValue = 0.0;
-  var blueValue = 1.0;
-  var alpha = 1.0;
+  
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart
   {
