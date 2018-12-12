@@ -1,6 +1,10 @@
 
 var redValue = 0.0;
 var blueValue = 1.0;
+var PointredValue = 0.0;
+var PointblueValue = 1.0;
+var PointgreenValue = 1.0;
+
 var alpha = 1.0;
 
 function initGL(canvas,SpecCanvas) 
@@ -197,11 +201,20 @@ function initAudio() {
   //  var HEIGHT = 500;
     var value, h, w;
     var arr = new Array();
+    var pointArr = new Array();
     var k=0;
     function draw()  
     {
         //ctx.clearRect(0, 0, WIDTH, HEIGHT);
-        // console.log(meter.volume)
+        InitArray();
+        //console.log("arr data is:",arr);
+        var Spectrumbuffers = Array2Buffers(ctx,arr);
+        drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
+        var Pointbuffers = Array2Buffers(ctx,pointArr);
+        drawPoint(ctx, Pointbuffers,frequencyBins.length);
+    };
+    function InitArray()
+    {
         var xstart=-1.0;
         var delta =4.0/frequencyBins.length;// 0.002
         var j= 0;
@@ -221,6 +234,28 @@ function initAudio() {
             arr[i++]=xstart;
             arr[i++]=h;
             arr[i++]=0.0;
+            xstart=xstart+1.25*delta;
+            if (xstart>1.0) 
+            {
+                xstart=-1.0;
+            }
+   
+        }
+        //point buffer
+        xstart=-1.0;
+        j=0;
+        for (var i = 0; i < 6*frequencyBins.length;) 
+        {
+            value = frequencyBins[j];
+            j++;
+            h = (value / 255);
+            pointArr[i++]=xstart;
+            pointArr[i++]=-h;
+            pointArr[i++]=0.0;
+        
+            pointArr[i++]=xstart;
+            pointArr[i++]=h;
+            pointArr[i++]=0.0;
             xstart=xstart+delta;
             if (xstart>1.0) 
             {
@@ -228,11 +263,7 @@ function initAudio() {
             }
    
         }
-        console.log("arr data is:",arr);
-        var Spectrumbuffers = Array2Buffers(ctx,arr);
-        drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
-    };
-
+    }
     function animate() {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
@@ -242,8 +273,6 @@ function initAudio() {
         // for (var i = 0; i < pitchBuffer.length; i++) {                    
         //     pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
         // }
-
-        
         /* RMS stands for Root Mean Square, basically the root square of the
         * average of the square of each value. */
         // Something is wrong with this so we are opting to use a volume-meter file instead. 
@@ -330,22 +359,61 @@ function drawSprctrum(gl, buffers,totalnum)
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [redValue, 1.0, blueValue, alpha]);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [1.0, blueValue, redValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i<=totalnum/2) //128
     {
-        redValue=redValue+0.002;
-        blueValue=blueValue-0.002;
+      PointredValue = PointredValue+0.002;
+      //PointblueValue =PointblueValue-0.002;
+      redValue=redValue+0.002;
+      blueValue=blueValue-0.002;
     }else
     {
-        redValue=redValue-0.002;
-        blueValue=blueValue+0.002;
+      PointredValue = PointredValue-0.002;
+      //PointblueValue = PointblueValue+0.002;
+      redValue=redValue-0.002;
+      blueValue=blueValue+0.002;
     }
     alpha-=0.001;
-    gl.lineWidth(1.5);
+    gl.lineWidth(2.0);
     gl.drawArrays(gl.LINES, i, 2);
 
   }
+
+}
+
+function drawPoint(gl, buffers,totalnum)
+{
+  const numComponents = 3;
+  const type = gl.FLOAT;
+  const normalize = false;
+  const stride = 0;// 0 = use the correct stride for type and numComponents
+  const offset = 0;
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
+  gl.vertexAttribPointer(
+      SpectrumProgram.vertexPositionAttribute,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset);
+  gl.enableVertexAttribArray(
+    SpectrumProgram.vertexPositionAttribute);
   
- // istart+=2000;
+  for (var i=0; i<totalnum; i++) 
+  {
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointgreenValue, PointblueValue, PointredValue, alpha]);//PointgreenValue
+    if (i<=totalnum/2) 
+    {
+      PointgreenValue=PointgreenValue-0.002;
+      PointblueValue =PointblueValue-0.002;
+    }else
+    {
+      PointgreenValue=PointgreenValue+0.002;
+      PointblueValue=PointblueValue+0.002;
+    }
+    alpha-=0.001;
+    gl.drawArrays(gl.POINTS, i, 1);
+  }
+
 }
