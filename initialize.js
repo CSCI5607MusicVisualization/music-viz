@@ -266,6 +266,7 @@ function initAudio() {
         //wave buffer
         xstart=-1.0;
         j=0;
+        var wavedelta = 4.0/dataArray.length;
         for (var i = 0; i < 3*dataArray.length;) 
         {
             value = dataArray[j];
@@ -274,7 +275,7 @@ function initAudio() {
             waveArr[i++]=xstart;
             waveArr[i++]=-h;
             waveArr[i++]=0.0;
-            xstart=xstart+delta;
+            xstart=xstart+0.5*wavedelta;
             if (xstart>1.0) 
             {
                 xstart=-1.0;
@@ -382,7 +383,7 @@ function drawSprctrum(gl, buffers,totalnum)
   {
     //if(i%200==0)
     //  console.log("spectrum color is:",redValue,1.0,blueValue);
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 0.0, blueValue, alpha]);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 1.0, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i< totalnum/2) //128
     {
