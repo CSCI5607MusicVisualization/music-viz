@@ -1,4 +1,5 @@
 var redValue = 0.0;
+var greenValue = 0.0;
 var blueValue = 1.0;
 var PointredValue = 1.0;
 var PointblueValue = 1.0;
@@ -235,7 +236,7 @@ function initAudio() {
             arr[i++]=xstart;
             arr[i++]=h;
             arr[i++]=0.0;
-            xstart=xstart+1.25*delta;
+            xstart=xstart+delta;
             if (xstart>1.0) 
             {
                 xstart=-1.0;
@@ -257,7 +258,7 @@ function initAudio() {
             pointArr[i++]=xstart;
             pointArr[i++]=h;
             pointArr[i++]=0.0;
-            xstart=xstart+delta;
+            xstart=xstart+1.25*delta;
             if (xstart>1.0) 
             {
                 xstart=-1.0;
@@ -383,22 +384,22 @@ function drawSprctrum(gl, buffers,totalnum)
   {
     //if(i%200==0)
     //  console.log("spectrum color is:",redValue,1.0,blueValue);
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 1.0, blueValue, alpha]);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, greenValue, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i< totalnum/2) //128
     {
-      //PointredValue = PointredValue+0.002;
-      //PointblueValue =PointblueValue-0.002;
-      redValue=redValue+0.002;
-      blueValue=blueValue-0.002;
+      redValue=redValue+0.02;
+      greenValue = greenValue + 0.03;
+      blueValue=blueValue-0.02;
     }else
     {
-      //PointredValue = PointredValue-0.002;
-      //PointblueValue = PointblueValue+0.002;
-      redValue=redValue-0.002;
-      blueValue=blueValue+0.002;
+      redValue=redValue-0.02;
+      greenValue = greenValue -0.03;
+      blueValue=blueValue+0.02;
     }
-    alpha-=0.001;
+    alpha-=0.01;
+    if(alpha == -0.01)
+       alpha=1.0;
     gl.lineWidth(3.0);
     gl.drawArrays(gl.LINES, i, 2);
 
@@ -431,16 +432,18 @@ function drawPoint(gl, buffers,totalnum)
     gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue,PointgreenValue, PointblueValue,alpha]);//PointgreenValue
     if (i< totalnum/2) 
     {
-      PointredValue = PointredValue -0.004
-      PointgreenValue=PointgreenValue+0.002;
-      PointblueValue =PointblueValue-0.004;
+      PointredValue = PointredValue -0.04
+      PointgreenValue=PointgreenValue+0.02;
+      PointblueValue =PointblueValue-0.04;
     }else
     {
-      PointredValue = PointredValue +0.004
-      PointgreenValue=PointgreenValue - 0.002;
-      PointblueValue=PointblueValue + 0.004;
+      PointredValue = PointredValue +0.04
+      PointgreenValue=PointgreenValue - 0.02;
+      PointblueValue=PointblueValue + 0.04;
     }
-    alpha-=0.001;
+    alpha-=0.01;
+    if(alpha == -0.01)
+       alpha=1.0;
     gl.drawArrays(gl.POINTS, i, 1);
   }
 }
@@ -483,3 +486,40 @@ function drawWave(gl, buffers,totalnum)
   
     }
 }
+
+
+// // creates a texture info { width: w, height: h, texture: tex }
+// // The texture will start with 1x1 pixels and be updated
+// // when the image has loaded
+// function loadImageAndCreateTextureInfo(url) 
+// {
+//   var tex = gl.createTexture();
+//   gl.bindTexture(gl.TEXTURE_2D, tex);
+ 
+//   // let's assume all images are not a power of 2
+//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+ 
+//   var textureInfo = {
+//     width: 1,   // we don't know the size until it loads
+//     height: 1,
+//     texture: tex,
+//   };
+//   var img = new Image();
+//   img.addEventListener('load', function() {
+//     textureInfo.width = img.width;
+//     textureInfo.height = img.height;
+ 
+//     gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
+//     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+//   });
+ 
+//   return textureInfo;
+// }
+ 
+// var textureInfos = [
+//   loadImageAndCreateTextureInfo('./textures/spectrum_background.jpg'),
+//   //loadImageAndCreateTextureInfo('resources/leaves.jpg'),
+//   //loadImageAndCreateTextureInfo('resources/keyboard.jpg'),
+// ];

@@ -77,6 +77,4 @@ var SpectrumProgram;
 var light = 0;
 var angle = 0;
 
-const PI=3.1415926;
-const R=0.5;  //radius
-const NUM=1000;
+var backTex;
