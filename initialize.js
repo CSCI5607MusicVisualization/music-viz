@@ -163,9 +163,10 @@ function initAudio() {
     var analyser; 
     analyser  = audioContext.createAnalyser();
     analyser.smoothingTimeConstant = 0.9;
-    analyser.fftSize = 512;
+    analyser.fftSize = 1024;
     analyser.connect(audioContext.destination);
     var frequencyBins = new Uint8Array(analyser.frequencyBinCount);
+    var dataArray = new Float32Array(analyser.fftSize);
     let buffer = new Uint8Array(analyser.frequencyBinCount);
 
     var source;
@@ -202,6 +203,7 @@ function initAudio() {
     var value, h, w;
     var arr = new Array();
     var pointArr = new Array();
+    var waveArr = new Array();
     var k=0;
     function draw()  
     {
@@ -212,6 +214,8 @@ function initAudio() {
         drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
         var Pointbuffers = Array2Buffers(ctx,pointArr);
         drawPoint(ctx, Pointbuffers,frequencyBins.length);
+        var wavebuffers = Array2Buffers(ctx,waveArr);
+        drawWave(ctx, wavebuffers,frequencyBins.length);
     };
     function InitArray()
     {
@@ -261,14 +265,31 @@ function initAudio() {
             {
                 xstart=-1.0;
             }
+        }
+        //wave buffer
+        xstart=-1.0;
+        j=0;
+        for (var i = 0; i < 3*dataArray.length;) 
+        {
+            value = dataArray[j];
+            j++;
+            h = value ;//(/ 255)
+            waveArr[i++]=xstart;
+            waveArr[i++]=-h;
+            waveArr[i++]=0.0;
+            xstart=xstart+delta;
+            if (xstart>1.0) 
+            {
+                xstart=-1.0;
+            }
    
         }
     }
     function animate() {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
-        //analyser.getFloatTimeDomainData(buffer);
-        analyser.getByteFrequencyData(buffer);
+        analyser.getFloatTimeDomainData(dataArray);
+        //analyser.getByteFrequencyData(buffer);
         // let pitchBuffer = buffer.slice(0);
         // for (var i = 0; i < pitchBuffer.length; i++) {                    
         //     pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
@@ -277,12 +298,13 @@ function initAudio() {
         * average of the square of each value. */
         // Something is wrong with this so we are opting to use a volume-meter file instead. 
         var rms = 0;
-        for (var i = 0; i < buffer.length; i++) {
-            rms += buffer[i] * buffer[i];
+        for (var i = 0; i < dataArray.length; i++) {
+            rms += dataArray[i] * dataArray[i];
         }
         
-        rms = Math.sqrt(rms / (buffer.length))
-        rms = 20 * Math.log10(rms);
+        rms = Math.sqrt(rms / (dataArray.length));
+        console.log(rms);
+
         vals = pickColor(rms);
         r = vals[0];
         g = vals[1];
@@ -359,6 +381,8 @@ function drawSprctrum(gl, buffers,totalnum)
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
+    if(i%200==0)
+      console.log("spectrum color is:",redValue,1.0,blueValue);
     gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 1.0, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i<=totalnum/2) //128
@@ -375,7 +399,7 @@ function drawSprctrum(gl, buffers,totalnum)
       blueValue=blueValue+0.002;
     }
     alpha-=0.001;
-    gl.lineWidth(2.0);
+    gl.lineWidth(3.0);
     gl.drawArrays(gl.LINES, i, 2);
 
   }
@@ -402,6 +426,7 @@ function drawPoint(gl, buffers,totalnum)
   
   for (var i=0; i<totalnum; i++) 
   {
+    
     gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue,PointgreenValue, PointblueValue,alpha]);//PointgreenValue
     if (i<=totalnum/2) 
     {
@@ -417,5 +442,43 @@ function drawPoint(gl, buffers,totalnum)
     alpha-=0.001;
     gl.drawArrays(gl.POINTS, i, 1);
   }
-
+}
+//draw other two things
+function drawWave(gl, buffers,totalnum)
+{
+  var redValue = 0.0;
+  var blueValue = 1.0;
+  const numComponents = 3;
+  const type = gl.FLOAT;
+  const normalize = false;
+  const stride = 0;// 0 = use the correct stride for type and numComponents
+  const offset = 0;
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
+  gl.vertexAttribPointer(
+      SpectrumProgram.vertexPositionAttribute,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset);
+  gl.enableVertexAttribArray(
+    SpectrumProgram.vertexPositionAttribute);
+    for (var i=0; i<totalnum; i++) //istart 2000+istart  256
+    {
+      gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, blueValue, 1.0 , 1.0]);
+      //console.log("buffer number is:",buffers);
+      if (i<=totalnum/2) //128
+      {
+        redValue=redValue+0.002;
+        blueValue=blueValue-0.002;
+      }else
+      {
+        
+        redValue=redValue-0.002;
+        blueValue=blueValue+0.002;
+      }
+     // gl.lineWidth(1.5);
+      gl.drawArrays(gl.POINTS, i, 1);
+  
+    }
 }
