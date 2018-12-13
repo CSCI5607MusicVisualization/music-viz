@@ -170,13 +170,11 @@ function initAudio() {
     let buffer = new Uint8Array(analyser.frequencyBinCount);
 
     var source;
-    var meter;
     function getData() {
       source = audioContext.createBufferSource();
-      meter = createAudioMeter(audioContext);
       source.connect(meter);      
       request = new XMLHttpRequest();
-      request.open('GET', 'viper.ogg', true);
+      request.open('GET', 'christmas.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {
@@ -288,22 +286,24 @@ function initAudio() {
     function animate() {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
+
         analyser.getFloatTimeDomainData(dataArray);
         //analyser.getByteFrequencyData(buffer);
         // let pitchBuffer = buffer.slice(0);
         // for (var i = 0; i < pitchBuffer.length; i++) {                    
         //     pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
         // }
+
+
         /* RMS stands for Root Mean Square, basically the root square of the
         * average of the square of each value. */
-        // Something is wrong with this so we are opting to use a volume-meter file instead. 
         var rms = 0;
         for (var i = 0; i < dataArray.length; i++) {
             rms += dataArray[i] * dataArray[i];
         }
-        
-        rms = Math.sqrt(rms / (dataArray.length));
-        console.log(rms);
+        rms = Math.sqrt(rms / (dataArray.length))
+        // This will return the value in decibals.
+        // var v = Math.abs(20 * Math.log10(rms));
 
         vals = pickColor(rms);
         r = vals[0];
