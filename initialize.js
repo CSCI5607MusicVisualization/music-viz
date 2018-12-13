@@ -6,6 +6,11 @@ var PointblueValue = 1.0;
 var PointgreenValue = 0.0;
 
 var alpha = 1.0;
+/** ----------for back ground-----------*/
+var Texture = {};
+var bufRect = {};
+var textureObj;
+var progBG;
 
 function initGL(canvas,SpecCanvas) 
 {
@@ -14,6 +19,7 @@ function initGL(canvas,SpecCanvas)
     gl = canvas.getContext("experimental-webgl");
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
+
     ctx = SpecCanvas.getContext('experimental-webgl')|| SpecCanvas.getContext('webgl') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
@@ -60,8 +66,6 @@ function initGL(canvas,SpecCanvas)
 
   return shader;
 }
-
-
 
 function initShaders() {
   
@@ -150,13 +154,46 @@ function initBuffers() {
   app.models.skylight = {};
   app.models.skylight.mesh = app.models.room_floor.mesh;
 }
+/*-----------------------Texture background------------------------------------- */
+// Texture.HandleLoadedTexture2D = function( image, texture, flipY ) {
+//   ctx.activeTexture( ctx.TEXTURE0 );
+//   ctx.bindTexture( ctx.TEXTURE_2D, texture );
+//   ctx.texImage2D( ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, image );
+//   if ( flipY != undefined && flipY == true )
+//       ctx.pixelStorei( ctx.UNPACK_FLIP_Y_WEBGL, true );
+//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR );
+//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.LINEAR );
+//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.REPEAT );
+//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.REPEAT );
+//   ctx.bindTexture( ctx.TEXTURE_2D, null );
+//   return texture;
+// }
 
-function initAudio() {
+// Texture.LoadTexture2D = function( name ) 
+// {
+//     var texture = ctx.createTexture();
+//     texture.image = new Image(480,360);
+//     texture.image.setAttribute('crossorigin', 'anonymous');
+//     texture.image.onload = function () 
+//     {
+//         var canvas =  document.createElement( 'canvas' );
+//          canvas.width = ctx.width;
+//          canvas.height = ctx.height;
+//         var context = canvas.getContext( '2d' );
+//         context.drawImage( texture.image, 0, 0, canvas.width, canvas.height );
+//         Texture.HandleLoadedTexture2D( canvas, texture, true )
+//     }
+//     texture.image.src = name;
+//     return texture;
+// }
+/*-----------------------End Texture background------------------------------------- */
+function initAudio() 
+{
   window.onload = function () 
   {
     //ctx = document.getElementById("canvas").getContext("2d");
+    //InitBackground();
     initSpectrumShader();
-
     var audioContext = new (window.AudioContext
         || window.webkitAudioContext || window.mozAudioContext)();
 
@@ -208,6 +245,7 @@ function initAudio() {
         //ctx.clearRect(0, 0, WIDTH, HEIGHT);
         InitArray();
         //console.log("arr data is:",arr);
+        //drawBackground(ctx);
         var Spectrumbuffers = Array2Buffers(ctx,arr);
         drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
         var Pointbuffers = Array2Buffers(ctx,pointArr);
@@ -218,7 +256,7 @@ function initAudio() {
     function InitArray()
     {
         var xstart=-1.0;
-        var delta =4.0/frequencyBins.length;// 0.002
+        var delta =4.0/frequencyBins.length+0.005;// 0.002
         var j= 0;
         for (var i = 0; i < 6*frequencyBins.length;) 
         {
@@ -270,7 +308,7 @@ function initAudio() {
         var wavedelta = 4.0/dataArray.length;
         for (var i = 0; i < 3*dataArray.length;) 
         {
-            value = dataArray[j];
+            value = 1.5*dataArray[j];
             j++;
             h = value ;//(/ 255)
             waveArr[i++]=xstart;
@@ -287,14 +325,12 @@ function initAudio() {
     function animate() {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
-
         analyser.getFloatTimeDomainData(dataArray);
         //analyser.getByteFrequencyData(buffer);
         // let pitchBuffer = buffer.slice(0);
         // for (var i = 0; i < pitchBuffer.length; i++) {                    
         //     pitchBuffer[i] = Math.log10(Math.abs(pitchBuffer[i]));
         // }
-
 
         /* RMS stands for Root Mean Square, basically the root square of the
         * average of the square of each value. */
@@ -314,7 +350,6 @@ function initAudio() {
         draw();
         requestAnimationFrame(animate);
     }
-
     requestAnimationFrame(animate);
   };
 }
@@ -344,21 +379,70 @@ function initSpectrumShader()
   SpectrumProgram.contrast = ctx.getUniformLocation(SpectrumProgram, 'u_contrast');
 }
 
-//
-// Draw the scene.  
-//
+// function InitBackground()
+// {
+//   var fragmentShader = getShader(ctx, "background-shader-fs");
+//   var vertexShader = getShader(ctx, "background-shader-vs");
+
+//   progBG = ctx.createProgram();
+//   ctx.attachShader(progBG, vertexShader);
+//   ctx.attachShader(progBG, fragmentShader);
+//   ctx.linkProgram(progBG);
+
+//   if (!ctx.getProgramParameter(progBG, ctx.LINK_STATUS)) {
+//     alert("Could not initialise progBG shaders");
+//   }
+
+//   ctx.useProgram(progBG);
+//   progBG.inPos = ctx.getAttribLocation( progBG, "inPos" );
+//   ctx.enableVertexAttribArray(progBG.inPos);
+//   progBG.u_texture = ctx.getUniformLocation(progBG, 'u_texture');
+//   textureObj = Texture.LoadTexture2D( "./textures/spectrum_background.jpg" ); 
+  
+//   bufRect = ctx.createBuffer()
+//   ctx.bindBuffer( gl.ARRAY_BUFFER, bufRect );
+//   ctx.bufferData( gl.ARRAY_BUFFER, new Float32Array( [ -1, -1, 1, -1, 1, 1, -1, 1 ] ), gl.STATIC_DRAW );
+// }
+// //
+// // Draw the scene.  
+// //
+// function drawBackground(gl)
+// {
+//   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+//   /*---------------backbround--------------- */
+//   gl.useProgram(progBG);
+  
+//   gl.disable( gl.DEPTH_TEST );
+//   var texUnit = 1;
+//   gl.activeTexture( gl.TEXTURE0 + texUnit );
+//   gl.bindTexture( gl.TEXTURE_2D, textureObj );
+//   //console.log("textureObj is:",textureObj);
+//   var tex_loc = gl.getUniformLocation( progBG, "u_texture" );
+//   gl.useProgram( progBG );
+//   gl.uniform1i( tex_loc, texUnit );
+  
+//   var v_attr_inx = gl.getAttribLocation( progBG, "inPos" );
+//   gl.bindBuffer( gl.ARRAY_BUFFER, bufRect );
+//   gl.vertexAttribPointer(v_attr_inx, 2, gl.FLOAT, false, 0, 0 );
+//   gl.enableVertexAttribArray(v_attr_inx);
+//   gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
+
+//   gl.disableVertexAttribArray( v_attr_inx );
+//   gl.clear( gl.DEPTH_BUFFER_BIT );
+//   /*---------------End backbround--------------- */  
+// }
 function drawSprctrum(gl, buffers,totalnum)
 {
-  var r = 0.;
-  var g = 0.; 
-  var b = 0.;
-  gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
+  // var r = 0.;
+  // var g = 0.; 
+  // var b = 0.;
+  // gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
+  // Clear the canvas before we start drawing on it.
+  //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.useProgram(SpectrumProgram);
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
-
-  // Clear the canvas before we start drawing on it.
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   const numComponents = 3;
   const type = gl.FLOAT;
@@ -377,8 +461,6 @@ function drawSprctrum(gl, buffers,totalnum)
     SpectrumProgram.vertexPositionAttribute);
   
   //sleep(999);  
-  //gl.useProgram(programInfo.program);
-  
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
@@ -488,38 +570,3 @@ function drawWave(gl, buffers,totalnum)
 }
 
 
-// // creates a texture info { width: w, height: h, texture: tex }
-// // The texture will start with 1x1 pixels and be updated
-// // when the image has loaded
-// function loadImageAndCreateTextureInfo(url) 
-// {
-//   var tex = gl.createTexture();
-//   gl.bindTexture(gl.TEXTURE_2D, tex);
- 
-//   // let's assume all images are not a power of 2
-//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-//   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 
-//   var textureInfo = {
-//     width: 1,   // we don't know the size until it loads
-//     height: 1,
-//     texture: tex,
-//   };
-//   var img = new Image();
-//   img.addEventListener('load', function() {
-//     textureInfo.width = img.width;
-//     textureInfo.height = img.height;
- 
-//     gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
-//     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-//   });
- 
-//   return textureInfo;
-// }
- 
-// var textureInfos = [
-//   loadImageAndCreateTextureInfo('./textures/spectrum_background.jpg'),
-//   //loadImageAndCreateTextureInfo('resources/leaves.jpg'),
-//   //loadImageAndCreateTextureInfo('resources/keyboard.jpg'),
-// ];

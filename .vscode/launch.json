@@ -23,6 +23,13 @@
             //"url": "http://localhost:8080",
             "file": "${workspaceRoot}/index.html"  
         },
-        
+        {
+            "name": "Launch test.html ",
+            "type": "firefox",
+            "request": "launch",
+           // "sourceMaps": false,
+            //"url": "http://localhost:8080",
+            "file": "${workspaceRoot}/test/test.html"  
+        },
     ]
 }

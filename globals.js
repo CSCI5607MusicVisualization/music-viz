@@ -5,6 +5,7 @@ var X = 0, Y = 1, Z = 2, H = 3, P = 4;
 // gl context
 var gl;
 var ctx;
+var glbox;
 // the canvas we're working with
 var canvas;
 var SpecCanvas;
@@ -71,10 +72,7 @@ var app = {};
   app.monkey = {};
   app.monkey.position = [0,0,0]
 
-
-var shaderProgram;
+var ShaderProgram;
+/*------------------spectrum------------ */
+var BackgroundProgram = {};
 var SpectrumProgram;
-var light = 0;
-var angle = 0;
-
-var backTex;

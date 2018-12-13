@@ -84,7 +84,7 @@ function Array2Buffer(array, iSize, nSize) {
   buffer.numItems = nSize;
   return buffer;
 }
-//for spectrum
+/**------------------for spectrum--------------------------------------- */
 function Array2Buffers(gl,array)
 {
   var positionBuffer = gl.createBuffer();
@@ -94,7 +94,7 @@ function Array2Buffers(gl,array)
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   return  positionBuffer;
 }
-
+/**------------------end for spectrum--------------------------------------- */
 function Array2EBuffer(array, iSize, nSize) {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
