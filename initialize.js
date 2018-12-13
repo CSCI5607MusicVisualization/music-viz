@@ -2,8 +2,8 @@ var redValue = 0.0;
 var greenValue = 0.0;
 var blueValue = 1.0;
 var PointredValue = 1.0;
-var PointblueValue = 1.0;
-var PointgreenValue = 0.0;
+var PointblueValue = 0.0;
+var PointgreenValue = 1.0;
 
 var alpha = 1.0;
 /** ----------for back ground-----------*/
@@ -480,7 +480,7 @@ function drawSprctrum(gl, buffers,totalnum)
       blueValue=blueValue+0.02;
     }
     alpha-=0.01;
-    if(alpha == -0.01)
+    if(alpha < 0 )
        alpha=1.0;
     gl.lineWidth(3.0);
     gl.drawArrays(gl.LINES, i, 2);
@@ -511,20 +511,20 @@ function drawPoint(gl, buffers,totalnum)
   for (var i=0; i<totalnum; i++) 
   {
     
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue,PointgreenValue, PointblueValue,alpha]);//PointgreenValue
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue, PointgreenValue, PointblueValue ,alpha]);//PointgreenValue
     if (i< totalnum/2) 
     {
-      PointredValue = PointredValue -0.04
-      PointgreenValue=PointgreenValue+0.02;
-      PointblueValue =PointblueValue-0.04;
+      PointredValue = PointredValue - 0.002;
+      PointgreenValue=PointgreenValue - 0.001;
+      PointblueValue =PointblueValue + 0.0005;
     }else
     {
-      PointredValue = PointredValue +0.04
-      PointgreenValue=PointgreenValue - 0.02;
-      PointblueValue=PointblueValue + 0.04;
+      PointredValue = PointredValue +0.002;
+      PointgreenValue=PointgreenValue + 0.001;
+      PointblueValue=PointblueValue - 0.0005;
     }
-    alpha-=0.01;
-    if(alpha == -0.01)
+    alpha-=0.005;
+    if(alpha < 0.5)
        alpha=1.0;
     gl.drawArrays(gl.POINTS, i, 1);
   }
