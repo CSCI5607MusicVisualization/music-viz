@@ -1,4 +1,3 @@
-
 var redValue = 0.0;
 var blueValue = 1.0;
 var PointredValue = 1.0;
@@ -172,7 +171,7 @@ function initAudio() {
     var source;
     function getData() {
       source = audioContext.createBufferSource();
-      source.connect(meter);      
+      source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
       request.open('GET', 'christmas.ogg', true);
       request.responseType = 'arraybuffer';
@@ -213,7 +212,7 @@ function initAudio() {
         var Pointbuffers = Array2Buffers(ctx,pointArr);
         drawPoint(ctx, Pointbuffers,frequencyBins.length);
         var wavebuffers = Array2Buffers(ctx,waveArr);
-        drawWave(ctx, wavebuffers,frequencyBins.length);
+        drawWave(ctx, wavebuffers,dataArray.length);
     };
     function InitArray()
     {
@@ -381,11 +380,11 @@ function drawSprctrum(gl, buffers,totalnum)
   //console.log("totalnum is:",totalnum);
   for (var i=0; i<totalnum; i+=2) //istart 2000+istart  256
   {
-    if(i%200==0)
-      console.log("spectrum color is:",redValue,1.0,blueValue);
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 1.0, blueValue, alpha]);
+    //if(i%200==0)
+    //  console.log("spectrum color is:",redValue,1.0,blueValue);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, 0.0, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
-    if (i<=totalnum/2) //128
+    if (i< totalnum/2) //128
     {
       //PointredValue = PointredValue+0.002;
       //PointblueValue =PointblueValue-0.002;
@@ -403,7 +402,8 @@ function drawSprctrum(gl, buffers,totalnum)
     gl.drawArrays(gl.LINES, i, 2);
 
   }
-
+  
+  //console.log("spectrum color is:",redValue,1.0,blueValue);
 }
 
 function drawPoint(gl, buffers,totalnum)
@@ -428,7 +428,7 @@ function drawPoint(gl, buffers,totalnum)
   {
     
     gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue,PointgreenValue, PointblueValue,alpha]);//PointgreenValue
-    if (i<=totalnum/2) 
+    if (i< totalnum/2) 
     {
       PointredValue = PointredValue -0.004
       PointgreenValue=PointgreenValue+0.002;
@@ -446,8 +446,8 @@ function drawPoint(gl, buffers,totalnum)
 //draw other two things
 function drawWave(gl, buffers,totalnum)
 {
-  var redValue = 0.0;
-  var blueValue = 1.0;
+  //var redValue = 0.0;
+  //var blueValue = 1.0;
   const numComponents = 3;
   const type = gl.FLOAT;
   const normalize = false;
@@ -467,7 +467,7 @@ function drawWave(gl, buffers,totalnum)
     {
       gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, blueValue, 1.0 , 1.0]);
       //console.log("buffer number is:",buffers);
-      if (i<=totalnum/2) //128
+      if (i< totalnum/2) //128
       {
         redValue=redValue+0.002;
         blueValue=blueValue-0.002;
