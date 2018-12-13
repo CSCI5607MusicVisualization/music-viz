@@ -162,7 +162,7 @@ function initAudio() {
     var analyser; 
     analyser  = audioContext.createAnalyser();
     analyser.smoothingTimeConstant = 0.9;
-    analyser.fftSize = 1024;
+    analyser.fftSize = 512;
     analyser.connect(audioContext.destination);
     var frequencyBins = new Uint8Array(analyser.frequencyBinCount);
     var dataArray = new Float32Array(analyser.fftSize);
