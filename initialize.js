@@ -16,11 +16,11 @@ function initGL(canvas,SpecCanvas)
 {
   try 
   {
-    gl = canvas.getContext("experimental-webgl");
+    gl = canvas.getContext("webgl2");
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
 
-    ctx = SpecCanvas.getContext('experimental-webgl')|| SpecCanvas.getContext('webgl') ;
+    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('webgl2') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
   } catch (e) {
@@ -103,6 +103,7 @@ function initShaders() {
   shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
   shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
   shaderProgram.hasTexure = gl.getUniformLocation(shaderProgram, "uHasTexure");
+  shaderProgram.lightCount = gl.getUniformLocation(shaderProgram, "lightCount");  
   shaderProgram.lightLocation = gl.getUniformLocation(shaderProgram, "uLightLocation");
   shaderProgram.lightVector = gl.getUniformLocation(shaderProgram, "uSpotDirection");
   shaderProgram.lightSpecularColor = gl.getUniformLocation(shaderProgram, "uLightSpecularColor");
@@ -135,9 +136,10 @@ function initTexture( object, url) {
 
 function initTextures(){
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
-  initTexture( app.models.room_walls, "textures/stone_wall.png" );
+  initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
   initTexture( app.models.room_floor, "textures/room_floor.jpg" );
-  initTexture( app.specular, "textures/specular.png");  
+  initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
+  initTexture( app.specular, "textures/redRamp.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
   
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;

@@ -4,25 +4,25 @@ function floatMonkey(){
   app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
   app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
 }
-app.monkeyRoomCollision = 3.95;
-function roomCollisionCheck(){
-  if( app.camera.position[X] > app.monkeyRoomCollision ){
-    app.camera.position[X] = app.monkeyRoomCollision
-  }
-  if( app.camera.position[X] < -app.monkeyRoomCollision ){
-    app.camera.position[X] = -app.monkeyRoomCollision
-  }
-  if( app.camera.position[Z] > app.monkeyRoomCollision ){
-    app.camera.position[Z] = app.monkeyRoomCollision
-  }
-  if( app.camera.position[Z] < -app.monkeyRoomCollision ){
-    app.camera.position[Z] = -app.monkeyRoomCollision
-  }
-}
+// app.monkeyRoomCollision = 3.95;
+// function roomCollisionCheck(){
+//   if( app.camera.position[X] > app.monkeyRoomCollision ){
+//     app.camera.position[X] = app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[X] < -app.monkeyRoomCollision ){
+//     app.camera.position[X] = -app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[Z] > app.monkeyRoomCollision ){
+//     app.camera.position[Z] = app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[Z] < -app.monkeyRoomCollision ){
+//     app.camera.position[Z] = -app.monkeyRoomCollision
+//   }
+// }
 
 function drawPlace(){
   floatMonkey();
-  roomCollisionCheck();
+  // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
@@ -39,36 +39,39 @@ function drawPlace(){
   
   gl.useProgram( shaderProgram );
 
+  // To add multiple lights append to and of array of light locations
   mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation )
-  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
+  gl.uniform3fv( shaderProgram.lightLocation, new Float32Array([app.lightLocation, [0,1,1]]) );
+  gl.uniform3fv( shaderProgram.lightVector, new Float32Array(app.lightVector, [1,0,0]) );
+  gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
   
   mvPushMatrix();
     mat4.scale( app.mvMatrix, [2,2,2] )
     // THIS IS A SINGLE OBJECT
-    drawObject( app.models.room_walls, 0 );
-    if( !app.breakWalls ) {
-      drawObject( app.models.room_wall_unbroken, 0 );
-    }
-    drawObject( app.models.room_floor, 0 );
-    drawObject( app.models.room_ceiling, 0 );
+    // drawObject( app.models.room_walls, 0 );
+    // if( !app.breakWalls ) {
+      // drawObject( app.models.room_wall_unbroken, 0 );
+    // }
+    // drawObject( app.models.room_floor, 0 );
+    // drawObject( app.models.room_ceiling, 0 );
     drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
       
       mvPushMatrix();
-        mat4.scale( app.mvMatrix, [0.05,0.05,0.05] )
+        mat4.scale( app.mvMatrix, [0.15,0.05,0.05] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
+        mat4.translate( app.mvMatrix,  [0, 1, 0] );        
         // mvPushMatrix();        
-        // for (let i = 0; i < 100; i++) {
-        //   mat4.translate( app.mvMatrix, app.monkey.position);
-        //   mat4.translate( app.mvMatrix,  [0+ 0.0001 * i * app.elapsed, 4 + 0.5, 0] );
-        //   drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );         
-        // }
+        for (let i = 0; i < 10; i++) {
+          mat4.translate( app.mvMatrix, app.monkey.position);
+          mat4.translate( app.mvMatrix,  [0 + .6, 0, 0] );                  
+          drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );         
+        }
         // mvPopMatrix();        
         mat4.translate( app.mvMatrix, app.monkey.position );
         mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
-        drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );
+        drawObject( app.models.tree01, 0, [1, 1, 0, 1] );
       mvPopMatrix();
     
 
