@@ -135,14 +135,16 @@ function initSyboxBuffers(canvas,shaderProgram)
 function loadTextureCube(urls) {
     var ct = 0;
     var img = new Array(6);
-
+    gl.activeTexture(gl.TEXTURE1);
     for (var i = 0; i < 6; i++) {
         img[i] = new Image();
         img[i].onload = function() {
             ct++;
             if (ct == 6) 
             {
+               
                 texID = gl.createTexture();
+                
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texID);
 
                 var targets = [
@@ -186,15 +188,20 @@ function createModel(modelData) {
 
     model.render = function() 
     { 
+        //setupSkybox();
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, texID);
+        
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer);
         gl.vertexAttribPointer(aCoords, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray( aCoords );
         gl.uniformMatrix4fv(uModelview, false, app.mvMatrix );//modelview
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        //gl.uniform1i(uTextreID,5);
+        gl.uniform1i(uTextreID,1);
         gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
         gl.disableVertexAttribArray( aCoords );
         //console.log(this.count);
+       
     }
     return model;
 }
@@ -204,7 +211,6 @@ function createModel(modelData) {
  */
 function setupSkybox() 
 {
-
     loadTextureCube(g_skyBoxUrls);
 }
 
@@ -215,11 +221,12 @@ function drawSkybox() {
 
     //mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
-    //mat4.perspective(projection, Math.PI/3, 1, 50, 200);
-    mat4.perspective( 45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);//projection
+    //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,projection);
+    mat4.perspective( 45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);
     gl.useProgram(SkyboxProgram);
     //console.log("SkyboxProgram:",SkyboxProgram);
-    gl.uniformMatrix4fv(uProjection, false, app.pMatrix );//projection
+    //gl.uniformMatrix4fv(uProjection, false, projection);
+    gl.uniformMatrix4fv(uProjection, false, app.pMatrix );
 
     //modelview = rotator.getViewMatrix();
 

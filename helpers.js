@@ -19,7 +19,8 @@ function drawObject( model, shininess, color ){
   gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, model.mesh.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
-  if( 'texture' in model ){
+  if( 'texture' in model )
+  {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, model.texture);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
