@@ -9,12 +9,15 @@ function drawObject( model, shininess, color ){
   
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.vertexBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, model.mesh.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.textureBuffer);
   gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, model.mesh.textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.normalBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, model.mesh.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
   if( 'texture' in model ){
     gl.activeTexture(gl.TEXTURE0);
@@ -37,6 +40,11 @@ function drawObject( model, shininess, color ){
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.mesh.indexBuffer);
   setMatrixUniforms();
   gl.drawElements(gl.TRIANGLES, model.mesh.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+  
+  gl.disableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+  gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
+  gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
 }
 
 function mvPushMatrix() {

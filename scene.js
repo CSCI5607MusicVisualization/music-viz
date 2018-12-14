@@ -24,9 +24,10 @@ function drawPlace(){
   floatMonkey();
   roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
-  
+  //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);
+  //mat4.perspective(app.pMatrix,Math.PI*45/180, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0);
+  //mat4.perspective( projection, fovyInRadians, aspect, near, far ); for version 2.2
   vec3.negate( app.camera.position, app.camera.inversePosition )
   
   mat4.identity( app.mvMatrix )
@@ -46,15 +47,16 @@ function drawPlace(){
   setUniforms();
   
   mvPushMatrix();
+     
     mat4.scale( app.mvMatrix, [2,2,2] )
     // THIS IS A SINGLE OBJECT
-    drawObject( app.models.room_walls, 0 );
-    if( !app.breakWalls ) {
-      drawObject( app.models.room_wall_unbroken, 0 );
-    }
-    drawObject( app.models.room_floor, 0 );
-    drawObject( app.models.room_ceiling, 0 );
-    drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
+    // drawObject( app.models.room_walls, 0 );
+    // if( !app.breakWalls ) {
+    //   drawObject( app.models.room_wall_unbroken, 0 );
+    // }
+    // drawObject( app.models.room_floor, 0 );
+    // drawObject( app.models.room_ceiling, 0 );
+    // drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
       
       mvPushMatrix();
         mat4.scale( app.mvMatrix, [0.05,0.05,0.05] )

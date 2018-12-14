@@ -5,13 +5,26 @@
   <meta charset="UTF-8">
   
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <!-- Version 1.7 -->
+  
+      
   <script type="text/javascript" src="gl-matrix.js"></script>
+ 
   <script type="text/javascript" src="webgl-utils.js"></script>
   <script type="text/javascript" src="volume-meter.js"></script>
   <meta charset="utf-8">
   <title>Music Visualizer</title>
+  <!--
   <link rel="stylesheet" href="./webgl.css" type="text/css">
- 
+  -->
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <!-- Version 2.2 -->
+  <!--
+  <script type="text/javascript" src="./webgl-skybox/gl-matrix.js"></script>
+   -->
+  <script type="text/javascript" src="webgl-utils.js"></script>
+  <script type="text/javascript" src="./webgl-skybox/simple-rotator.js"></script>
+  <script type="text/javascript" src="./webgl-skybox/basic-objects-IFS.js"></script>
 
   <!-- Main Shader -->
   
@@ -257,6 +270,7 @@
     </script>
 
     <!-- Background Shader -->
+    <!--
     <script id="background-shader-vs" type="x-shader/x-vertex">
         precision mediump float;
     
@@ -282,7 +296,7 @@
             gl_FragColor  = vec4( texColor.rgb, 1.0 );
         }
     </script> 
-     
+   -->  
   <script type='text/javascript' src='webgl-obj-loader.js'></script>
   <script type='text/javascript' src='globals.js'></script>
   <script type='text/javascript' src='helpers.js'></script>
@@ -291,6 +305,7 @@
   <script type='text/javascript' src='scene.js'></script>
   <script type='text/javascript' src='ColorUtil.js'></script>
   <script type='text/javascript' src='webgl.js'></script>
+  <script type="text/javascript" src='skybox.js'></script>
 </head>
 
 <body style='padding:0; margin:0 auto;'>

@@ -7,10 +7,10 @@ var PointgreenValue = 1.0;
 
 var alpha = 1.0;
 /** ----------for back ground-----------*/
-var Texture = {};
-var bufRect = {};
-var textureObj;
-var progBG;
+//var Texture = {};
+//var bufRect = {};
+//var textureObj;
+//var progBG;
 
 function initGL(canvas,SpecCanvas) 
 {
@@ -31,7 +31,7 @@ function initGL(canvas,SpecCanvas)
   }
 }
 
-  function getShader(env, id) 
+function getShader(env, id) 
 {
   var shaderScript = document.getElementById(id);
   if (!shaderScript) {
@@ -84,13 +84,13 @@ function initShaders() {
   gl.useProgram(shaderProgram);
 
   shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
   shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
-  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
   shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
   shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
   shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
