@@ -51,10 +51,10 @@ function drawPlace(){
     mat4.scale( app.mvMatrix, [2,2,2] )
 
     // Floor
-    drawObject( app.models.room_floor, 0 );
+    //drawObject( app.models.room_floor, 0 );
     
     // Ceiling
-    drawObject( app.models.room_ceiling, 0 );
+    //drawObject( app.models.room_ceiling, 0 );
 
     // Pedestal
     // drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
@@ -79,7 +79,7 @@ function drawPlace(){
 
 
       
-      // Skylight
+      Skylight
       mvPushMatrix();
         mat4.translate( app.mvMatrix, [0,2,0] );
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
@@ -87,8 +87,8 @@ function drawPlace(){
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
       mvPopMatrix();
     
-    drawObject( app.models.room_tunnel_ceiling, 0 );
-    drawObject( app.models.room_tunnel_walls, 0 );
+    //drawObject( app.models.room_tunnel_ceiling, 0 );
+    //drawObject( app.models.room_tunnel_walls, 0 );
   mvPopMatrix();
 }
 
