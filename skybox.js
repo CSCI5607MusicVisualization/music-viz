@@ -13,12 +13,12 @@ var rotator;   // A SimpleRotator object to enable rotation by mouse dragging.
 var texID;
 var cube;
 var g_skyBoxUrls = [
-    './webgl-skybox/images/skyposx1.png',
-    './webgl-skybox/images/skynegx1.png',
-    './webgl-skybox/images/skyposy1.png',
-    './webgl-skybox/images/skynegy1.png',
-    './webgl-skybox/images/skyposz1.png',
-    './webgl-skybox/images/skynegz1.png'
+    './skybox/skyposx1.png',
+    './skybox/skynegx1.png',
+    './skybox/skyposy1.png',
+    './skybox/skynegy1.png',
+    './skybox/skyposz1.png',
+    './skybox/skynegz1.png'
     ];
 
 var lastTime = new Date().getTime();

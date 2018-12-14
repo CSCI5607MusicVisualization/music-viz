@@ -76,10 +76,7 @@ function drawPlace(){
           
         mvPopMatrix();
       }
-
-
-      
-      Skylight
+      // Skylight
       mvPushMatrix();
         mat4.translate( app.mvMatrix, [0,2,0] );
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
