@@ -53,7 +53,6 @@ function drawPlace(){
     // Floor
     drawObject( app.models.room_floor, 0 );
     
-    
     // Ceiling
     drawObject( app.models.room_ceiling, 0 );
 
