@@ -63,6 +63,9 @@ $(document).ready(function(){
       'suzanne': 'models/boulder.obj',
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
+
+      // Tree
+      'tree': 'models/tree01.obj'
     },
     webGLStart
   );
