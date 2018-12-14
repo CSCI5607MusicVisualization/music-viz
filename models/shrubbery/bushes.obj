@@ -1,8 +1,6 @@
 # File produced by Open Asset Import Library (http://www.assimp.sf.net)
 # (assimp v3.1.187496374)
 
-mtllib Bushes.obj.mtl
-
 # 576 vertex positions
 v  1.69125 -0.00251369 -0.207671
 v  2.02112 0.178524 -0.118156

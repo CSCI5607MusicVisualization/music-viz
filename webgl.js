@@ -76,7 +76,12 @@ $(document).ready(function(){
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
       
-      'tree': 'models/shrubbery/tree01.obj',
+      'treeLrg': 'models/shrubbery/tree01.obj',
+      'treeSml': 'models/shrubbery/tree01.obj',
+      'treeMed': 'models/shrubbery/tree01.obj',
+
+
+      'bushes': 'models/shrubbery/bushes.obj'
     },
     webGLStart
   );

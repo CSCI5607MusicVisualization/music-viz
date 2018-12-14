@@ -142,7 +142,11 @@ function initTextures(){
   initTexture( app.specular, "textures/redRamp.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
 
-  initTexture( app.models.tree, "textures/cloud.jpg")
+  initTexture( app.models.treeLrg, "textures/cloud.jpg")
+  initTexture( app.models.treeMed, "textures/cloud.jpg")
+  initTexture( app.models.treeSml, "textures/cloud.jpg")
+
+  initTexture( app.models.bushes, "textures/cloud.jpg")
 
   
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;

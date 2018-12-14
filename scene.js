@@ -89,7 +89,7 @@ function drawPlace(){
 
       // RANDOM GENERATION
 
-      for (i = 0; i < app.trees.num; i++)
+      for (i = 0; i < app.shrubbery.num; i++)
       // Generate a random tree from the trees object in `globals.js`
       {
         // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
@@ -98,10 +98,10 @@ function drawPlace(){
           // Scale trees to be a bit bigger
           mat4.scale( app.mvMatrix, [3, 8, 3] );
 
-          mat4.translate( app.mvMatrix,  [ app.trees.locations[i][0], 0, app.trees.locations[i][1] ] );
+          mat4.translate( app.mvMatrix,  [ app.shrubbery.locations[i][0], 0, app.shrubbery.locations[i][1] ] );
 
           // Actually draw tree
-          drawObject( app.models.tree, 0, [1, 1, 0, 1] );
+          drawObject( app.models.bushes, 0, [1, 1, 0, 1] );
 
         mvPopMatrix();        
       }
