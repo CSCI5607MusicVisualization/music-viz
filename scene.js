@@ -4,21 +4,8 @@ function floatMonkey(){
   app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
   app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
 }
-// app.monkeyRoomCollision = 3.95;
-// function roomCollisionCheck(){
-//   if( app.camera.position[X] > app.monkeyRoomCollision ){
-//     app.camera.position[X] = app.monkeyRoomCollision
-//   }
-//   if( app.camera.position[X] < -app.monkeyRoomCollision ){
-//     app.camera.position[X] = -app.monkeyRoomCollision
-//   }
-//   if( app.camera.position[Z] > app.monkeyRoomCollision ){
-//     app.camera.position[Z] = app.monkeyRoomCollision
-//   }
-//   if( app.camera.position[Z] < -app.monkeyRoomCollision ){
-//     app.camera.position[Z] = -app.monkeyRoomCollision
-//   }
-// }
+
+
 
 function drawPlace(){
   floatMonkey();
@@ -72,29 +59,51 @@ function drawPlace(){
       mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
       // mat4.translate( app.mvMatrix, [0, 1, 0] );    
       
-      for (let i = 0; i < 10; i++)
-      // Push 10 trees
+      // ORIGINAL
+      // for (let i = 0; i < 10; i++)
+      // // Push 10 trees
+      // {
+      //   // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
+      //   mvPushMatrix();
+
+      //     // Scale trees to be a bit bigger
+      //     mat4.scale( app.mvMatrix, [3, 8, 3] );
+
+      //     // Get a random coordinate
+      //     // coord = getRandomXZ(-10, 10, 0, 10);
+      //     // console.log("COORD: ", coord[0], coord[1]);
+
+      //     // Move tree to center of screen
+      //     mat4.translate( app.mvMatrix, app.monkey.position);
+
+      //     // Move tree apart from nearby others by space of size `tree_space`
+      //     tree_space = 2;
+      //     // mat4.translate( app.mvMatrix,  [ coord[0], 0, coord[1] ] );
+
+      //     // Actually draw tree
+      //     drawObject( app.models.tree, 0, [1, 1, 0, 1] );
+
+      //   mvPopMatrix();
+
+      // }
+
+      // RANDOM GENERATION
+
+      for (i = 0; i < app.trees.num; i++)
+      // Generate a random tree from the trees object in `globals.js`
       {
         // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
         mvPushMatrix();
 
           // Scale trees to be a bit bigger
           mat4.scale( app.mvMatrix, [3, 8, 3] );
-    
-          
 
-          // Move tree to center of screen
-          // mat4.translate( app.mvMatrix, app.monkey.position);
-
-          // Move tree apart from nearby others by space of size `tree_space`
-          tree_space = 2;
-          mat4.translate( app.mvMatrix,  [i * tree_space, 0, i * tree_space] );
+          mat4.translate( app.mvMatrix,  [ app.trees.locations[i][0], 0, app.trees.locations[i][1] ] );
 
           // Actually draw tree
           drawObject( app.models.tree, 0, [1, 1, 0, 1] );
 
-        mvPopMatrix();
-
+        mvPopMatrix();        
       }
 
     mvPopMatrix();

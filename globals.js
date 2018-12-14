@@ -79,3 +79,31 @@ var ShaderProgram;
 /*------------------spectrum------------ */
 var BackgroundProgram = {};
 var SpectrumProgram;
+
+
+
+
+
+
+// Tree locations
+
+function getRandomXZ(minx, maxx, minz, maxz)
+// Returns X and Z coordinates within the ranges of x,z specified
+{
+  x = Math.random() * (maxx - minx) + minx;
+  z = Math.random() * (maxz - minz) + minz;
+
+  return [x, z];
+}
+
+app.trees = {}
+app.trees.num = 100;
+app.trees.locations = []
+for (i = 0; i < app.trees.num; i++)
+// Generate tree locations
+{
+  coord = getRandomXZ(-10, 10, -10, 10);
+  app.trees.locations.push( coord );
+}
+// DEBUG
+console.log(app.trees.locations)
