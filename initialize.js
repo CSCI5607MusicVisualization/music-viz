@@ -16,11 +16,11 @@ function initGL(canvas,SpecCanvas)
 {
   try 
   {
-    gl = canvas.getContext("experimental-webgl");
+    gl = canvas.getContext("webgl2");
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
 
-    ctx = SpecCanvas.getContext('experimental-webgl')|| SpecCanvas.getContext('webgl') ;
+    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('experimental-webgl') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
   } catch (e) {
@@ -67,7 +67,8 @@ function getShader(env, id)
   return shader;
 }
 
-function initShaders() {
+function initShaders() 
+{
   
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
@@ -108,8 +109,10 @@ function initShaders() {
 }
 
 
-function handleLoadedTexture(texture) {
+function handleLoadedTexture(texture) 
+{
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  //gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image );
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -119,19 +122,23 @@ function handleLoadedTexture(texture) {
   gl.generateMipmap(gl.TEXTURE_2D);
 
   gl.bindTexture(gl.TEXTURE_2D, null);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 }
 
-function initTexture( object, url) {
+function initTexture( object, url) 
+{
   object.texture = gl.createTexture();
   object.texture.image = new Image();
   object.texture.image.crossOrigin = "anonymous";
   object.texture.image.onload = function () {
-    handleLoadedTexture( object.texture );
+    //handleLoadedTexture( object.texture );
   }
   object.texture.image.src = url;
 }
 
-function initTextures(){
+function initTextures()
+{
+  gl.useProgram(shaderProgram);
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
   initTexture( app.models.room_walls, "textures/stone_wall.png" );
   initTexture( app.models.room_floor, "textures/room_floor.jpg" );
@@ -209,7 +216,8 @@ function initAudio()
     let buffer = new Uint8Array(analyser.frequencyBinCount);
 
     var source;
-    function getData() {
+    function getData() 
+    {
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
@@ -433,7 +441,7 @@ function initSpectrumShader()
 //   gl.clear( gl.DEPTH_BUFFER_BIT );
 //   /*---------------End backbround--------------- */  
 // }
-function drawSprctrum(gl, buffers,totalnum)
+function drawSprctrum(env, buffers,totalnum)
 {
   // var r = 0.;
   // var g = 0.; 
@@ -441,25 +449,25 @@ function drawSprctrum(gl, buffers,totalnum)
   // gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
   // Clear the canvas before we start drawing on it.
   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.useProgram(SpectrumProgram);
-  gl.clearDepth(1.0);                 // Clear everything
-  gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-  gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+  env.useProgram(SpectrumProgram);
+  env.clearDepth(1.0);                 // Clear everything
+  env.enable(env.DEPTH_TEST);           // Enable depth testing
+  env.depthFunc(env.LEQUAL);            // Near things obscure far things
 
   const numComponents = 3;
-  const type = gl.FLOAT;
+  const type = env.FLOAT;
   const normalize = false;
   const stride = 0;// 0 = use the correct stride for type and numComponents
   const offset = 0;
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
-  gl.vertexAttribPointer(
+  env.bindBuffer(env.ARRAY_BUFFER, buffers);
+  env.vertexAttribPointer(
       SpectrumProgram.vertexPositionAttribute,
       numComponents,
       type,
       normalize,
       stride,
       offset);
-  gl.enableVertexAttribArray(
+  env.enableVertexAttribArray(
     SpectrumProgram.vertexPositionAttribute);
   
   //sleep(999);  
@@ -468,7 +476,7 @@ function drawSprctrum(gl, buffers,totalnum)
   {
     //if(i%200==0)
     //  console.log("spectrum color is:",redValue,1.0,blueValue);
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, greenValue, blueValue, alpha]);
+    env.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, greenValue, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i< totalnum/2) //128
     {
@@ -484,36 +492,36 @@ function drawSprctrum(gl, buffers,totalnum)
     alpha-=0.01;
     if(alpha < 0 )
        alpha=1.0;
-    gl.lineWidth(3.0);
-    gl.drawArrays(gl.LINES, i, 2);
+    env.lineWidth(3.0);
+    env.drawArrays(env.LINES, i, 2);
 
   }
-  
+  env.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
   //console.log("spectrum color is:",redValue,1.0,blueValue);
 }
 
-function drawPoint(gl, buffers,totalnum)
+function drawPoint(env, buffers,totalnum)
 {
   const numComponents = 3;
-  const type = gl.FLOAT;
+  const type = env.FLOAT;
   const normalize = false;
   const stride = 0;// 0 = use the correct stride for type and numComponents
   const offset = 0;
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
-  gl.vertexAttribPointer(
+  env.bindBuffer(env.ARRAY_BUFFER, buffers);
+  env.vertexAttribPointer(
       SpectrumProgram.vertexPositionAttribute,
       numComponents,
       type,
       normalize,
       stride,
       offset);
-  gl.enableVertexAttribArray(
+  env.enableVertexAttribArray(
     SpectrumProgram.vertexPositionAttribute);
   
   for (var i=0; i<totalnum; i++) 
   {
     
-    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue, PointgreenValue, PointblueValue ,alpha]);//PointgreenValue
+    env.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue, PointgreenValue, PointblueValue ,alpha]);//PointgreenValue
     if (i< totalnum/2) 
     {
       PointredValue = PointredValue - 0.002;
@@ -528,8 +536,9 @@ function drawPoint(gl, buffers,totalnum)
     alpha-=0.005;
     if(alpha < 0.5)
        alpha=1.0;
-    gl.drawArrays(gl.POINTS, i, 1);
+    env.drawArrays(env.POINTS, i, 1);
   }
+  env.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
 }
 //draw other two things
 function drawWave(gl, buffers,totalnum)
@@ -569,6 +578,7 @@ function drawWave(gl, buffers,totalnum)
       gl.drawArrays(gl.POINTS, i, 1);
   
     }
+  gl.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
 }
 
 
