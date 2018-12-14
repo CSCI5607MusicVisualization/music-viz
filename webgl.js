@@ -76,7 +76,7 @@ $(document).ready(function(){
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
       
-      'tree': 'models/tree01.obj',
+      'tree': 'models/shrubbery/tree01.obj',
     },
     webGLStart
   );

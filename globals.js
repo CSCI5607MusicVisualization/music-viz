@@ -104,7 +104,7 @@ function getRandomXZ(minx, maxx, minz, maxz)
 // Populate a trees object
 app.trees = {}
 
-app.trees.num = 100;
+app.trees.num = 50;
 
 app.trees.locations = []
 for (i = 0; i < app.trees.num; i++)
@@ -113,10 +113,6 @@ for (i = 0; i < app.trees.num; i++)
   coord = getRandomXZ(-10, 10, -10, 10);
   app.trees.locations.push( coord );
 }
-
-
-
-
 
 // DEBUG
 // console.log(app.trees.locations)
