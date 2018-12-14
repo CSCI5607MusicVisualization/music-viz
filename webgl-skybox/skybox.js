@@ -197,7 +197,8 @@ function drawScene() {
 
     //mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
-    mat4.perspective(projection, Math.PI/3, 1, 50, 200);
+    //mat4.perspective(projection, Math.PI/3, 1, 50, 200);
+    mat4.perspective( 60, 1, 50, 200 , projection);
     gl.uniformMatrix4fv(uProjection, false, projection );
 
     modelview = rotator.getViewMatrix();
@@ -221,6 +222,7 @@ function tick() {
     if (!g_drawOnce) {
         requestAnimFrame(tick);
     }
+    drawSkybox();
     drawScene();
     animate();
 }
