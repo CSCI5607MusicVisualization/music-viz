@@ -40,15 +40,13 @@ function drawPlace(){
   gl.useProgram( shaderProgram );
 
 
-  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation )
+  // To add multiple lights append to and of array of light locations
+  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic[0], app.lightLocation )
+  // console.log(app.lightLocationStatic);
+  console.log(app.lightLocation);  
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
-
-  // To add multiple lights append to and of array of light locations
-  // mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation )
-  // gl.uniform3fv( shaderProgram.lightLocation ) // , new Float32Array([app.lightLocation, [0,1,1]]) );
-  // gl.uniform3fv( shaderProgram.lightVector ) // , new Float32Array(app.lightVector, [1,0,0]) );
-  // gl.uniform1i( shaderProgram.lightCount, 1);
+  gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
   
@@ -61,7 +59,7 @@ function drawPlace(){
     // }
     // drawObject( app.models.room_floor, 0 );
     // drawObject( app.models.room_ceiling, 0 );
-    // drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
+    drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
       
       mvPushMatrix();
 
@@ -69,22 +67,16 @@ function drawPlace(){
         mat4.scale( app.mvMatrix, [0.15,0.05,0.05] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [0, 1, 0] );        
-        
-        mvPushMatrix();
-        // Draws 10 suzanne's
+        // mvPushMatrix();        
         for (let i = 0; i < 10; i++) {
           mat4.translate( app.mvMatrix, app.monkey.position);
-          // mat4.translate( app.mvMatrix,  [0 + .6, 0, 0] );
-
-          scl = 1.5;
-          mat4.translate( app.mvMatrix,  [i * scl, 0, i * (2 * scl)] ); 
-          drawObject( app.models.tree, 0, [1, 1, 0, 1] );         
+          mat4.translate( app.mvMatrix,  [0 + .6, 0, 0] );                  
+          drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );         
         }
-        mvPopMatrix();
-
-        // mat4.translate( app.mvMatrix, app.monkey.position );
-        // mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
-        // drawObject( app.models.tree01, 0, [1, 1, 0, 1] );
+        // mvPopMatrix();        
+        mat4.translate( app.mvMatrix, app.monkey.position );
+        mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
+        drawObject( app.models.tree01, 0, [1, 1, 0, 1] );
       mvPopMatrix();
     
 
