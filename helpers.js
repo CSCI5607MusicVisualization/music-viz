@@ -93,13 +93,13 @@ function Array2Buffer(array, iSize, nSize) {
   return buffer;
 }
 /**------------------for spectrum--------------------------------------- */
-function Array2Buffers(gl,array)
+function Array2Buffers(env,array)
 {
-  var positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
+  var positionBuffer = env.createBuffer();
+  env.bindBuffer(env.ARRAY_BUFFER, positionBuffer);
+  env.bufferData(env.ARRAY_BUFFER, new Float32Array(array), env.STATIC_DRAW);
   positionBuffer.numItems=array.length;
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  env.bindBuffer(env.ARRAY_BUFFER, null);
   return  positionBuffer;
 }
 /**------------------end for spectrum--------------------------------------- */
@@ -112,13 +112,18 @@ function Array2EBuffer(array, iSize, nSize) {
   return buffer;
 }
 
-function drawBuffer(vpbuf, vcbuf, start, nitems, gltype) {
+function drawBuffer(vpbuf, vcbuf, start, nitems, gltype) 
+{
   gl.bindBuffer(gl.ARRAY_BUFFER, vpbuf);
   gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vpbuf.itemSize, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray( shaderProgram.vertexPositionAttribute );
   gl.bindBuffer(gl.ARRAY_BUFFER, vcbuf);
   gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, vcbuf.itemSize, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute );
   setMatrixUniforms();
   gl.drawArrays(gltype, start, nitems);
+  gl.disableVertexAttribArray(shaderProgram.vertexPositionAttribute );
+  gl.disableVertexAttribArray( shaderProgram.vertexColorAttribute );
 }
 
 // //add texture to background

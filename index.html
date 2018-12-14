@@ -254,7 +254,7 @@
         varying vec3 vCoords;
         void main() {
             vec4 eyeCoords = projection *modelview * vec4(coords,1.0);
-            gl_Position =  eyeCoords;//.xyww
+            gl_Position = eyeCoords;//.xyww
             vCoords = coords;//gl_Position.xyz;
         }
     </script>
