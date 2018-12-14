@@ -15,9 +15,9 @@ function animate() {
 
 function tick() {
   requestAnimFrame(tick);
-  
   app.drawScene();
-  drawSkybox();
+  //drawSkybox();
+  //DrawTriangle(gl,shaderProgram);
   animate();
 }
 
@@ -27,17 +27,20 @@ function webGLStart( meshes )
   canvas = document.getElementById("mycanvas");
   SpecCanvas = document.getElementById("canvas");
   initGL(canvas,SpecCanvas);
-
+/**----------------------initial 3D Objects--------------------------- */
   initShaders();
-  initAudio();
+  
   initBuffers();
   initPointerLock();
   initTextures();
-  
+/**----------------------initial Audio--------------------------- */  
+  initAudio();
+/**----------------------initial Skybox--------------------------- */  
   initSkyboxShaders(gl);
   initSyboxBuffers(canvas,SkyboxProgram);
   setupSkybox();
-
+/**----------------------initial Triangles--------------------------- */ 
+  //InitTrangleBuffer();
   document.onkeydown = cameraKeyDownHandler;
   document.onkeyup = cameraKeyUpHandler;
 
@@ -64,7 +67,7 @@ $(document).ready(function(){
       'boulder': 'models/boulder.obj',
 
       // Tree
-      'tree': 'models/tree01.obj'
+      'tree': 'models/HighPolyGrass.obj'
     },
     webGLStart
   );

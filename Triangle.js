@@ -1,6 +1,6 @@
 var vertices=new Array();
 var indices  = new Array();
-function InitTrangle()
+function InitTrangleBuffer()
 {
   vertices.push([
     -0.5,0.5,0.5,
@@ -11,7 +11,7 @@ function InitTrangle()
  indices.push([0,1,2]);
 }
 
-function InitTrangleBuffer(gl)
+function DrawTriangle(gl,shaderProgram)
 {
  // Create an empty buffer object to store vertex buffer
  var vertex_buffer = gl.createBuffer();
@@ -84,8 +84,8 @@ function InitTrangleBuffer(gl)
 //  // Link both the programs
 //  gl.linkProgram(shaderProgram);
 
-//  // Use the combined shader program object
-//  gl.useProgram(shaderProgram);
+ // Use the combined shader program object
+ gl.useProgram(shaderProgram);
 
  /*======= Associating shaders to buffer objects =======*/
 
@@ -96,7 +96,7 @@ function InitTrangleBuffer(gl)
  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
  
  // Get the attribute location
- var coord = gl.getAttribLocation(shaderProgram, "coordinates");
+ var coord = gl.getAttribLocation(shaderProgram, "vPosition");
 
  // Point an attribute to the currently bound VBO
  gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0); 
