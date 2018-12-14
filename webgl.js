@@ -62,7 +62,7 @@ $(document).ready(function(){
       'suzanne': 'models/boulder.obj',
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
-
+      'tree01': 'models/suzanne.obj',
       // Tree
       'tree': 'models/tree01.obj'
     },

@@ -23,10 +23,25 @@ function drawObject( model, shininess, color ){
   {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, model.texture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    gl.uniform1i(shaderProgram.samplerUniform, 0);    
+
+    gl.activeTexture(gl.TEXTURE1)    
+    gl.bindTexture(gl.TEXTURE_2D, app.diffuse.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 1)
+
+    gl.activeTexture(gl.TEXTURE2)        
+    gl.bindTexture(gl.TEXTURE_2D, app.specular.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 2);        ;    
     gl.uniform1i(shaderProgram.hasTexure, true);
   }
   else{
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, app.diffuse.texture); 
+    gl.uniform1i(shaderProgram.diffuseUniform, 0);     
+    gl.activeTexture(gl.TEXTURE1)        
+    gl.bindTexture(gl.TEXTURE_2D, app.specular.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 1);          
+
     gl.uniform1i(shaderProgram.hasTexure, false);
     gl.uniform4fv( shaderProgram.modelColor, color );
   }

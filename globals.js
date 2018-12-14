@@ -11,6 +11,9 @@ var canvas;
 var SpecCanvas;
 // application var holder
 var app = {};
+  // Color Ramps
+  app.specular = {};
+  app.diffuse = {};  
   // mesh holder
   app.meshes = {};
   // model holder
@@ -46,8 +49,8 @@ var app = {};
   app.drawScene;
   app.scenechange = false;
   // room light
-  app.lightLocationStatic = [0,2,0];
-  app.lightVectorStatic = [0,-1,0];
+  app.lightLocationStatic = [0,15,0];
+  app.lightVectorStatic = [0, -1, 0];
   app.lightLocation = vec3.create();
   app.lightVector = vec3.create();
   app.ambientIntensity = 1.0;
@@ -61,13 +64,13 @@ var app = {};
   // which function to use to draw
   app.drawScene;
   app.scenechange = false;
-  // room light
-  app.lightLocationStatic = [0,2,0];
-  app.lightVectorStatic = [0,-1,0];
-  app.lightLocation = vec3.create();
-  app.lightVector = vec3.create();
-  app.ambientIntensity = 0.8;
-  app.diffuseIntensity = 2.0;
+  // // room light
+  // // app.lightLocationStatic = [0,2,0, -0.5, 2, 0];
+  // // app.lightVectorStatic = [0,-1,0, 0, -1, 0];
+  // // app.lightLocation = vec3.create();
+  // // app.lightVector = vec3.create();
+  // app.ambientIntensity = 0.8;
+  // app.diffuseIntensity = 2.0;
   // monkey
   app.monkey = {};
   app.monkey.position = [0,0,0]
