@@ -62,7 +62,6 @@ function drawPlace(){
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
       drawObject( app.models.room_floor, 0 );
-    
     mvPopMatrix();
 
     // Push the model matrix for trees
@@ -74,30 +73,39 @@ function drawPlace(){
       // mat4.translate( app.mvMatrix, [0, 1, 0] );    
       
       for (let i = 0; i < 10; i++)
-      // Push 10 trees 
+      // Push 10 trees
       {
+        // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
+        mvPushMatrix();
+
+          // Scale trees to be a bit bigger
+          mat4.scale( app.mvMatrix, [3, 8, 3] );
+    
+          
 
           // Move tree to center of screen
           // mat4.translate( app.mvMatrix, app.monkey.position);
 
           // Move tree apart from nearby others by space of size `tree_space`
           tree_space = 2;
-          mat4.translate( app.mvMatrix,  [2 * tree_space, 0, 2 * tree_space] );
+          mat4.translate( app.mvMatrix,  [i * tree_space, 0, i * tree_space] );
 
           // Actually draw tree
           drawObject( app.models.tree, 0, [1, 1, 0, 1] );
+
+        mvPopMatrix();
 
       }
 
     mvPopMatrix();
     
 
-      mvPushMatrix();
-        mat4.translate( app.mvMatrix, [0,2,0] );
-        gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
-        drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
-        gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
-      mvPopMatrix();
+    mvPushMatrix();
+      mat4.translate( app.mvMatrix, [0,2,0] );
+      gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
+      drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
+      gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
+    mvPopMatrix();
     
     // Old tunnel stuff
     // drawObject( app.models.room_tunnel_ceiling, 0 );
