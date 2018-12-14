@@ -76,9 +76,6 @@ var app = {};
   app.monkey.position = [0,0,0]
 
 var ShaderProgram;
-
 /*------------------spectrum------------ */
-//var BackgroundProgram = {};
+var BackgroundProgram = {};
 var SpectrumProgram;
-/*------------------skybox------------ */
-var SkyboxProgram;
