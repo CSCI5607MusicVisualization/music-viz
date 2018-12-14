@@ -308,7 +308,7 @@ function initAudio()
         var wavedelta = 4.0/dataArray.length;
         for (var i = 0; i < 3*dataArray.length;) 
         {
-            value = 1.5*dataArray[j];
+            value = dataArray[j];//1.5*
             j++;
             h = value ;//(/ 255)
             waveArr[i++]=xstart;
