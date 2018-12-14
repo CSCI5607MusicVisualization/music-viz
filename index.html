@@ -32,7 +32,9 @@
     uniform bool uHasTexure;
 
     uniform sampler2D uSampler;
-
+    uniform sampler2D diffuseRamp;
+    uniform sampler2D specularRamp;
+    
     uniform float uMaterialShininess;
 
     const float spotExponent = 40.0;
@@ -48,7 +50,7 @@
       
       vec3 vectorToLightSource = normalize(uLightLocation - vPosition.xyz / vPosition.w);
 
-      diffuseLightWeighting = max(dot(vTransformedNormal, vectorToLightSource), 0.0);
+      diffuseLightWeighting = max(0.5 * dot(vTransformedNormal, vectorToLightSource), 0.0) + 0.5;
 
       if (diffuseLightWeighting > 0.0) {
         spotEffect = dot(normalize(uSpotDirection), normalize(-vectorToLightSource));
@@ -61,10 +63,12 @@
           vec3 viewVectorEye = -normalize(vPosition.xyz / vPosition.w);
           rdotv = max(dot(reflectionVector, viewVectorEye), 0.0);
           specularLightWeighting = pow(rdotv, uMaterialShininess);
-
+          vec3 diffuseColor = texture2D(diffuseRamp, vec2(diffuseLightWeighting, 0)).xyz;
+          vec3 specularColor = texture2D(specularRamp, vec2(specularLightWeighting, 0)).xyz;
+          
           lightWeighting =
-            spotEffect * uLightDiffuseColor * diffuseLightWeighting +
-            spotEffect * uLightSpecularColor * specularLightWeighting;
+            spotEffect * diffuseColor +
+            spotEffect * specularColor;
         }
       }
 

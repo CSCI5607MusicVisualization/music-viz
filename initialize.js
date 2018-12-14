@@ -96,6 +96,8 @@ function initShaders() {
   shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
   shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+  shaderProgram.diffuseUniform = gl.getUniformLocation(shaderProgram, "diffuseRamp");
+  shaderProgram.specularUniform = gl.getUniformLocation(shaderProgram, "specularRamp");    
   shaderProgram.modelColor = gl.getUniformLocation(shaderProgram, "uColor");
   shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, "uMaterialShininess");
   shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
@@ -135,6 +137,9 @@ function initTextures(){
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
   initTexture( app.models.room_walls, "textures/stone_wall.png" );
   initTexture( app.models.room_floor, "textures/room_floor.jpg" );
+  initTexture( app.specular, "textures/specular.png");  
+  initTexture( app.diffuse, "textures/diffuse.png");
+  
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;
   app.models.room_wall_broken.texture = app.models.room_walls.texture;
   app.models.room_wall_unbroken.texture = app.models.room_walls.texture;
@@ -211,7 +216,7 @@ function initAudio()
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'christmas.ogg', true);
+      request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {

@@ -11,6 +11,9 @@ var canvas;
 var SpecCanvas;
 // application var holder
 var app = {};
+  // Color Ramps
+  app.specular = {};
+  app.diffuse = {};  
   // mesh holder
   app.meshes = {};
   // model holder

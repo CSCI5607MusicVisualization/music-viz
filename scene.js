@@ -38,7 +38,7 @@ function drawPlace(){
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
   
   gl.useProgram( shaderProgram );
-  
+
   mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation )
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
@@ -59,11 +59,19 @@ function drawPlace(){
       mvPushMatrix();
         mat4.scale( app.mvMatrix, [0.05,0.05,0.05] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
+        // mvPushMatrix();        
+        // for (let i = 0; i < 100; i++) {
+        //   mat4.translate( app.mvMatrix, app.monkey.position);
+        //   mat4.translate( app.mvMatrix,  [0+ 0.0001 * i * app.elapsed, 4 + 0.5, 0] );
+        //   drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );         
+        // }
+        // mvPopMatrix();        
         mat4.translate( app.mvMatrix, app.monkey.position );
-        mat4.translate( app.mvMatrix,  [0, 4, 0] );
+        mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
         drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );
       mvPopMatrix();
-      
+    
+
       mvPushMatrix();
         mat4.translate( app.mvMatrix, [0,2,0] );
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
