@@ -47,7 +47,7 @@ function drawPlace(){
   gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
-  
+  // console.log(app.spectrum);
   mvPushMatrix();
     mat4.scale( app.mvMatrix, [2,2,2] )
     // THIS IS A SINGLE OBJECT
@@ -58,15 +58,14 @@ function drawPlace(){
     // drawObject( app.models.room_floor, 0 );
     // drawObject( app.models.room_ceiling, 0 );
     drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
-      
       mvPushMatrix();
         mat4.scale( app.mvMatrix, [0.15,0.05,0.05] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [0, 1, 0] );        
         // mvPushMatrix();        
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < app.spectrum.length; i++) {
           mat4.translate( app.mvMatrix, app.monkey.position);
-          mat4.translate( app.mvMatrix,  [0 + .6, 0, 0] );                  
+          mat4.translate( app.mvMatrix,  [0 + i * 0.0005, 0, 0] );                  
           drawObject( app.models.suzanne, 0, [1, 1, 0, 1] );         
         }
         // mvPopMatrix();        

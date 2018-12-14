@@ -72,7 +72,7 @@ $(document).ready(function(){
       'room_tunnel_walls': 'models/room_tunnel_walls.obj',
       'room_wall_broken': 'models/room_wall_broken.obj',
       'room_wall_unbroken': 'models/room_wall_unbroken.obj',
-      'suzanne': 'models/boulder.obj',
+      'suzanne': 'models/cube.obj',
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
       'tree01': 'models/suzanne.obj',

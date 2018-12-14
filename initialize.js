@@ -253,13 +253,13 @@ function initAudio()
         InitArray();
         //console.log("arr data is:",arr);
         //drawBackground(ctx);
-        var Spectrumbuffers = Array2Buffers(ctx,arr);
-        drawSprctrum(ctx, Spectrumbuffers,frequencyBins.length);
-        var Pointbuffers = Array2Buffers(ctx,pointArr);
-        drawPoint(ctx, Pointbuffers,frequencyBins.length);
-        var wavebuffers = Array2Buffers(ctx,waveArr);
-        drawWave(ctx, wavebuffers,dataArray.length);
-    };
+        // var Spectrumbuffers = Array2Buffers(ctx,arr);
+        // var Pointbuffers = Array2Buffers(ctx,pointArr);
+        // var wavebuffers = Array2Buffers(ctx,waveArr);
+        app.spectrum = arr;
+        app.point = pointArr;
+        app.wave = waveArr;
+      };
     function InitArray()
     {
         var xstart=-1.0;
@@ -272,7 +272,7 @@ function initAudio()
             h = (value / 255);
             //console.log("frequencyBins is:",value);
             // w = WIDTH / frequencyBins.length;
-            //     ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
+                // ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
             // ctx.fillRect(i * w, HEIGHT - 1, w, -h);
             arr[i++]=xstart;
             arr[i++]=0.0;
@@ -345,14 +345,11 @@ function initAudio()
         for (var i = 0; i < dataArray.length; i++) {
             rms += dataArray[i] * dataArray[i];
         }
-        rms = Math.sqrt(rms / (dataArray.length))
+        rms = Math.sqrt(rms / (dataArray.length));
+        
+        app.intensity = rms;
         // This will return the value in decibals.
         // var v = Math.abs(20 * Math.log10(rms));
-
-        vals = pickColor(rms);
-        r = vals[0];
-        g = vals[1];
-        b = vals[2];
 
         draw();
         requestAnimationFrame(animate);
@@ -386,58 +383,6 @@ function initSpectrumShader()
   SpectrumProgram.contrast = ctx.getUniformLocation(SpectrumProgram, 'u_contrast');
 }
 
-// function InitBackground()
-// {
-//   var fragmentShader = getShader(ctx, "background-shader-fs");
-//   var vertexShader = getShader(ctx, "background-shader-vs");
-
-//   progBG = ctx.createProgram();
-//   ctx.attachShader(progBG, vertexShader);
-//   ctx.attachShader(progBG, fragmentShader);
-//   ctx.linkProgram(progBG);
-
-//   if (!ctx.getProgramParameter(progBG, ctx.LINK_STATUS)) {
-//     alert("Could not initialise progBG shaders");
-//   }
-
-//   ctx.useProgram(progBG);
-//   progBG.inPos = ctx.getAttribLocation( progBG, "inPos" );
-//   ctx.enableVertexAttribArray(progBG.inPos);
-//   progBG.u_texture = ctx.getUniformLocation(progBG, 'u_texture');
-//   textureObj = Texture.LoadTexture2D( "./textures/spectrum_background.jpg" ); 
-  
-//   bufRect = ctx.createBuffer()
-//   ctx.bindBuffer( gl.ARRAY_BUFFER, bufRect );
-//   ctx.bufferData( gl.ARRAY_BUFFER, new Float32Array( [ -1, -1, 1, -1, 1, 1, -1, 1 ] ), gl.STATIC_DRAW );
-// }
-// //
-// // Draw the scene.  
-// //
-// function drawBackground(gl)
-// {
-//   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-//   /*---------------backbround--------------- */
-//   gl.useProgram(progBG);
-  
-//   gl.disable( gl.DEPTH_TEST );
-//   var texUnit = 1;
-//   gl.activeTexture( gl.TEXTURE0 + texUnit );
-//   gl.bindTexture( gl.TEXTURE_2D, textureObj );
-//   //console.log("textureObj is:",textureObj);
-//   var tex_loc = gl.getUniformLocation( progBG, "u_texture" );
-//   gl.useProgram( progBG );
-//   gl.uniform1i( tex_loc, texUnit );
-  
-//   var v_attr_inx = gl.getAttribLocation( progBG, "inPos" );
-//   gl.bindBuffer( gl.ARRAY_BUFFER, bufRect );
-//   gl.vertexAttribPointer(v_attr_inx, 2, gl.FLOAT, false, 0, 0 );
-//   gl.enableVertexAttribArray(v_attr_inx);
-//   gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
-
-//   gl.disableVertexAttribArray( v_attr_inx );
-//   gl.clear( gl.DEPTH_BUFFER_BIT );
-//   /*---------------End backbround--------------- */  
-// }
 function drawSprctrum(gl, buffers,totalnum)
 {
   // var r = 0.;
