@@ -41,9 +41,11 @@ function drawPlace(){
 
 
   // To add multiple lights append to and of array of light locations
-  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic[0], app.lightLocation )
+  // mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic[0], app.lightLocation )
   // console.log(app.lightLocationStatic);
   // console.log(app.lightLocation);  
+
+  // One global light
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
   gl.uniform1i( shaderProgram.lightCount, 2);
@@ -57,32 +59,37 @@ function drawPlace(){
     mat4.scale( app.mvMatrix, [2,2,2] )
     
     // Draw floor
-    drawObject( app.models.room_floor, 0 );
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [2,2,2] )
+      drawObject( app.models.room_floor, 0 );
+    
+    mvPopMatrix();
 
-      // Push the model matrix for trees
-      mvPushMatrix();
+    // Push the model matrix for trees
+    mvPushMatrix();
 
-        // General world transformations:
-        mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
-        mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
-        // mat4.translate( app.mvMatrix, [0, 1, 0] );    
-        
-        for (let i = 0; i < 10; i++)
-        // Push 10 trees 
-        {
+      // General world transformations:
+      mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
+      mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
+      // mat4.translate( app.mvMatrix, [0, 1, 0] );    
+      
+      for (let i = 0; i < 10; i++)
+      // Push 10 trees 
+      {
 
-            // Move tree to center of screen
-            // mat4.translate( app.mvMatrix, app.monkey.position);
+          // Move tree to center of screen
+          // mat4.translate( app.mvMatrix, app.monkey.position);
 
-            // Move tree apart from nearby others by space of size `tree_space`
-            tree_space = 2;
-            mat4.translate( app.mvMatrix,  [2 * tree_space, 0, 2 * tree_space] );
+          // Move tree apart from nearby others by space of size `tree_space`
+          tree_space = 2;
+          mat4.translate( app.mvMatrix,  [2 * tree_space, 0, 2 * tree_space] );
 
-            // Actually draw tree
-            drawObject( app.models.tree, 0, [1, 1, 0, 1] );
+          // Actually draw tree
+          drawObject( app.models.tree, 0, [1, 1, 0, 1] );
 
-        }
-        mvPopMatrix();
+      }
+
+    mvPopMatrix();
     
 
       mvPushMatrix();

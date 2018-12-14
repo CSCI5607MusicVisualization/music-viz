@@ -128,4 +128,6 @@ function cameraMove(){
 
   app.camera.position[ X ] += camX;
   app.camera.position[ Z ] += camZ;
+
+  console.log("POS: ", app.camera.position[0], app.camera.position[1], app.camera.position[2])
 }
