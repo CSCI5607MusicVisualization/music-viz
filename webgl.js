@@ -76,10 +76,11 @@ $(document).ready(function(){
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
       
+      // Shrubbery.
+      // WARNING: These values are also referenced in globals.js
       'treeLrg': 'models/shrubbery/tree01.obj',
-      'treeSml': 'models/shrubbery/tree01.obj',
-      'treeMed': 'models/shrubbery/tree01.obj',
-
+      'treeSml': 'models/shrubbery/tree02.obj',
+      'treeMed': 'models/shrubbery/tree03.obj',
 
       'bushes': 'models/shrubbery/bushes.obj'
     },

@@ -142,6 +142,7 @@ function initTextures(){
   initTexture( app.specular, "textures/redRamp.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
 
+  // Shrubbery
   initTexture( app.models.treeLrg, "textures/cloud.jpg")
   initTexture( app.models.treeMed, "textures/cloud.jpg")
   initTexture( app.models.treeSml, "textures/cloud.jpg")

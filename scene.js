@@ -26,21 +26,13 @@ function drawPlace(){
   
   gl.useProgram( shaderProgram );
 
-
-  // To add multiple lights append to and of array of light locations
-  // mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic[0], app.lightLocation )
-  // console.log(app.lightLocationStatic);
-  // console.log(app.lightLocation);  
-
   // One global light
+
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
   gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
-
-  //  TO FIX LIGHTING
-
 
   mat4.identity( app.mvMatrix )
   // camera position and rotations
@@ -51,7 +43,6 @@ function drawPlace(){
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
  
   gl.useProgram( shaderProgram );
- 
  
   // To add multiple lights append to and of array of light locations
   mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
@@ -64,6 +55,13 @@ function drawPlace(){
 
 
 
+
+
+  function getRandomInt(min, max)
+  // Returns a random integer
+  {
+    return Math.floor( Math.random() * (max - min + 1) ) << 0;
+  }
 
   
   // Root transform start
@@ -84,55 +82,48 @@ function drawPlace(){
       // General world transformations:
       mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
       mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
-      // mat4.translate( app.mvMatrix, [0, 1, 0] );    
-      
-      // ORIGINAL
-      // for (let i = 0; i < 10; i++)
-      // // Push 10 trees
-      // {
-      //   // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
-      //   mvPushMatrix();
-
-      //     // Scale trees to be a bit bigger
-      //     mat4.scale( app.mvMatrix, [3, 8, 3] );
-
-      //     // Get a random coordinate
-      //     // coord = getRandomXZ(-10, 10, 0, 10);
-      //     // console.log("COORD: ", coord[0], coord[1]);
-
-      //     // Move tree to center of screen
-      //     mat4.translate( app.mvMatrix, app.monkey.position);
-
-      //     // Move tree apart from nearby others by space of size `tree_space`
-      //     tree_space = 2;
-      //     // mat4.translate( app.mvMatrix,  [ coord[0], 0, coord[1] ] );
-
-      //     // Actually draw tree
-      //     drawObject( app.models.tree, 0, [1, 1, 0, 1] );
-
-      //   mvPopMatrix();
-
-      // }
-
-      // RANDOM GENERATION
 
       for (i = 0; i < app.shrubbery.num; i++)
-      // Generate a random tree from the trees object in `globals.js`
+      // Generate random shrubbery.  Objects defined in `globals.js`
       {
 
-        // Choose a random shrub
-        
+        // Pick the current shrub
+        shrub = app.shrubbery[i];
 
         // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
         mvPushMatrix();
 
           // Scale trees to be a bit bigger
-          mat4.scale( app.mvMatrix, [3, 8, 3] );
+          mat4.scale( app.mvMatrix, [3, 5, 3] );
 
-          mat4.translate( app.mvMatrix,  [ app.shrubbery.locations[i][0], 0, app.shrubbery.locations[i][1] ] );
+          // console.log(shrub.loc[0], shrub.loc[1])
+          // console.log(shrub.type)
+          mat4.translate( app.mvMatrix,  [ shrub.loc[0], 0, shrub.loc[1] ] );
+          // mat4.translate( app.mvMatrix,  [ app.shrubbery.locations[i][0], 0, app.shrubbery.locations[i][1] ] );
 
           // Actually draw tree
-          drawObject( app.models.bushes, 0, [1, 1, 0, 1] );
+          // TODO: All of this cross-referencing with the trees across files is becoming a headache
+
+          // The index of the tree is hard-coded here
+          if (shrub.type == 0)
+          {
+            drawObject( app.models.treeLrg, 0, [1, 1, 0, 1] );
+          }
+
+          else if (shrub.type == 1)
+          {
+            drawObject( app.models.treeSml, 0, [1, 1, 0, 1] );
+          }
+          else if (shrub.type == 2)
+          {
+            drawObject( app.models.treeMed, 0, [1, 1, 0, 1] );
+          }
+
+          else
+          {
+            console.log("Cant draw");
+          }
+
 
         mvPopMatrix();        
       }

@@ -98,21 +98,35 @@ function getRandomXZ(minx, maxx, minz, maxz)
   return [x, z];
 }
 
+function getRandomInt(min, max)
+// Returns a random integer
+// Used here to get the index of a random shrubbery object file
+{
+  return Math.floor( Math.random() * (max - min + 1) ) << 0;
+}
 
 
-
-// Populate a trees object
+// Populate a shrubbery object
 app.shrubbery = {}
-
 app.shrubbery.num = 50;
 
-app.shrubbery.locations = []
+// The number of object files that are initialized in  `webgl.js`
+app.shrubbery.objFileCount = 3;
+
 for (i = 0; i < app.shrubbery.num; i++)
 // Generate tree locations
 {
-  coord = getRandomXZ(-10, 10, -10, 10);
-  app.shrubbery.locations.push( coord );
+  // Create an empty shrub object
+  app.shrubbery[i] = {}
+
+  // Generate its location
+  app.shrubbery[i]['loc'] = getRandomXZ(-10, 10, -10, 10);
+
+  // Generate  random type
+  app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);
 }
+
+console.log(app.shrubbery)
 
 // DEBUG
 // console.log(app.shrubbery.locations)
