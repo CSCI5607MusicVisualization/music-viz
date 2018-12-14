@@ -218,9 +218,7 @@ function drawSkybox() {
     
     //gl.clearColor(0,0,0,1);
     //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     //mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
-
     //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,projection);
     mat4.perspective( 45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);
     gl.useProgram(SkyboxProgram);
