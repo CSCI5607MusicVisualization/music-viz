@@ -8,7 +8,7 @@ video {
 
 canvas{
     border: solid black 2px;
-    background: url("./textures/spectrum_background.jpg");
+    /* background: url("./textures/spectrum_background.jpg"); */
     background-repeat:no-repeat;
     width: 1080px;
     height: 500px;
