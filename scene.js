@@ -38,6 +38,33 @@ function drawPlace(){
   gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
+
+  //  TO FIX LIGHTING
+
+
+  mat4.identity( app.mvMatrix )
+  // camera position and rotations
+  mat4.rotate( app.mvMatrix, degToRad( app.camera.pitch ), [1,0,0] );
+  // account for pitch rotation and light down vector
+  mat4.multiplyVec3( app.mvMatrix, app.lightVectorStatic, app.lightVector )
+  mat4.rotate( app.mvMatrix, degToRad( app.camera.heading ), [0,1,0] );
+  mat4.translate( app.mvMatrix, app.camera.inversePosition );
+ 
+  gl.useProgram( shaderProgram );
+ 
+ 
+  // To add multiple lights append to and of array of light locations
+  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
+  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
+  gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
+  gl.uniform1i( shaderProgram.lightCount, 2);
+ 
+  setUniforms();
+
+
+
+
+
   
   // Root transform start
   // ===============================================
@@ -92,6 +119,10 @@ function drawPlace(){
       for (i = 0; i < app.shrubbery.num; i++)
       // Generate a random tree from the trees object in `globals.js`
       {
+
+        // Choose a random shrub
+        
+
         // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
         mvPushMatrix();
 
