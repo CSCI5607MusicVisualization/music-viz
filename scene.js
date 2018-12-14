@@ -4,25 +4,25 @@ function floatMonkey(){
   app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
   app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
 }
-app.monkeyRoomCollision = 3.95;
-function roomCollisionCheck(){
-  if( app.camera.position[X] > app.monkeyRoomCollision ){
-    app.camera.position[X] = app.monkeyRoomCollision
-  }
-  if( app.camera.position[X] < -app.monkeyRoomCollision ){
-    app.camera.position[X] = -app.monkeyRoomCollision
-  }
-  if( app.camera.position[Z] > app.monkeyRoomCollision ){
-    app.camera.position[Z] = app.monkeyRoomCollision
-  }
-  if( app.camera.position[Z] < -app.monkeyRoomCollision ){
-    app.camera.position[Z] = -app.monkeyRoomCollision
-  }
-}
+// app.monkeyRoomCollision = 3.95;
+// function roomCollisionCheck(){
+//   if( app.camera.position[X] > app.monkeyRoomCollision ){
+//     app.camera.position[X] = app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[X] < -app.monkeyRoomCollision ){
+//     app.camera.position[X] = -app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[Z] > app.monkeyRoomCollision ){
+//     app.camera.position[Z] = app.monkeyRoomCollision
+//   }
+//   if( app.camera.position[Z] < -app.monkeyRoomCollision ){
+//     app.camera.position[Z] = -app.monkeyRoomCollision
+//   }
+// }
 
 function drawPlace(){
   floatMonkey();
-  roomCollisionCheck();
+  // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);
@@ -39,17 +39,19 @@ function drawPlace(){
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
   
   gl.useProgram( shaderProgram );
-  
-  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation )
+
+
+  // To add multiple lights append to and of array of light locations
+  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
+  gl.uniform1i( shaderProgram.lightCount, 2);
   
   setUniforms();
   
   mvPushMatrix();
      
     mat4.scale( app.mvMatrix, [2,2,2] )
-
     // Floor
     //drawObject( app.models.room_floor, 0 );
     
@@ -80,7 +82,7 @@ function drawPlace(){
       mvPushMatrix();
         mat4.translate( app.mvMatrix, [0,2,0] );
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
-        drawObject( app.models.skylight, 0, [0.53,0.81,0.98,1.0] );
+//         drawObject( app.models.skylight, 0, [0.53,0.81,0.98,1.0] );
         gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
       mvPopMatrix();
     

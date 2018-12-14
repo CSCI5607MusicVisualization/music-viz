@@ -19,7 +19,8 @@ function initGL(canvas,SpecCanvas)
     gl = canvas.getContext("webgl2");
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
-
+    
+    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('webgl2');
     ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('experimental-webgl') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
@@ -97,11 +98,14 @@ function initShaders()
   shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
   shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+  shaderProgram.diffuseUniform = gl.getUniformLocation(shaderProgram, "diffuseRamp");
+  shaderProgram.specularUniform = gl.getUniformLocation(shaderProgram, "specularRamp");    
   shaderProgram.modelColor = gl.getUniformLocation(shaderProgram, "uColor");
   shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, "uMaterialShininess");
   shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
   shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
   shaderProgram.hasTexure = gl.getUniformLocation(shaderProgram, "uHasTexure");
+  shaderProgram.lightCount = gl.getUniformLocation(shaderProgram, "lightCount");  
   shaderProgram.lightLocation = gl.getUniformLocation(shaderProgram, "uLightLocation");
   shaderProgram.lightVector = gl.getUniformLocation(shaderProgram, "uSpotDirection");
   shaderProgram.lightSpecularColor = gl.getUniformLocation(shaderProgram, "uLightSpecularColor");
@@ -140,10 +144,12 @@ function initTextures()
 {
   gl.useProgram(shaderProgram);
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
-  initTexture( app.models.room_walls, "textures/stone_wall.png" );
+  initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
   initTexture( app.models.room_floor, "textures/room_floor.jpg" );
-  initTexture (app.models.tree, "textures/cloud.jpg" );
-
+  initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
+  initTexture( app.specular, "textures/redRamp.png");  
+  initTexture( app.diffuse, "textures/diffuse.png");
+  
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;
   app.models.room_wall_broken.texture = app.models.room_walls.texture;
   app.models.room_wall_unbroken.texture = app.models.room_walls.texture;
@@ -221,7 +227,7 @@ function initAudio()
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'christmas.ogg', true);
+      request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {
