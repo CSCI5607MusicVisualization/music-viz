@@ -39,16 +39,9 @@ function drawPlace(){
   
   gl.useProgram( shaderProgram );
 
-  var locations = [
-    1.0, 0, 0,
-    0, 1.0, 0,
-    0, 0, 0
-  ];
 
   // To add multiple lights append to and of array of light locations
-  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic[0], app.lightLocation )
-  // console.log(app.lightLocationStatic);
-  console.log(app.lightLocation);  
+  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
   gl.uniform1i( shaderProgram.lightCount, 2);
