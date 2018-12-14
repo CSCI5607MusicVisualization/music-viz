@@ -123,6 +123,10 @@ function initSyboxBuffers(canvas,shaderProgram) {
 
     rotator = new SimpleRotator(canvas, drawSkybox);
     rotator.setView( [0,0,1], [0,1,0], 5 );
+    //the first parameter is the viewpoint. The second is the viewup vector for the view
+    //third parameter is a positive number that specifies the distance of the viewer from the origin; 
+    //if it is specified, the first parameter gives the direction of view rather than the 
+    //viewpoint.
     cube = createModel(cube(200));
 }
 
@@ -201,7 +205,8 @@ function drawSkybox() {
     //mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
     //mat4.perspective(projection, Math.PI/3, 1, 50, 200);
-    mat4.perspective( 60, 1, 50, 200 , projection);
+    //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,app.pMatrix);
+    mat4.perspective( 45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0,projection);
     gl.useProgram(SkyboxProgram);
     //console.log("SkyboxProgram:",SkyboxProgram);
     gl.uniformMatrix4fv(uProjection, false, projection );

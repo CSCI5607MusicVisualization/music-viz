@@ -17,11 +17,12 @@ function tick() {
   requestAnimFrame(tick);
   drawSkybox();
   app.drawScene();
-  //initBkgnd();
+  
   animate();
 }
 
-function webGLStart( meshes ) {
+function webGLStart( meshes ) 
+{
   app.meshes = meshes;
   canvas = document.getElementById("mycanvas");
   SpecCanvas = document.getElementById("canvas");
