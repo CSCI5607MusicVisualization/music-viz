@@ -17,8 +17,7 @@ function animate() {
 function tick() {
   requestAnimFrame(tick);
   app.drawScene();
-  //drawSkybox();
-  //DrawTriangle(gl,shaderProgram);
+  drawSkybox();
   animate();
 }
 
@@ -28,15 +27,15 @@ function webGLStart( meshes ) {
   SpecCanvas = document.getElementById("canvas");
   initGL(canvas,SpecCanvas);
   initShaders();
-  
+  initAudio();
   initBuffers();
   initPointerLock();
   initTextures();
+
   initSkyboxShaders(gl);
   initSyboxBuffers(canvas,SkyboxProgram);
   setupSkybox();
-/**----------------------initial Triangles--------------------------- */ 
-  //InitTrangleBuffer();
+
   document.onkeydown = cameraKeyDownHandler;
   document.onkeyup = cameraKeyUpHandler;
 

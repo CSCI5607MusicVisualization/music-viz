@@ -88,7 +88,7 @@ function lightIntesity( i, r, g, b){
 }
 
 function setUniforms(){
-  gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.8, 0.8, 0.8 ) );
+  gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3, 0.3, 0.3 ) );
   gl.uniform3fv( shaderProgram.lightSpecularColor, lightIntesity( 0.5, 1.0, 1.0, 1.0 ) );
   gl.uniform3fv( shaderProgram.lightDiffuseColor, lightIntesity( app.diffuseIntensity, 1.0, 1.0, 1.0 ) );
 }

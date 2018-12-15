@@ -46,6 +46,7 @@ function randPos(scale) {
 }
 
 
+
 //var shaderProgram;
 
 function initSkyboxShaders(gl) 
@@ -94,6 +95,7 @@ function loadTextureCube(urls) {
             ct++;
             if (ct == 6) 
             {
+               
                 texID = gl.createTexture();
                 
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texID);

@@ -20,7 +20,7 @@ function initGL(canvas,SpecCanvas)
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
 
-    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('experimental-webgl') ;
+    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('webgl2') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
   } catch (e) {
