@@ -7,7 +7,7 @@ app.monkeyPositionTimer = 0;
 // }
 
 function drawPlace(){
-  floatMonkey();
+  //floatMonkey();
   // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -117,12 +117,12 @@ function drawPlace(){
       }
     mvPopMatrix();
 /**-------------sky light------------------------- */
-    mvPushMatrix();
-      mat4.translate( app.mvMatrix, [0,2,0] );
-      gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
-      drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
-      gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
-    mvPopMatrix(); 
+    // mvPushMatrix();
+    //   mat4.translate( app.mvMatrix, [0,2,0] );
+    //   gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
+    //   drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
+    //   gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
+    // mvPopMatrix(); 
 
     // Old tunnel stuff
     // drawObject( app.models.room_tunnel_ceiling, 0 );
