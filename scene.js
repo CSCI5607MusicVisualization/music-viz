@@ -105,7 +105,7 @@ function drawPlace(){
           if (app.enviromental[i].loc[2] < -1.0) {
             app.enviromental[i].loc[2] = 30;
           }
-          mat4.translate( app.mvMatrix,  [app.enviromental[i].loc[0], app.enviromental[i].loc[2], app.enviromental[i].loc[1]] );              
+          mat4.translate( app.mvMatrix,  [app.enviromental[i].loc[0], app.enviromental[i].loc[2] + 70, app.enviromental[i].loc[1]] );              
           drawObject( app.models.cube, 0, [(255-i)/255, 1, (255 - (255 - i)) / 255, 1] );                   
           // app.enviromental[i].loc[2] -=  20 * dt;          
         mvPopMatrix();            
