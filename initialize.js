@@ -337,7 +337,10 @@ function initAudio()
    
         }
     }
-    function animate() {
+    function animate() 
+    // Generates an RMS value based on intensity
+    // Intensity rarely goes above .5, but RMS is clamped [0, 1]
+    {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
         analyser.getFloatTimeDomainData(dataArray);
@@ -356,6 +359,9 @@ function initAudio()
         rms = Math.sqrt(rms / (dataArray.length))
         // This will return the value in decibals.
         // var v = Math.abs(20 * Math.log10(rms));
+
+        // Send the current RMS value to the globals
+        app.intensity = rms;
 
         vals = pickColor(rms);
         r = vals[0];

@@ -49,7 +49,7 @@ var app = {};
   app.drawScene;
   app.scenechange = false;
   // room light
-  app.lightLocationStatic = [0, 15, 0];
+  app.lightLocationStatic = [0, 45, 0];
   app.lightVectorStatic = [0, -1, 0];
   app.lightLocation = vec3.create();
   app.lightVector = vec3.create();
@@ -130,3 +130,10 @@ console.log(app.shrubbery)
 
 // DEBUG
 // console.log(app.shrubbery.locations)
+
+
+
+
+
+// Store the current RMS value
+app.intensity = 0;
