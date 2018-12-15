@@ -90,11 +90,11 @@ function drawPlace(){
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      drawObject( app.models.room_floor, 0, [0, 1, 0, 1] );
+      drawObject( app.models.room_floor, 0, [0, 0.1, 0, 0.8] );
     mvPopMatrix();
     
     mvPushMatrix();
-      mat4.scale( app.mvMatrix, [0.05, 0.05, 0.05] )
+      mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
       mat4.translate( app.mvMatrix, app.monkey.position);      
       for (let i = 0; i < app.enviromental.num; i++) {
         mvPushMatrix();
@@ -102,8 +102,8 @@ function drawPlace(){
             app.enviromental[i].loc[2] = 30;
           }
           mat4.translate( app.mvMatrix,  [app.enviromental[i].loc[0], app.enviromental[i].loc[2], app.enviromental[i].loc[1]] );              
-          drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );                   
-          app.enviromental[i].loc[2] -=  20 * dt;          
+          drawObject( app.models.cube, 0, [(255-i)/255, 1, (255 - (255 - i)) / 255, 1] );                   
+          // app.enviromental[i].loc[2] -=  20 * dt;          
         mvPopMatrix();            
       }
     mvPopMatrix();    
@@ -169,7 +169,7 @@ function drawPlace(){
     mvPushMatrix();
       mat4.translate( app.mvMatrix, [0,2,0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
-      drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
+      // drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
     mvPopMatrix();
     
