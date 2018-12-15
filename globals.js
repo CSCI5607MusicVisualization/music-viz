@@ -125,7 +125,6 @@ for (i = 0; i < app.shrubbery.num; i++)
 
   // Generate its location
   app.shrubbery[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
-
   // Generate  random type
   app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);
 }
@@ -135,6 +134,33 @@ console.log(app.shrubbery)
 // DEBUG
 // console.log(app.shrubbery.locations)
 
+// Populate a shrubbery object
+app.enviromental = {}
+app.enviromental.num = 1000;
+for (i = 0; i < app.enviromental.num; i++)
+  // Generate tree locations
+  {
+    // Create an empty shrub object
+    app.enviromental[i] = {}
+    // Generate its location
+    app.enviromental[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
+    app.enviromental[i]['loc'][2] = 30;    
+  }
+
+// Populate a shrubbery object
+app.particle = {}
+app.particle.num = 1000;
+for (i = 0; i < app.particle.num; i++)
+  // Generate tree locations
+  {
+    // Create an empty shrub object
+    app.particle[i] = {}
+    // Generate its location
+    app.particle[i]['loc'] = getRandomXZ(-30, 300, -5, 100);
+    // console.log(app.particle[i]['loc']);
+    app.particle[i]['loc'][2] = Math.floor(Math.random() * (3000 - 300) + 300);
+    // console.log(app.particle[i]['loc'][2])
+  }
 
 
 
