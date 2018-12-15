@@ -9,7 +9,6 @@ function floatMonkey(){
 
 function drawPlace(){
   floatMonkey();
-  // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
@@ -24,16 +23,6 @@ function drawPlace(){
   mat4.rotate( app.mvMatrix, degToRad( app.camera.heading ), [0,1,0] );
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
   
-  gl.useProgram( shaderProgram );
-
-  mat4.identity( app.mvMatrix )
-  // camera position and rotations
-  mat4.rotate( app.mvMatrix, degToRad( app.camera.pitch ), [1,0,0] );
-  // account for pitch rotation and light down vector
-  mat4.multiplyVec3( app.mvMatrix, app.lightVectorStatic, app.lightVector )
-  mat4.rotate( app.mvMatrix, degToRad( app.camera.heading ), [0,1,0] );
-  mat4.translate( app.mvMatrix, app.camera.inversePosition );
- 
   gl.useProgram( shaderProgram );
  
   // To add multiple lights append to and of array of light locations
@@ -56,32 +45,43 @@ function drawPlace(){
   }
 
   
-  // Root transform start
+  // Root transform START
   // ===============================================
   mvPushMatrix();
 
     mat4.scale( app.mvMatrix, [2,2,2] )
-    // THIS IS A SINGLE OBJECT
-    // drawObject( app.models.room_walls, 0 );
-    // if( !app.breakWalls ) {
-      // drawObject( app.models.room_wall_unbroken, 0 );
-    // }
-    // drawObject( app.models.room_floor, 0 );
-    // drawObject( app.models.room_ceiling, 0 );
-    drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
+
       mvPushMatrix();
+
         mat4.scale( app.mvMatrix, [0.025,0.5,0.025] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [100, 0, 100] );
-        // cuniform4fvonsole.log(app.spectrum);
-        // console.log(app.intensity);
+
+
         for (let i = 0; i < app.spectrum.length; i++) {
-          mvPushMatrix();
-            mat4.scale( app.mvMatrix, [1, app.spectrum[i] * .5, 1] )       
+        // Draw spectrum
+
+
+          // ORIGINAL
+          // mvPushMatrix();
+          //   mat4.scale( app.mvMatrix, [1, app.spectrum[i] * .5, 1] )       
+          //   mat4.translate( app.mvMatrix, app.monkey.position);
+          //   mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );              
+          //   drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );         
+          // mvPopMatrix();
+          
+            mvPushMatrix();
             mat4.translate( app.mvMatrix, app.monkey.position);
-            mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );              
-            drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );         
-          mvPopMatrix();        
+            mat4.translate( app.mvMatrix, [300, 0, 0] );
+            mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 1.3, app.zwidth] )       
+            mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );
+
+
+            drawObject( app.models.cube, 0,  [.3, .3, .3, 1]);         
+            // Original color:
+            // [(255-i)/255, 0, (255 - (255 - i)) / 255, 1]  
+          
+          mvPopMatrix(); 
         }
         mat4.translate( app.mvMatrix, app.monkey.position );
         mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
@@ -90,13 +90,13 @@ function drawPlace(){
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      drawObject( app.models.room_floor, 0, [0, 1, 0, 1] );
+      // Color the ground a darker shade of green
+      drawObject( app.models.room_floor, 0, [0, 0.1, 0, .8] );
     mvPopMatrix();
 
     // Push the model matrix for trees
     mvPushMatrix();
 
-      // General world transformations:
       mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
       mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
 
@@ -111,7 +111,7 @@ function drawPlace(){
         mvPushMatrix();
 
           // Scale trees to be a bit bigger
-          mat4.scale( app.mvMatrix, [3, 5, 3] );
+          mat4.scale( app.mvMatrix, [3, 6, 3] );
 
           // console.log(shrub.loc[0], shrub.loc[1])
           // console.log(shrub.type)
@@ -154,7 +154,7 @@ function drawPlace(){
     mvPushMatrix();
       mat4.translate( app.mvMatrix, [0,2,0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
-      drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
+      // drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
     mvPopMatrix();
     
@@ -162,7 +162,7 @@ function drawPlace(){
     // drawObject( app.models.room_tunnel_ceiling, 0 );
     // drawObject( app.models.room_tunnel_walls, 0 );
 
-  // Root transform start
+  // Root transform END
   // ===============================================
   mvPopMatrix();
 }

@@ -33,7 +33,7 @@ var app = {};
   app.camera.position = [0,0.3,3.7];
   app.camera.inversePosition = vec3.create();
   app.camera.heading = 0;
-  app.camera.pitch = 0;
+  app.camera.pitch = -40;
   app.camera.walkSpeed = 0.001;
   app.camera.runSpeed = 0.002;
   app.camera.speed = app.camera.walkSpeed;
@@ -87,10 +87,17 @@ var SpectrumProgram;
 
 
 
+// Scenery globals
+// ===============
+// Store the current RMS value
+app.intensity = 0;
+app.xwidth = 30;
+app.zwidth = 10;
 
 
 
 // Trees
+// ===============
 
 
 function getRandomXZ(minx, maxx, minz, maxz)
@@ -124,7 +131,7 @@ for (i = 0; i < app.shrubbery.num; i++)
   app.shrubbery[i] = {}
 
   // Generate its location
-  app.shrubbery[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
+  app.shrubbery[i]['loc'] = getRandomXZ( -app.xwidth, app.xwidth, -app.zwidth / 2, app.zwidth );
 
   // Generate  random type
   app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);
@@ -139,5 +146,4 @@ console.log(app.shrubbery)
 
 
 
-// Store the current RMS value
-app.intensity = 0;
+
