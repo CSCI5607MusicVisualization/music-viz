@@ -137,7 +137,7 @@ function drawPlace(){
       for (let i = 0; i < app.rocks.num; i++) {
         mvPushMatrix();
           mat4.translate( app.mvMatrix,  [app.rocks[i].loc[0] * i, app.rocks[i].loc[2], app.rocks[i].loc[1]] );              
-          drawObject( app.models.rock1, 0, [0, 0, 0, 1] );                   
+          drawObject( app.models.rock1, 0, [165/255, 42/255, 42/255, 1] );                   
         mvPopMatrix();            
       }
     mvPopMatrix();    
