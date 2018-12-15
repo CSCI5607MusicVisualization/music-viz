@@ -26,14 +26,6 @@ function drawPlace(){
   
   gl.useProgram( shaderProgram );
 
-  // One global light
-
-  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
-  gl.uniform1i( shaderProgram.lightCount, 2);
-  
-  setUniforms();
-
   mat4.identity( app.mvMatrix )
   // camera position and rotations
   mat4.rotate( app.mvMatrix, degToRad( app.camera.pitch ), [1,0,0] );
@@ -69,11 +61,36 @@ function drawPlace(){
   mvPushMatrix();
 
     mat4.scale( app.mvMatrix, [2,2,2] )
+    // THIS IS A SINGLE OBJECT
+    // drawObject( app.models.room_walls, 0 );
+    // if( !app.breakWalls ) {
+      // drawObject( app.models.room_wall_unbroken, 0 );
+    // }
+    // drawObject( app.models.room_floor, 0 );
+    // drawObject( app.models.room_ceiling, 0 );
+    drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
+      mvPushMatrix();
+        mat4.scale( app.mvMatrix, [0.025,0.5,0.025] )
+        mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
+        mat4.translate( app.mvMatrix,  [100, 0, 100] );
+        // cuniform4fvonsole.log(app.spectrum);
+        // console.log(app.intensity);
+        for (let i = 0; i < app.spectrum.length; i++) {
+          mvPushMatrix();
+            mat4.scale( app.mvMatrix, [1, app.spectrum[i] * .5, 1] )       
+            mat4.translate( app.mvMatrix, app.monkey.position);
+            mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );              
+            drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );         
+          mvPopMatrix();        
+        }
+        mat4.translate( app.mvMatrix, app.monkey.position );
+        mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
+      mvPopMatrix();
     
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      drawObject( app.models.room_floor, 0, [0, 1, 0] );
+      drawObject( app.models.room_floor, 0, [0, 1, 0, 1] );
     mvPopMatrix();
 
     // Push the model matrix for trees
