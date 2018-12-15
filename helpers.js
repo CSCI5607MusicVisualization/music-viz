@@ -29,6 +29,7 @@ function drawObject( model, shininess, color ){
     gl.bindTexture(gl.TEXTURE_2D, app.specular.texture);  
     gl.uniform1i(shaderProgram.diffuseUniform, 2);        ;    
     gl.uniform1i(shaderProgram.hasTexure, true);
+    gl.uniform4fv( shaderProgram.modelColor, color );    
   }
   else{
     gl.activeTexture(gl.TEXTURE0);
