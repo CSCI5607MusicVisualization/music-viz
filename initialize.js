@@ -216,7 +216,7 @@ function initAudio()
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'Dragonforce.ogg', true);
+      request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {
@@ -267,11 +267,12 @@ function initAudio()
         {
             value = frequencyBins[j];
             j++;
-            h = (value / 24);
+            h = (value / 64);
             //console.log("frequencyBins is:",value);
             // w = WIDTH / frequencyBins.length;
                 // ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
             arr[i++]=h;
+
         }
         //point buffer
         xstart=-1.0;
