@@ -32,8 +32,8 @@ var app = {};
   app.camera = {};
   app.camera.position = [0,0.3,3.7];
   app.camera.inversePosition = vec3.create();
-  app.camera.heading = 0;
-  app.camera.pitch = -40;
+  app.camera.heading = 20;
+  app.camera.pitch = -25;
   app.camera.walkSpeed = 0.001;
   app.camera.runSpeed = 0.002;
   app.camera.speed = app.camera.walkSpeed;
@@ -119,7 +119,7 @@ function getRandomInt(min, max)
 
 // Populate a shrubbery object
 app.shrubbery = {}
-app.shrubbery.num = 150;
+app.shrubbery.num = 200;
 
 // The number of object files that are initialized in  `webgl.js`
 app.shrubbery.objFileCount = 3;
@@ -131,7 +131,7 @@ for (i = 0; i < app.shrubbery.num; i++)
   app.shrubbery[i] = {}
 
   // Generate its location
-  app.shrubbery[i]['loc'] = getRandomXZ( -app.xwidth, app.xwidth, -app.zwidth / 2, app.zwidth );
+  app.shrubbery[i]['loc'] = getRandomXZ( -app.xwidth / 2, app.xwidth / 2, -app.zwidth * .6, app.zwidth );
 
   // Generate  random type
   app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);

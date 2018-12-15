@@ -73,7 +73,7 @@ function drawPlace(){
             mvPushMatrix();
             mat4.translate( app.mvMatrix, app.monkey.position);
             mat4.translate( app.mvMatrix, [300, 0, 0] );
-            mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 1.3, app.zwidth] )       
+            mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 2, app.zwidth] )       
             mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );
 
 
