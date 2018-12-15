@@ -94,7 +94,7 @@ function drawPlace(){
     mvPopMatrix();
     
     mvPushMatrix();
-      mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
+      mat4.scale( app.mvMatrix, [0.25, 0.05, 0.15] )
       mat4.translate( app.mvMatrix, app.monkey.position);      
       for (let i = 0; i < app.enviromental.num; i++) {
         mvPushMatrix();
