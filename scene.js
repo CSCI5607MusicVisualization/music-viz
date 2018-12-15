@@ -73,6 +73,8 @@ function drawPlace(){
         mat4.scale( app.mvMatrix, [0.025,0.5,0.025] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [100, 0, 100] );
+        // cuniform4fvonsole.log(app.spectrum);
+        // console.log(app.intensity);
         for (let i = 0; i < app.spectrum.length; i++) {
           mvPushMatrix();
             mat4.scale( app.mvMatrix, [1, app.spectrum[i] * .5, 1] )       
@@ -83,13 +85,12 @@ function drawPlace(){
         }
         mat4.translate( app.mvMatrix, app.monkey.position );
         mat4.translate( app.mvMatrix,  [0, 2.5, 0] );
-        drawObject( app.models.tree01, 0, [1, 1, 0, 1] );
       mvPopMatrix();
     
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      drawObject( app.models.room_floor, 0, [0, 1, 0] );
+      drawObject( app.models.room_floor, 0, [0, 1, 0, 1] );
     mvPopMatrix();
 
     // Push the model matrix for trees

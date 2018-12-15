@@ -202,11 +202,12 @@ function initBuffers() {
 /*-----------------------End Texture background------------------------------------- */
 function initAudio() 
 {
-  window.onload = function () 
-  {
+  // window.onload = function () 
+  // {
+    console.log("called");    
     //ctx = document.getElementById("canvas").getContext("2d");
     //InitBackground();
-    initSpectrumShader();
+    // initSpectrumShader();
     var audioContext = new (window.AudioContext
         || window.webkitAudioContext || window.mozAudioContext)();
 
@@ -351,7 +352,7 @@ function initAudio()
         requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
-  };
+  // };
 }
 
 function initSpectrumShader()
