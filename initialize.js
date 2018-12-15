@@ -137,7 +137,7 @@ function initTextures(){
   initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
   // initTexture( app.models.room_floor, "textures/room_floor.jpg" );
   // initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
-  initTexture( app.specular, "textures/redRamp.png");  
+  initTexture( app.specular, "textures/specular.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
 
   // Shrubbery
@@ -226,7 +226,7 @@ function initAudio()
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'viper.ogg', true);
+      request.open('GET', 'christmas.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {

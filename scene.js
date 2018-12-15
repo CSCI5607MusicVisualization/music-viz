@@ -77,8 +77,9 @@ function drawPlace(){
             mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 2, app.zwidth] )       
             mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );
 
-
-            drawObject( app.models.cube, 0,  [.3, .3, .3, 1]);         
+            drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );         
+            
+            // drawObject( app.models.cube, 0,  [.3, .3, .3, 1]);         
             // Original color:
             // [(255-i)/255, 0, (255 - (255 - i)) / 255, 1]  
           
@@ -93,7 +94,7 @@ function drawPlace(){
       mat4.scale( app.mvMatrix, [2,2,2] )
 
       // Color the ground a darker shade of green
-      drawObject( app.models.room_floor, 0, [0, 0.1, 0, 0.8] );
+      drawObject( app.models.room_floor, 0, [1, 1, 1, 0.8] );
 
     mvPopMatrix();
     
@@ -118,11 +119,11 @@ function drawPlace(){
       for (let i = 0; i < app.particle.num; i++) {
         mvPushMatrix();
           if (app.particle[i].loc[2] < -1.0) {
-            app.particle[i].loc[2] = 300;          
+            app.particle[i].loc[2] = 3000;          
           }
           // console.log(app.particle[i].loc[2]);
           mat4.translate( app.mvMatrix,  [app.particle[i].loc[0] - i + 500, app.particle[i].loc[2], app.particle[i].loc[1]] );              
-          drawObject( app.models.cube, 0, [0, 0, 0.1, 0.7] );                   
+          drawObject( app.models.cube, 0, [1, 1, 1, 0.7] );                   
           // console.log(app.particle[i].loc[2]);                    
           app.particle[i].loc[2] -=  10;
           // console.log(app.particle[i].loc[2]);          
@@ -160,19 +161,19 @@ function drawPlace(){
           // The index of the tree is hard-coded here
           if (shrub.type == 0)
           {
-            drawObject( app.models.treeLrg, 0, [1, 0, 1, 1] );
-            // drawObject( app.models.treeLrg, 0, [1, 1, 0, 1] );
+            // drawObject( app.models.treeLrg, 0, [1, 0, 0, 1] );
+            drawObject( app.models.treeLrg, 0, [0, 1-app.intensity, 0, 1] );
           }
 
           else if (shrub.type == 1)
           {
-            drawObject( app.models.treeSml, 0, [1, 1, 0, 1] );
-            // drawObject( app.models.treeSml, 0, [app.intensity, app.intensity, 0, 1] );
+            // drawObject( app.models.treeSml, 0, [0, 1, 0, 1] );
+            drawObject( app.models.treeSml, 0, [app.intensity, 0, 1-app.intensity, 1] );
           }
           else if (shrub.type == 2)
           {
-            drawObject( app.models.treeMed, 0, [0, 1, 1, 1] );
-            // drawObject( app.models.treeMed, 0, [app.intensity, app.intensity, 0, 1] );
+            // drawObject( app.models.treeMed, 0, [0, 0, 1, 1] );
+            drawObject( app.models.treeMed, 0, [app.intensity, 0, 1-app.intensity, 1] );
           }
 
           else
