@@ -130,7 +130,18 @@ function drawPlace(){
         mvPopMatrix();            
       }
     mvPopMatrix();    
-    
+    // Rocks
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [0.05, 0.05, 0.05] )
+      mat4.translate( app.mvMatrix, app.monkey.position);      
+      for (let i = 0; i < app.rocks.num; i++) {
+        mvPushMatrix();
+          mat4.translate( app.mvMatrix,  [app.rocks[i].loc[0] * i, app.rocks[i].loc[2], app.rocks[i].loc[1]] );              
+          drawObject( app.models.rock1, 0, [0, 0, 0, 1] );                   
+        mvPopMatrix();            
+      }
+    mvPopMatrix();    
+
     // Push the model matrix for trees
     mvPushMatrix();
 
@@ -173,7 +184,7 @@ function drawPlace(){
           else if (shrub.type == 2)
           {
             // drawObject( app.models.treeMed, 0, [0, 0, 1, 1] );
-            drawObject( app.models.treeMed, 0, [app.intensity, 0, 1-app.intensity, 1] );
+            drawObject( app.models.treeMed, 0, [1-app.intensity, 0, app.intensity, 1] );
           }
 
           else

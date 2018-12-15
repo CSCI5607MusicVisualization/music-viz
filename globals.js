@@ -171,6 +171,18 @@ for (i = 0; i < app.particle.num; i++)
   }
 
 
+// Populate a Rock objects
+app.rocks = {}
+app.rocks.num = 100;
+for (i = 0; i < app.rocks.num; i++)
+  // Generate tree locations
+  {
+    // Create an empty shrub object
+    app.rocks[i] = {}
+    // Generate its location
+    app.rocks[i]['loc'] = getRandomXZ(-10, 10, -50, 10);
+    app.rocks[i]['loc'][2] = -1;    
+  }
 
 
 

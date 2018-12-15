@@ -82,7 +82,8 @@ $(document).ready(function(){
       'treeSml': 'models/shrubbery/tree02.obj',
       'treeMed': 'models/shrubbery/tree03.obj',
 
-      'bushes': 'models/shrubbery/bushes.obj'
+      'bushes': 'models/shrubbery/bushes.obj',
+      'rock1': 'models/shrubbery/boulder.obj'
     },
     webGLStart
   );
