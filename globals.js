@@ -57,9 +57,12 @@ var app = {};
 
   app.lightLocationStatic.push(45, 45, 0);
   app.lightVectorStatic.push(-1, -1, 0);
-
-  app.lightLocationStatic.push(-45, 45, 0);
-  app.lightVectorStatic.push(1, -1, 0);
+  // app.lightLocationStatic[0] = vec3.fromValues(45, 45, 0);
+  // app.lightVectorStatic[0] = vec3.fromValues(-1, -1, 0);
+  app.lightLocationStatic.push(vec3.fromValues(-45, 45, 0));
+  app.lightVectorStatic.push(vec3.fromValues(1, -1, 0));
+  // app.lightLocationStatic[1] = vec3.fromValues(-45, 45, 0);
+  // app.lightVectorStatic[1]=vec3.fromValues(1, -1, 0);
   // app.lightLocationStatic = [0, 45, 0];
   // app.lightVectorStatic = [0, -1, 0];
   // app.lightLocation = vec3.create();

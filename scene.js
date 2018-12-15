@@ -43,19 +43,20 @@ function drawPlace()
   var currentLight=new Array();
   //clear
   // app.lightLocation.splice(0,app.lightLocation.length);
-  // for(var i=0;i<lightcount;++i)
+  // for(var i=0;i<app.lightLocation.length;++i)
   // {
-  //   currentLight[0] = app.lightLocationStatic[3*i];
-  //   currentLight[1] = app.lightLocationStatic[3*i+1];
-  //   currentLight[2] = app.lightLocationStatic[3*i+2];
-  //   mat4.multiplyVec3( app.mvMatrix, currentLight, lightLocation);
-  //   currentLight[0] = lightLocation.x;
-  //   currentLight[1] = lightLocation.y;
-  //   currentLight[2] = lightLocation.z;
-  //   app.lightLocation =app.lightLocation.concat(currentLight);
+  //   //currentLight[0] = app.lightLocationStatic[3*i];
+  //   //currentLight[1] = app.lightLocationStatic[3*i+1];
+  //   //currentLight[2] = app.lightLocationStatic[3*i+2];
+  //   mat4.multiplyVec3( app.mvMatrix, app.lightLocation[i], lightLocation);
+  //   //currentLight[0] = lightLocation.x;
+  //   //currentLight[1] = lightLocation.y;
+  //   //currentLight[2] = lightLocation.z;
+  //   //app.lightLocation =app.lightLocation.concat(currentLight);
+  //   app.lightLocation.push(vec3.clone(lightLocation));
   // }
  
-  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocationStatic );// app.lightLocation
+  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocationStatic);//  app.lightLocation
   gl.uniform3fv( shaderProgram.lightVector, app.lightVectorStatic );
   // gl.uniform3fv( shaderProgram.lightLocation, app.lightLocationStatic,0,6);
   // gl.uniform3fv( shaderProgram.lightVector, app.lightVectorStatic,0,6 );
