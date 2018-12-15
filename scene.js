@@ -55,7 +55,7 @@ function drawPlace(){
     return Math.floor( Math.random() * (max - min + 1) ) << 0;
   }
 
-  
+  var dt = app.elapsed / 1000;
   // Root transform start
   // ===============================================
   mvPushMatrix();
@@ -92,6 +92,21 @@ function drawPlace(){
       mat4.scale( app.mvMatrix, [2,2,2] )
       drawObject( app.models.room_floor, 0, [0, 1, 0, 1] );
     mvPopMatrix();
+    
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [0.05, 0.05, 0.05] )
+      mat4.translate( app.mvMatrix, app.monkey.position);      
+      for (let i = 0; i < app.enviromental.num; i++) {
+        mvPushMatrix();
+          if (app.enviromental[i].loc[2] < -1.0) {
+            app.enviromental[i].loc[2] = 30;
+          }
+          mat4.translate( app.mvMatrix,  [app.enviromental[i].loc[0], app.enviromental[i].loc[2], app.enviromental[i].loc[1]] );              
+          drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );                   
+          app.enviromental[i].loc[2] -=  20 * dt;          
+        mvPopMatrix();            
+      }
+    mvPopMatrix();    
 
     // Push the model matrix for trees
     mvPushMatrix();
