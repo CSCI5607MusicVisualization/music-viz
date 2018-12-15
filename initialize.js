@@ -135,10 +135,18 @@ function initTexture( object, url) {
 function initTextures(){
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
   initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
-  initTexture( app.models.room_floor, "textures/room_floor.jpg" );
-  initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
+  // initTexture( app.models.room_floor, "textures/room_floor.jpg" );
+  // initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
   initTexture( app.specular, "textures/redRamp.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
+
+  // Shrubbery
+  initTexture( app.models.treeLrg, "textures/cloud.jpg")
+  initTexture( app.models.treeMed, "textures/cloud.jpg")
+  initTexture( app.models.treeSml, "textures/cloud.jpg")
+
+  initTexture( app.models.bushes, "textures/cloud.jpg")
+
   
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;
   app.models.room_wall_broken.texture = app.models.room_walls.texture;
@@ -315,7 +323,10 @@ function initAudio()
    
         }
     }
-    function animate() {
+    function animate() 
+    // Generates an RMS value based on intensity
+    // Intensity rarely goes above .5, but RMS is clamped [0, 1]
+    {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
         analyser.getFloatTimeDomainData(dataArray);
@@ -336,7 +347,6 @@ function initAudio()
         app.intensity = rms;
         // This will return the value in decibals.
         // var v = Math.abs(20 * Math.log10(rms));
-
         draw();
         requestAnimationFrame(animate);
     }

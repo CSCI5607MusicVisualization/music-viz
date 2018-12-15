@@ -75,7 +75,14 @@ $(document).ready(function(){
       'cube': 'models/cube.obj',
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
-      'tree01': 'models/suzanne.obj',
+      
+      // Shrubbery.
+      // WARNING: These values are also referenced in globals.js
+      'treeLrg': 'models/shrubbery/tree01.obj',
+      'treeSml': 'models/shrubbery/tree02.obj',
+      'treeMed': 'models/shrubbery/tree03.obj',
+
+      'bushes': 'models/shrubbery/bushes.obj'
     },
     webGLStart
   );
