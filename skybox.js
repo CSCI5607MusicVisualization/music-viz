@@ -75,8 +75,8 @@ function initSyboxBuffers(canvas,shaderProgram)
     //gl.enableVertexAttribArray(aCoords);
     gl.enable(gl.DEPTH_TEST);
 
-    rotator = new SimpleRotator(canvas, drawSkybox);
-    rotator.setView( [0,0,1], [0,1,0], 5 );
+    //rotator = new SimpleRotator(canvas, drawSkybox);
+    //rotator.setView( [0,0,1], [0,1,0], 5 );
     //the first parameter is the viewpoint. The second is the viewup vector for the view
     //third parameter is a positive number that specifies the distance of the viewer from the origin; 
     //if it is specified, the first parameter gives the direction of view rather than the 
