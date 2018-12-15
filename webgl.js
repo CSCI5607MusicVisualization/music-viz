@@ -44,23 +44,7 @@ function webGLStart( meshes ) {
   
   tick();
 }
-// function initBkgnd() {
-//   backTex = gl.createTexture();
-//   backTex.Img = new Image();
-//   backTex.Img.onload = function() {
-//       handleBkTex(backTex);
-//   }
-//   backTex.Img.src = "./textures/spectrum_background.jpg";
-// }
 
-// function handleBkTex(tex) {
-//   ctx.bindTexture(ctx.TEXTURE_2D, tex);
-//   ctx.pixelStorei(ctx.UNPACK_FLIP_Y_WEBGL, true);
-//   ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, tex.Img);
-//   ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.NEAREST);
-//   ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST);
-//   ctx.bindTexture(ctx.TEXTURE_2D, null);
-// }
 $(document).ready(function(){
   obj_utils.downloadMeshes({
       'tunnel_ceiling':'models/tunnel_ceiling.obj',

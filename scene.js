@@ -1,14 +1,15 @@
 app.monkeyPositionTimer = 0;
 
-function floatMonkey(){
-  app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
-  app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
-}
+// function floatMonkey(){
+//   app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
+//   app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
+// }
 
 
 
-function drawPlace(){
-  floatMonkey();
+function drawPlace()
+{
+  //floatMonkey();
   // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -37,17 +38,30 @@ function drawPlace(){
   gl.useProgram( shaderProgram );
  
   // To add multiple lights append to and of array of light locations
-  mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightVector, app.lightVector );
-  gl.uniform1i( shaderProgram.lightCount, 2);
+  var lightLocation = vec3.create();
+  var lightVector = vec3.create();
+  var currentLight=new Array();
+  //clear
+  // app.lightLocation.splice(0,app.lightLocation.length);
+  // for(var i=0;i<lightcount;++i)
+  // {
+  //   currentLight[0] = app.lightLocationStatic[3*i];
+  //   currentLight[1] = app.lightLocationStatic[3*i+1];
+  //   currentLight[2] = app.lightLocationStatic[3*i+2];
+  //   mat4.multiplyVec3( app.mvMatrix, currentLight, lightLocation);
+  //   currentLight[0] = lightLocation.x;
+  //   currentLight[1] = lightLocation.y;
+  //   currentLight[2] = lightLocation.z;
+  //   app.lightLocation =app.lightLocation.concat(currentLight);
+  // }
+ 
+  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocationStatic );// app.lightLocation
+  gl.uniform3fv( shaderProgram.lightVector, app.lightVectorStatic );
+  // gl.uniform3fv( shaderProgram.lightLocation, app.lightLocationStatic,0,6);
+  // gl.uniform3fv( shaderProgram.lightVector, app.lightVectorStatic,0,6 );
+  gl.uniform1i( shaderProgram.lightCount, lightcount);
  
   setUniforms();
-
-
-
-
-
 
   function getRandomInt(min, max)
   // Returns a random integer
@@ -55,7 +69,6 @@ function drawPlace(){
     return Math.floor( Math.random() * (max - min + 1) ) << 0;
   }
 
-  
   // Root transform start
   // ===============================================
   mvPushMatrix();
@@ -147,9 +160,7 @@ function drawPlace(){
 
         mvPopMatrix();        
       }
-
     mvPopMatrix();
-    
 
     mvPushMatrix();
       mat4.translate( app.mvMatrix, [0,2,0] );

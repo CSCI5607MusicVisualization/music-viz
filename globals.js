@@ -49,10 +49,21 @@ var app = {};
   app.drawScene;
   app.scenechange = false;
   // room light
-  app.lightLocationStatic = [0, 45, 0];
-  app.lightVectorStatic = [0, -1, 0];
-  app.lightLocation = vec3.create();
-  app.lightVector = vec3.create();
+  var lightcount=1;
+  app.lightLocationStatic=new Array();
+  app.lightVectorStatic=new Array();
+  app.lightLocation = new Array();
+  app.lightVector = new Array();
+
+  app.lightLocationStatic.push(45, 45, 0);
+  app.lightVectorStatic.push(-1, -1, 0);
+
+  app.lightLocationStatic.push(-45, 45, 0);
+  app.lightVectorStatic.push(1, -1, 0);
+  // app.lightLocationStatic = [0, 45, 0];
+  // app.lightVectorStatic = [0, -1, 0];
+  // app.lightLocation = vec3.create();
+  // app.lightVector = vec3.create();
   app.ambientIntensity = 1.0;
   app.diffuseIntensity = 2.0;
   app.mvMatrix = mat4.create();
@@ -64,13 +75,7 @@ var app = {};
   // which function to use to draw
   app.drawScene;
   app.scenechange = false;
-  // // room light
-  // // app.lightLocationStatic = [0,2,0, -0.5, 2, 0];
-  // // app.lightVectorStatic = [0,-1,0, 0, -1, 0];
-  // // app.lightLocation = vec3.create();
-  // // app.lightVector = vec3.create();
-  // app.ambientIntensity = 0.8;
-  // app.diffuseIntensity = 2.0;
+  
   // monkey
   app.monkey = {};
   app.monkey.position = [0,0,0]
@@ -85,14 +90,7 @@ var BackgroundProgram = {};
 var SpectrumProgram;
 
 
-
-
-
-
-
 // Trees
-
-
 function getRandomXZ(minx, maxx, minz, maxz)
 // Returns X and Z coordinates within the ranges of x,z specified
 {
@@ -134,10 +132,6 @@ console.log(app.shrubbery)
 
 // DEBUG
 // console.log(app.shrubbery.locations)
-
-
-
-
 
 // Store the current RMS value
 app.intensity = 0;
