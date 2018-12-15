@@ -265,28 +265,15 @@ function initAudio()
         var xstart=-1.0;
         var delta =4.0/frequencyBins.length+0.005;// 0.002
         var j= 0;
-        for (var i = 0; i < 6*frequencyBins.length;) 
+        for (var i = 0; i < frequencyBins.length;) 
         {
             value = frequencyBins[j];
             j++;
-            h = (value / 255);
+            h = (value / 24);
             //console.log("frequencyBins is:",value);
             // w = WIDTH / frequencyBins.length;
                 // ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
-            // ctx.fillRect(i * w, HEIGHT - 1, w, -h);
-            arr[i++]=xstart;
-            arr[i++]=0.0;
-            arr[i++]=0.0;
-        
-            arr[i++]=xstart;
             arr[i++]=h;
-            arr[i++]=0.0;
-            xstart=xstart+delta;
-            if (xstart>1.0) 
-            {
-                xstart=-1.0;
-            }
-   
         }
         //point buffer
         xstart=-1.0;
