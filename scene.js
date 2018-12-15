@@ -124,7 +124,7 @@ function drawPlace(){
           // The index of the tree is hard-coded here
           if (shrub.type == 0)
           {
-            drawObject( app.models.treeLrg, 0, [app.intensity, 1, 1, 1] );
+            drawObject( app.models.treeLrg, 0, [app.intensity, 1, 1, 1] );//
             // drawObject( app.models.treeLrg, 0, [1, 1, 0, 1] );
           }
 
