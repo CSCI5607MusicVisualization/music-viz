@@ -1,11 +1,10 @@
 app.monkeyPositionTimer = 0;
 
-function floatMonkey(){
-  app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
-  app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
-}
-
-
+// function floatMonkey()
+// {
+//   app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
+//   app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
+// }
 
 function drawPlace(){
   floatMonkey();
@@ -57,8 +56,6 @@ function drawPlace(){
   {
     return Math.floor( Math.random() * (max - min + 1) ) << 0;
   }
-
-  
   // Root transform start
   // ===============================================
   mvPushMatrix();
@@ -81,10 +78,8 @@ function drawPlace(){
       for (i = 0; i < app.shrubbery.num; i++)
       // Generate random shrubbery.  Objects defined in `globals.js`
       {
-
         // Pick the current shrub
         shrub = app.shrubbery[i];
-
         // mat4.scale( app.mvMatrix, [0.5, 1, 0.5] );
         mvPushMatrix();
 
@@ -98,14 +93,12 @@ function drawPlace(){
 
           // Actually draw tree
           // TODO: All of this cross-referencing with the trees across files is becoming a headache
-
           // The index of the tree is hard-coded here
           if (shrub.type == 0)
           {
             drawObject( app.models.treeLrg, 0, [app.intensity, 1, 1, 1] );
             // drawObject( app.models.treeLrg, 0, [1, 1, 0, 1] );
           }
-
           else if (shrub.type == 1)
           {
             drawObject( app.models.treeSml, 0, [1, 1, 0, 1] );
@@ -116,25 +109,21 @@ function drawPlace(){
             drawObject( app.models.treeMed, 0, [1, 1, 0, 1] );
             // drawObject( app.models.treeMed, 0, [app.intensity, app.intensity, 0, 1] );
           }
-
           else
           {
             console.log("Cant draw");
           }
-
-
         mvPopMatrix();        
       }
-
     mvPopMatrix();
-
+/**-------------sky light------------------------- */
     mvPushMatrix();
       mat4.translate( app.mvMatrix, [0,2,0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( 2.0, 1,1,1 ) );
       drawObject( app.models.skylight, 0, [0.53, 0.81, 0.98, 1.0] );
       gl.uniform3fv( shaderProgram.ambientColorUniform, lightIntesity( app.ambientIntensity, 0.3,0.3,0.3 ) );
-    mvPopMatrix();
-    
+    mvPopMatrix(); 
+
     // Old tunnel stuff
     // drawObject( app.models.room_tunnel_ceiling, 0 );
     // drawObject( app.models.room_tunnel_walls, 0 );
