@@ -74,12 +74,8 @@ var app = {};
   // monkey
   app.monkey = {};
   app.monkey.position = [0,0,0]
-  app.intensity = 0;
-  app.spectrum = [];
-  app.point = [];
-  app.wave = [];
-  
-  var ShaderProgram;
+
+var ShaderProgram;
 /*------------------spectrum------------ */
 var BackgroundProgram = {};
 var SpectrumProgram;
