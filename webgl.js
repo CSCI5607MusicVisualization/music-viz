@@ -32,9 +32,9 @@ function webGLStart( meshes ) {
   initPointerLock();
   initTextures();
 
-   initSkyboxShaders(gl);
-   initSyboxBuffers(canvas,SkyboxProgram);
-   setupSkybox();
+  initSkyboxShaders(gl);
+  initSyboxBuffers(canvas,SkyboxProgram);
+  setupSkybox();
 
   document.onkeydown = cameraKeyDownHandler;
   document.onkeyup = cameraKeyUpHandler;
