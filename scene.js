@@ -118,7 +118,7 @@ function drawPlace(){
           }
           // console.log(app.particle[i].loc[2]);
           mat4.translate( app.mvMatrix,  [app.particle[i].loc[0] - i + 500, app.particle[i].loc[2], app.particle[i].loc[1]] );              
-          drawObject( app.models.cube, 0, [1, 0, 0.1, 1] );                   
+          drawObject( app.models.cube, 0, [0, 0, 0.1, 0.7] );                   
           // console.log(app.particle[i].loc[2]);                    
           app.particle[i].loc[2] -=  10;
           // console.log(app.particle[i].loc[2]);          
