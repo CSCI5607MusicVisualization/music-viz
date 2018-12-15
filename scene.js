@@ -12,7 +12,7 @@ function drawPlace(){
   // roomCollisionCheck();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
+  mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
   
   vec3.negate( app.camera.position, app.camera.inversePosition )
   
@@ -73,7 +73,7 @@ function drawPlace(){
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      drawObject( app.models.room_floor, 0 );
+      drawObject( app.models.room_floor, 0, [0, 1, 0] );
     mvPopMatrix();
 
     // Push the model matrix for trees

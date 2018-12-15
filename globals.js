@@ -108,7 +108,7 @@ function getRandomInt(min, max)
 
 // Populate a shrubbery object
 app.shrubbery = {}
-app.shrubbery.num = 50;
+app.shrubbery.num = 150;
 
 // The number of object files that are initialized in  `webgl.js`
 app.shrubbery.objFileCount = 3;
@@ -120,7 +120,7 @@ for (i = 0; i < app.shrubbery.num; i++)
   app.shrubbery[i] = {}
 
   // Generate its location
-  app.shrubbery[i]['loc'] = getRandomXZ(-10, 10, -10, 10);
+  app.shrubbery[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
 
   // Generate  random type
   app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);
