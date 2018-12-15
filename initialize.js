@@ -20,9 +20,7 @@ function initGL(canvas,SpecCanvas)
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
 
-    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('webgl2') ;
-    ctx.viewportWidth = SpecCanvas.width;
-    ctx.viewportHeight = SpecCanvas.height;
+    ctx = canvas.getContext('webgl2');
   } catch (e) {
   }
   if (!gl||!ctx) 
@@ -218,7 +216,7 @@ function initAudio()
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'viper.ogg', true);
+      request.open('GET', 'Dragonforce.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {

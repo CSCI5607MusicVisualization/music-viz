@@ -59,7 +59,7 @@ function drawPlace(){
     // drawObject( app.models.room_ceiling, 0 );
     drawObject( app.models.pedestal, 50, [0.75,0.75,0.75,1.0] );
       mvPushMatrix();
-        mat4.scale( app.mvMatrix, [0.01,0.05,0.05] )
+        mat4.scale( app.mvMatrix, [0.005,0.05,0.05] )
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [130, 10, 0] );        
         for (let i = 0; i < app.spectrum.length; i++) {
