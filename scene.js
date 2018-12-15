@@ -63,13 +63,13 @@ function drawPlace(){
         mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
         mat4.translate( app.mvMatrix,  [250, 10, 0] );        
         for (let i = 0; i < app.spectrum.length; i++) {
-          let r = 1, g = 0, b = 0;
+          let r = 0, g = 0, b = 0;
 
           mvPushMatrix();
             mat4.scale( app.mvMatrix, [1, app.spectrum[i], 1] )       
             mat4.translate( app.mvMatrix, app.monkey.position);
             mat4.translate( app.mvMatrix,  [0 - i * 2, 0 + 1, 0] );              
-            drawObject( app.models.cube, 0, [r, g, b, 1] );         
+            drawObject( app.models.cube, 0, [(255-i)/255, g, (255 - (255 - i)) / 255, 1] );         
           mvPopMatrix();        
         }
         mat4.translate( app.mvMatrix, app.monkey.position );
