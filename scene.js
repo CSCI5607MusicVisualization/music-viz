@@ -114,11 +114,14 @@ function drawPlace(){
       for (let i = 0; i < app.particle.num; i++) {
         mvPushMatrix();
           if (app.particle[i].loc[2] < -1.0) {
-            app.particle[i].loc[2] = 300;
+            console.log(app.particle[i].loc[2])            
           }
+          // console.log(app.particle[i].loc[2]);
           mat4.translate( app.mvMatrix,  [app.particle[i].loc[0] - i + 500, app.particle[i].loc[2], app.particle[i].loc[1]] );              
           drawObject( app.models.cube, 0, [1, 0, 0.1, 1] );                   
-          app.particle[i].loc[2] -=  20 * dt;          
+          // console.log(app.particle[i].loc[2]);                    
+          app.particle[i].loc[2] -=  20;
+          // console.log(app.particle[i].loc[2]);          
         mvPopMatrix();            
       }
     mvPopMatrix();    

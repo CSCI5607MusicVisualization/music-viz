@@ -156,8 +156,10 @@ for (i = 0; i < app.particle.num; i++)
     // Create an empty shrub object
     app.particle[i] = {}
     // Generate its location
-    app.particle[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
-    app.particle[i]['loc'][2] = Math.random() * (1000 - 20) + 100;
+    app.particle[i]['loc'] = getRandomXZ(-30, 300, -5, 100);
+    // console.log(app.particle[i]['loc']);
+    app.particle[i]['loc'][2] = Math.floor(Math.random() * (3000 - 300) + 300);
+    // console.log(app.particle[i]['loc'][2])
   }
 
 
