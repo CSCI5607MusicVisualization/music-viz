@@ -11,6 +11,9 @@ var canvas;
 var SpecCanvas;
 // application var holder
 var app = {};
+  // Color Ramps
+  app.specular = {};
+  app.diffuse = {};  
   // mesh holder
   app.meshes = {};
   // model holder
@@ -46,11 +49,11 @@ var app = {};
   app.drawScene;
   app.scenechange = false;
   // room light
-  app.lightLocationStatic = [0,2,0];
-  app.lightVectorStatic = [0,-1,0];
+  app.lightLocationStatic = [0, 45, 0];
+  app.lightVectorStatic = [0, -1, 0];
   app.lightLocation = vec3.create();
   app.lightVector = vec3.create();
-  app.ambientIntensity = 0.8;
+  app.ambientIntensity = 1.0;
   app.diffuseIntensity = 2.0;
   app.mvMatrix = mat4.create();
   app.mvMatrixStack = [];
@@ -61,21 +64,76 @@ var app = {};
   // which function to use to draw
   app.drawScene;
   app.scenechange = false;
-  // room light
-  app.lightLocationStatic = [0,2,0];
-  app.lightVectorStatic = [0,-1,0];
-  app.lightLocation = vec3.create();
-  app.lightVector = vec3.create();
-  app.ambientIntensity = 0.8;
-  app.diffuseIntensity = 2.0;
+  // // room light
+  // // app.lightLocationStatic = [0,2,0, -0.5, 2, 0];
+  // // app.lightVectorStatic = [0,-1,0, 0, -1, 0];
+  // // app.lightLocation = vec3.create();
+  // // app.lightVector = vec3.create();
+  // app.ambientIntensity = 0.8;
+  // app.diffuseIntensity = 2.0;
   // monkey
   app.monkey = {};
   app.monkey.position = [0,0,0]
 
 var ShaderProgram;
-
 /*------------------spectrum------------ */
-//var BackgroundProgram = {};
+var BackgroundProgram = {};
 var SpectrumProgram;
-/*------------------skybox------------ */
-var SkyboxProgram;
+
+
+
+
+
+
+
+// Trees
+
+
+function getRandomXZ(minx, maxx, minz, maxz)
+// Returns X and Z coordinates within the ranges of x,z specified
+{
+  x = Math.random() * (maxx - minx) + minx;
+  z = Math.random() * (maxz - minz) + minz;
+
+  return [x, z];
+}
+
+function getRandomInt(min, max)
+// Returns a random integer
+// Used here to get the index of a random shrubbery object file
+{
+  return Math.floor( Math.random() * (max - min + 1) ) << 0;
+}
+
+
+// Populate a shrubbery object
+app.shrubbery = {}
+app.shrubbery.num = 50;
+
+// The number of object files that are initialized in  `webgl.js`
+app.shrubbery.objFileCount = 3;
+
+for (i = 0; i < app.shrubbery.num; i++)
+// Generate tree locations
+{
+  // Create an empty shrub object
+  app.shrubbery[i] = {}
+
+  // Generate its location
+  app.shrubbery[i]['loc'] = getRandomXZ(-10, 10, -10, 10);
+
+  // Generate  random type
+  app.shrubbery[i]['type'] = getRandomInt(0, app.shrubbery.objFileCount - 1);
+}
+
+console.log(app.shrubbery)
+
+// DEBUG
+// console.log(app.shrubbery.locations)
+
+
+
+
+
+// Store the current RMS value
+app.intensity = 0;

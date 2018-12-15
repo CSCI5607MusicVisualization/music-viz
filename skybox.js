@@ -13,12 +13,12 @@ var rotator;   // A SimpleRotator object to enable rotation by mouse dragging.
 var texID;
 var cube;
 var g_skyBoxUrls = [
-    './webgl-skybox/images/skyposx1.png',
-    './webgl-skybox/images/skynegx1.png',
-    './webgl-skybox/images/skyposy1.png',
-    './webgl-skybox/images/skynegy1.png',
-    './webgl-skybox/images/skyposz1.png',
-    './webgl-skybox/images/skynegz1.png'
+    './skybox/skyposx1.png',
+    './skybox/skynegx1.png',
+    './skybox/skyposy1.png',
+    './skybox/skynegy1.png',
+    './skybox/skyposz1.png',
+    './skybox/skynegz1.png'
     ];
 
 var lastTime = new Date().getTime();
@@ -45,53 +45,6 @@ function randPos(scale) {
     return vec3.random(vec3.create(), scale);
 }
 
-// function initGL(canvas) {
-//     try {
-//         gl = canvas.getContext("experimental-webgl");
-//         gl.viewportWidth = canvas.width;
-//         gl.viewportHeight = canvas.height;
-//     } catch (e) {
-//     }
-//     if (!gl) {
-//         alert("Could not initialise WebGL, sorry :-(");
-//     }
-// }
-
-
-// function getShader(gl, id) {
-//     var shaderScript = document.getElementById(id);
-//     if (!shaderScript) {
-//         return null;
-//     }
-
-//     var str = "";
-//     var k = shaderScript.firstChild;
-//     while (k) {
-//         if (k.nodeType == 3) {
-//             str += k.textContent;
-//         }
-//         k = k.nextSibling;
-//     }
-
-//     var shader;
-//     if (shaderScript.type == "x-shader/x-fragment") {
-//         shader = gl.createShader(gl.FRAGMENT_SHADER);
-//     } else if (shaderScript.type == "x-shader/x-vertex") {
-//         shader = gl.createShader(gl.VERTEX_SHADER);
-//     } else {
-//         return null;
-//     }
-
-//     gl.shaderSource(shader, str);
-//     gl.compileShader(shader);
-
-//     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-//         alert(gl.getShaderInfoLog(shader));
-//         return null;
-//     }
-
-//     return shader;
-// }
 
 
 //var shaderProgram;
@@ -123,8 +76,8 @@ function initSyboxBuffers(canvas,shaderProgram)
     //gl.enableVertexAttribArray(aCoords);
     gl.enable(gl.DEPTH_TEST);
 
-    rotator = new SimpleRotator(canvas, drawSkybox);
-    rotator.setView( [0,0,1], [0,1,0], 5 );
+    //rotator = new SimpleRotator(canvas, drawSkybox);
+    //rotator.setView( [0,0,1], [0,1,0], 5 );
     //the first parameter is the viewpoint. The second is the viewup vector for the view
     //third parameter is a positive number that specifies the distance of the viewer from the origin; 
     //if it is specified, the first parameter gives the direction of view rather than the 

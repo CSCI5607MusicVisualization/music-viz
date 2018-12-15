@@ -7,10 +7,10 @@ var PointgreenValue = 1.0;
 
 var alpha = 1.0;
 /** ----------for back ground-----------*/
-//var Texture = {};
-//var bufRect = {};
-//var textureObj;
-//var progBG;
+var Texture = {};
+var bufRect = {};
+var textureObj;
+var progBG;
 
 function initGL(canvas,SpecCanvas) 
 {
@@ -20,7 +20,7 @@ function initGL(canvas,SpecCanvas)
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
 
-    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('experimental-webgl') ;
+    ctx = SpecCanvas.getContext('webgl2')|| SpecCanvas.getContext('webgl2') ;
     ctx.viewportWidth = SpecCanvas.width;
     ctx.viewportHeight = SpecCanvas.height;
   } catch (e) {
@@ -31,7 +31,7 @@ function initGL(canvas,SpecCanvas)
   }
 }
 
-function getShader(env, id) 
+  function getShader(env, id) 
 {
   var shaderScript = document.getElementById(id);
   if (!shaderScript) {
@@ -67,8 +67,7 @@ function getShader(env, id)
   return shader;
 }
 
-function initShaders() 
-{
+function initShaders() {
   
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
@@ -97,11 +96,14 @@ function initShaders()
   shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
   shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+  shaderProgram.diffuseUniform = gl.getUniformLocation(shaderProgram, "diffuseRamp");
+  shaderProgram.specularUniform = gl.getUniformLocation(shaderProgram, "specularRamp");    
   shaderProgram.modelColor = gl.getUniformLocation(shaderProgram, "uColor");
   shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, "uMaterialShininess");
   shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
   shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
   shaderProgram.hasTexure = gl.getUniformLocation(shaderProgram, "uHasTexure");
+  shaderProgram.lightCount = gl.getUniformLocation(shaderProgram, "lightCount");  
   shaderProgram.lightLocation = gl.getUniformLocation(shaderProgram, "uLightLocation");
   shaderProgram.lightVector = gl.getUniformLocation(shaderProgram, "uSpotDirection");
   shaderProgram.lightSpecularColor = gl.getUniformLocation(shaderProgram, "uLightSpecularColor");
@@ -109,10 +111,8 @@ function initShaders()
 }
 
 
-function handleLoadedTexture(texture) 
-{
+function handleLoadedTexture(texture) {
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-  //gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image );
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -122,26 +122,34 @@ function handleLoadedTexture(texture)
   gl.generateMipmap(gl.TEXTURE_2D);
 
   gl.bindTexture(gl.TEXTURE_2D, null);
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 }
 
-function initTexture( object, url) 
-{
+function initTexture( object, url) {
   object.texture = gl.createTexture();
   object.texture.image = new Image();
   object.texture.image.crossOrigin = "anonymous";
   object.texture.image.onload = function () {
-    //handleLoadedTexture( object.texture );
+    handleLoadedTexture( object.texture );
   }
   object.texture.image.src = url;
 }
 
-function initTextures()
-{
-  gl.useProgram(shaderProgram);
+function initTextures(){
   initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
-  initTexture( app.models.room_walls, "textures/stone_wall.png" );
+  initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
   initTexture( app.models.room_floor, "textures/room_floor.jpg" );
+  // initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
+  initTexture( app.specular, "textures/redRamp.png");  
+  initTexture( app.diffuse, "textures/diffuse.png");
+
+  // Shrubbery
+  initTexture( app.models.treeLrg, "textures/cloud.jpg")
+  initTexture( app.models.treeMed, "textures/cloud.jpg")
+  initTexture( app.models.treeSml, "textures/cloud.jpg")
+
+  initTexture( app.models.bushes, "textures/cloud.jpg")
+
+  
   app.models.room_tunnel_walls.texture = app.models.room_walls.texture;
   app.models.room_wall_broken.texture = app.models.room_walls.texture;
   app.models.room_wall_unbroken.texture = app.models.room_walls.texture;
@@ -161,39 +169,7 @@ function initBuffers() {
   app.models.skylight = {};
   app.models.skylight.mesh = app.models.room_floor.mesh;
 }
-/*-----------------------Texture background------------------------------------- */
-// Texture.HandleLoadedTexture2D = function( image, texture, flipY ) {
-//   ctx.activeTexture( ctx.TEXTURE0 );
-//   ctx.bindTexture( ctx.TEXTURE_2D, texture );
-//   ctx.texImage2D( ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, image );
-//   if ( flipY != undefined && flipY == true )
-//       ctx.pixelStorei( ctx.UNPACK_FLIP_Y_WEBGL, true );
-//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR );
-//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.LINEAR );
-//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.REPEAT );
-//   ctx.texParameteri( ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.REPEAT );
-//   ctx.bindTexture( ctx.TEXTURE_2D, null );
-//   return texture;
-// }
 
-// Texture.LoadTexture2D = function( name ) 
-// {
-//     var texture = ctx.createTexture();
-//     texture.image = new Image(480,360);
-//     texture.image.setAttribute('crossorigin', 'anonymous');
-//     texture.image.onload = function () 
-//     {
-//         var canvas =  document.createElement( 'canvas' );
-//          canvas.width = ctx.width;
-//          canvas.height = ctx.height;
-//         var context = canvas.getContext( '2d' );
-//         context.drawImage( texture.image, 0, 0, canvas.width, canvas.height );
-//         Texture.HandleLoadedTexture2D( canvas, texture, true )
-//     }
-//     texture.image.src = name;
-//     return texture;
-// }
-/*-----------------------End Texture background------------------------------------- */
 function initAudio() 
 {
   window.onload = function () 
@@ -214,12 +190,11 @@ function initAudio()
     let buffer = new Uint8Array(analyser.frequencyBinCount);
 
     var source;
-    function getData() 
-    {
+    function getData() {
       source = audioContext.createBufferSource();
       source.connect(audioContext.destination);//    meter  
       request = new XMLHttpRequest();
-      request.open('GET', 'christmas.ogg', true);
+      request.open('GET', 'viper.ogg', true);
       request.responseType = 'arraybuffer';
       
       request.onload = function() {
@@ -316,7 +291,7 @@ function initAudio()
         var wavedelta = 4.0/dataArray.length;
         for (var i = 0; i < 3*dataArray.length;) 
         {
-            value = dataArray[j];//1.5*
+            value = 1.5*dataArray[j];
             j++;
             h = value ;//(/ 255)
             waveArr[i++]=xstart;
@@ -330,7 +305,10 @@ function initAudio()
    
         }
     }
-    function animate() {
+    function animate() 
+    // Generates an RMS value based on intensity
+    // Intensity rarely goes above .5, but RMS is clamped [0, 1]
+    {
         analyser.getByteFrequencyData(frequencyBins);
         // console.log(frequencyBins.indexOf(Math.max(...frequencyBins)), Math.max(...frequencyBins));
         analyser.getFloatTimeDomainData(dataArray);
@@ -349,6 +327,9 @@ function initAudio()
         rms = Math.sqrt(rms / (dataArray.length))
         // This will return the value in decibals.
         // var v = Math.abs(20 * Math.log10(rms));
+
+        // Send the current RMS value to the globals
+        app.intensity = rms;
 
         vals = pickColor(rms);
         r = vals[0];
@@ -387,59 +368,8 @@ function initSpectrumShader()
   SpectrumProgram.contrast = ctx.getUniformLocation(SpectrumProgram, 'u_contrast');
 }
 
-// function InitBackground()
-// {
-//   var fragmentShader = getShader(ctx, "background-shader-fs");
-//   var vertexShader = getShader(ctx, "background-shader-vs");
 
-//   progBG = ctx.createProgram();
-//   ctx.attachShader(progBG, vertexShader);
-//   ctx.attachShader(progBG, fragmentShader);
-//   ctx.linkProgram(progBG);
-
-//   if (!ctx.getProgramParameter(progBG, ctx.LINK_STATUS)) {
-//     alert("Could not initialise progBG shaders");
-//   }
-
-//   ctx.useProgram(progBG);
-//   progBG.inPos = ctx.getAttribLocation( progBG, "inPos" );
-//   ctx.enableVertexAttribArray(progBG.inPos);
-//   progBG.u_texture = ctx.getUniformLocation(progBG, 'u_texture');
-//   textureObj = Texture.LoadTexture2D( "./textures/spectrum_background.jpg" ); 
-  
-//   bufRect = ctx.createBuffer()
-//   ctx.bindBuffer( gl.ARRAY_BUFFER, bufRect );
-//   ctx.bufferData( gl.ARRAY_BUFFER, new Float32Array( [ -1, -1, 1, -1, 1, 1, -1, 1 ] ), gl.STATIC_DRAW );
-// }
-// //
-// // Draw the scene.  
-// //
-// function drawBackground(gl)
-// {
-//   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-//   /*---------------backbround--------------- */
-//   gl.useProgram(progBG);
-  
-//   gl.disable( gl.DEPTH_TEST );
-//   var texUnit = 1;
-//   gl.activeTexture( gl.TEXTURE0 + texUnit );
-//   gl.bindTexture( gl.TEXTURE_2D, textureObj );
-//   //console.log("textureObj is:",textureObj);
-//   var tex_loc = gl.getUniformLocation( progBG, "u_texture" );
-//   gl.useProgram( progBG );
-//   gl.uniform1i( tex_loc, texUnit );
-  
-//   var v_attr_inx = gl.getAttribLocation( progBG, "inPos" );
-//   gl.bindBuffer( gl.ARRAY_BUFFER, bufRect );
-//   gl.vertexAttribPointer(v_attr_inx, 2, gl.FLOAT, false, 0, 0 );
-//   gl.enableVertexAttribArray(v_attr_inx);
-//   gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
-
-//   gl.disableVertexAttribArray( v_attr_inx );
-//   gl.clear( gl.DEPTH_BUFFER_BIT );
-//   /*---------------End backbround--------------- */  
-// }
-function drawSprctrum(env, buffers,totalnum)
+function drawSprctrum(gl, buffers,totalnum)
 {
   // var r = 0.;
   // var g = 0.; 
@@ -447,25 +377,25 @@ function drawSprctrum(env, buffers,totalnum)
   // gl.clearColor(r, g, b, 1.0);  // Clear to black, fully opaque
   // Clear the canvas before we start drawing on it.
   //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  env.useProgram(SpectrumProgram);
-  env.clearDepth(1.0);                 // Clear everything
-  env.enable(env.DEPTH_TEST);           // Enable depth testing
-  env.depthFunc(env.LEQUAL);            // Near things obscure far things
+  gl.useProgram(SpectrumProgram);
+  gl.clearDepth(1.0);                 // Clear everything
+  gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+  gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
 
   const numComponents = 3;
-  const type = env.FLOAT;
+  const type = gl.FLOAT;
   const normalize = false;
   const stride = 0;// 0 = use the correct stride for type and numComponents
   const offset = 0;
-  env.bindBuffer(env.ARRAY_BUFFER, buffers);
-  env.vertexAttribPointer(
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
+  gl.vertexAttribPointer(
       SpectrumProgram.vertexPositionAttribute,
       numComponents,
       type,
       normalize,
       stride,
       offset);
-  env.enableVertexAttribArray(
+  gl.enableVertexAttribArray(
     SpectrumProgram.vertexPositionAttribute);
   
   //sleep(999);  
@@ -474,7 +404,7 @@ function drawSprctrum(env, buffers,totalnum)
   {
     //if(i%200==0)
     //  console.log("spectrum color is:",redValue,1.0,blueValue);
-    env.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, greenValue, blueValue, alpha]);
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [ redValue, greenValue, blueValue, alpha]);
     //console.log("buffer number is:",buffers);
     if (i< totalnum/2) //128
     {
@@ -490,36 +420,36 @@ function drawSprctrum(env, buffers,totalnum)
     alpha-=0.01;
     if(alpha < 0 )
        alpha=1.0;
-    env.lineWidth(3.0);
-    env.drawArrays(env.LINES, i, 2);
+    gl.lineWidth(3.0);
+    gl.drawArrays(gl.LINES, i, 2);
 
   }
-  env.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
+  
   //console.log("spectrum color is:",redValue,1.0,blueValue);
 }
 
-function drawPoint(env, buffers,totalnum)
+function drawPoint(gl, buffers,totalnum)
 {
   const numComponents = 3;
-  const type = env.FLOAT;
+  const type = gl.FLOAT;
   const normalize = false;
   const stride = 0;// 0 = use the correct stride for type and numComponents
   const offset = 0;
-  env.bindBuffer(env.ARRAY_BUFFER, buffers);
-  env.vertexAttribPointer(
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers);
+  gl.vertexAttribPointer(
       SpectrumProgram.vertexPositionAttribute,
       numComponents,
       type,
       normalize,
       stride,
       offset);
-  env.enableVertexAttribArray(
+  gl.enableVertexAttribArray(
     SpectrumProgram.vertexPositionAttribute);
   
   for (var i=0; i<totalnum; i++) 
   {
     
-    env.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue, PointgreenValue, PointblueValue ,alpha]);//PointgreenValue
+    gl.uniform4fv(SpectrumProgram.OutcolorVec4, [PointredValue, PointgreenValue, PointblueValue ,alpha]);//PointgreenValue
     if (i< totalnum/2) 
     {
       PointredValue = PointredValue - 0.002;
@@ -534,9 +464,8 @@ function drawPoint(env, buffers,totalnum)
     alpha-=0.005;
     if(alpha < 0.5)
        alpha=1.0;
-    env.drawArrays(env.POINTS, i, 1);
+    gl.drawArrays(gl.POINTS, i, 1);
   }
-  env.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
 }
 //draw other two things
 function drawWave(gl, buffers,totalnum)
@@ -576,7 +505,6 @@ function drawWave(gl, buffers,totalnum)
       gl.drawArrays(gl.POINTS, i, 1);
   
     }
-  gl.disableVertexAttribArray(SpectrumProgram.vertexPositionAttribute );
 }
 
 

@@ -1,3 +1,4 @@
+
 function animate() {
   app.timeNow = new Date().getTime();
   app.elapsed = app.timeNow - app.lastTime;
@@ -15,28 +16,25 @@ function animate() {
 
 function tick() {
   requestAnimFrame(tick);
-  
   app.drawScene();
   drawSkybox();
   animate();
 }
 
-function webGLStart( meshes ) 
-{
+function webGLStart( meshes ) {
   app.meshes = meshes;
   canvas = document.getElementById("mycanvas");
   SpecCanvas = document.getElementById("canvas");
   initGL(canvas,SpecCanvas);
-
   initShaders();
   initAudio();
   initBuffers();
   initPointerLock();
   initTextures();
-  
-  initSkyboxShaders(gl);
-  initSyboxBuffers(canvas,SkyboxProgram);
-  setupSkybox();
+
+   initSkyboxShaders(gl);
+   initSyboxBuffers(canvas,SkyboxProgram);
+   setupSkybox();
 
   document.onkeydown = cameraKeyDownHandler;
   document.onkeyup = cameraKeyUpHandler;
@@ -45,6 +43,8 @@ function webGLStart( meshes )
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
+  
+  
   tick();
 }
 
@@ -62,6 +62,14 @@ $(document).ready(function(){
       'suzanne': 'models/boulder.obj',
       'pedestal': 'models/pedestal.obj',
       'boulder': 'models/boulder.obj',
+      
+      // Shrubbery.
+      // WARNING: These values are also referenced in globals.js
+      'treeLrg': 'models/shrubbery/tree01.obj',
+      'treeSml': 'models/shrubbery/tree02.obj',
+      'treeMed': 'models/shrubbery/tree03.obj',
+
+      'bushes': 'models/shrubbery/bushes.obj'
     },
     webGLStart
   );

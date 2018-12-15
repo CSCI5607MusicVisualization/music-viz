@@ -9,24 +9,36 @@ function drawObject( model, shininess, color ){
   
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.vertexBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, model.mesh.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
+  gl.enableVertexAttribArray( shaderProgram.vertexPositionAttribute );
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.textureBuffer);
   gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, model.mesh.textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
+  gl.enableVertexAttribArray( shaderProgram.textureCoordAttribute );
   gl.bindBuffer(gl.ARRAY_BUFFER, model.mesh.normalBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, model.mesh.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+  gl.enableVertexAttribArray( shaderProgram.vertexNormalAttribute );
 
-  if( 'texture' in model )
-  {
+  if( 'texture' in model ){
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, model.texture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    gl.uniform1i(shaderProgram.samplerUniform, 0);    
+
+    gl.activeTexture(gl.TEXTURE1)    
+    gl.bindTexture(gl.TEXTURE_2D, app.diffuse.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 1)
+
+    gl.activeTexture(gl.TEXTURE2)        
+    gl.bindTexture(gl.TEXTURE_2D, app.specular.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 2);        ;    
     gl.uniform1i(shaderProgram.hasTexure, true);
   }
   else{
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, app.diffuse.texture); 
+    gl.uniform1i(shaderProgram.diffuseUniform, 0);     
+    gl.activeTexture(gl.TEXTURE1)        
+    gl.bindTexture(gl.TEXTURE_2D, app.specular.texture);  
+    gl.uniform1i(shaderProgram.diffuseUniform, 1);          
+
     gl.uniform1i(shaderProgram.hasTexure, false);
     gl.uniform4fv( shaderProgram.modelColor, color );
   }
@@ -41,11 +53,11 @@ function drawObject( model, shininess, color ){
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.mesh.indexBuffer);
   setMatrixUniforms();
   gl.drawElements(gl.TRIANGLES, model.mesh.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-  
-  gl.disableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-  gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
-  gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
+
+  gl.disableVertexAttribArray( shaderProgram.vertexPositionAttribute );
+  gl.disableVertexAttribArray( shaderProgram.textureCoordAttribute );
+  gl.disableVertexAttribArray( shaderProgram.vertexNormalAttribute );
 }
 
 function mvPushMatrix() {
@@ -94,13 +106,13 @@ function Array2Buffer(array, iSize, nSize) {
   return buffer;
 }
 /**------------------for spectrum--------------------------------------- */
-function Array2Buffers(env,array)
+function Array2Buffers(gl,array)
 {
-  var positionBuffer = env.createBuffer();
-  env.bindBuffer(env.ARRAY_BUFFER, positionBuffer);
-  env.bufferData(env.ARRAY_BUFFER, new Float32Array(array), env.STATIC_DRAW);
+  var positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
   positionBuffer.numItems=array.length;
-  env.bindBuffer(env.ARRAY_BUFFER, null);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
   return  positionBuffer;
 }
 /**------------------end for spectrum--------------------------------------- */
@@ -113,18 +125,13 @@ function Array2EBuffer(array, iSize, nSize) {
   return buffer;
 }
 
-function drawBuffer(vpbuf, vcbuf, start, nitems, gltype) 
-{
+function drawBuffer(vpbuf, vcbuf, start, nitems, gltype) {
   gl.bindBuffer(gl.ARRAY_BUFFER, vpbuf);
   gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vpbuf.itemSize, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray( shaderProgram.vertexPositionAttribute );
   gl.bindBuffer(gl.ARRAY_BUFFER, vcbuf);
   gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, vcbuf.itemSize, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute );
   setMatrixUniforms();
   gl.drawArrays(gltype, start, nitems);
-  gl.disableVertexAttribArray(shaderProgram.vertexPositionAttribute );
-  gl.disableVertexAttribArray( shaderProgram.vertexColorAttribute );
 }
 
 // //add texture to background
