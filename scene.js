@@ -44,8 +44,9 @@ function drawPlace(){
     return Math.floor( Math.random() * (max - min + 1) ) << 0;
   }
 
-  
-  // Root transform START
+
+  var dt = app.elapsed / 1000;
+  // Root transform start
   // ===============================================
   mvPushMatrix();
 
@@ -90,10 +91,45 @@ function drawPlace(){
     // Draw floor
     mvPushMatrix();
       mat4.scale( app.mvMatrix, [2,2,2] )
-      // Color the ground a darker shade of green
-      drawObject( app.models.room_floor, 0, [0, 0.1, 0, .8] );
-    mvPopMatrix();
 
+      // Color the ground a darker shade of green
+      drawObject( app.models.room_floor, 0, [0, 0.1, 0, 0.8] );
+
+    mvPopMatrix();
+    
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [0.25, 0.05, 0.15] )
+      mat4.translate( app.mvMatrix, app.monkey.position);      
+      for (let i = 0; i < app.enviromental.num; i++) {
+        mvPushMatrix();
+          if (app.enviromental[i].loc[2] < -1.0) {
+            app.enviromental[i].loc[2] = 30;
+          }
+          mat4.translate( app.mvMatrix,  [app.enviromental[i].loc[0], app.enviromental[i].loc[2], app.enviromental[i].loc[1]] );              
+          drawObject( app.models.cube, 0, [(255-i)/255, 1, (255 - (255 - i)) / 255, 1] );                   
+          // app.enviromental[i].loc[2] -=  20 * dt;          
+        mvPopMatrix();            
+      }
+    mvPopMatrix();    
+
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [0.005, 0.005, 0.005] )
+      mat4.translate( app.mvMatrix, app.monkey.position);      
+      for (let i = 0; i < app.particle.num; i++) {
+        mvPushMatrix();
+          if (app.particle[i].loc[2] < -1.0) {
+            app.particle[i].loc[2] = 300;          
+          }
+          // console.log(app.particle[i].loc[2]);
+          mat4.translate( app.mvMatrix,  [app.particle[i].loc[0] - i + 500, app.particle[i].loc[2], app.particle[i].loc[1]] );              
+          drawObject( app.models.cube, 0, [0, 0, 0.1, 0.7] );                   
+          // console.log(app.particle[i].loc[2]);                    
+          app.particle[i].loc[2] -=  10;
+          // console.log(app.particle[i].loc[2]);          
+        mvPopMatrix();            
+      }
+    mvPopMatrix();    
+    
     // Push the model matrix for trees
     mvPushMatrix();
 
