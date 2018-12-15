@@ -147,6 +147,20 @@ for (i = 0; i < app.enviromental.num; i++)
     app.enviromental[i]['loc'][2] = 30;    
   }
 
+// Populate a shrubbery object
+app.particle = {}
+app.particle.num = 1000;
+for (i = 0; i < app.particle.num; i++)
+  // Generate tree locations
+  {
+    // Create an empty shrub object
+    app.particle[i] = {}
+    // Generate its location
+    app.particle[i]['loc'] = getRandomXZ(-30, 30, -5, 10);
+    app.particle[i]['loc'][2] = Math.random() * (1000 - 20) + 100;
+  }
+
+
 
 
 // Store the current RMS value

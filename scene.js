@@ -108,6 +108,21 @@ function drawPlace(){
       }
     mvPopMatrix();    
 
+    mvPushMatrix();
+      mat4.scale( app.mvMatrix, [0.005, 0.005, 0.005] )
+      mat4.translate( app.mvMatrix, app.monkey.position);      
+      for (let i = 0; i < app.particle.num; i++) {
+        mvPushMatrix();
+          if (app.particle[i].loc[2] < -1.0) {
+            app.particle[i].loc[2] = 300;
+          }
+          mat4.translate( app.mvMatrix,  [app.particle[i].loc[0] - i + 500, app.particle[i].loc[2], app.particle[i].loc[1]] );              
+          drawObject( app.models.cube, 0, [1, 0, 0.1, 1] );                   
+          app.particle[i].loc[2] -=  20 * dt;          
+        mvPopMatrix();            
+      }
+    mvPopMatrix();    
+    
     // Push the model matrix for trees
     mvPushMatrix();
 
