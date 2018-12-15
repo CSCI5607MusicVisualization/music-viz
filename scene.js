@@ -91,7 +91,7 @@ function drawPlace(){
     
     // Draw floor
     mvPushMatrix();
-      mat4.scale( app.mvMatrix, [2,2,2] )
+      mat4.scale( app.mvMatrix, [4,2,2] )
 
       // Color the ground a darker shade of green
       drawObject( app.models.room_floor, 0, [1, 1, 1, 0.8] );
@@ -99,7 +99,7 @@ function drawPlace(){
     mvPopMatrix();
     
     mvPushMatrix();
-      mat4.scale( app.mvMatrix, [0.25, 0.05, 0.15] )
+      mat4.scale( app.mvMatrix, [0.25, 0.05, 0.2] )
       mat4.translate( app.mvMatrix, app.monkey.position);      
       for (let i = 0; i < app.enviromental.num; i++) {
         mvPushMatrix();
