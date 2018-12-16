@@ -122,6 +122,8 @@ function handleLoadedTexture(texture) {
   gl.generateMipmap(gl.TEXTURE_2D);
 
   gl.bindTexture(gl.TEXTURE_2D, null);
+  /**-------------------Be sure to end the flip y aix after you finish using!-------------- */
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 }
 
 function initTexture( object, url) {
