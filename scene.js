@@ -65,7 +65,6 @@ function drawPlace(){
     return Math.floor( Math.random() * (max - min + 1) ) << 0;
   }
 
-
   var dt = app.elapsed / 1000;
   // Root transform start
   // ===============================================
@@ -98,7 +97,7 @@ function drawPlace(){
             mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 2, app.zwidth] )       
             mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );
 
-            drawObject( app.models.cube, 0, [(255-i)/255, 0, (255 - (255 - i)) / 255, 1] );         
+            drawObject( app.models.cube, 0, [1, 1, 1, 1] );         
             
             // drawObject( app.models.cube, 0,  [.3, .3, .3, 1]);         
             // Original color:
@@ -169,6 +168,7 @@ function drawPlace(){
       mat4.scale( app.mvMatrix, [0.15, 0.05, 0.05] )
       mat4.rotate( app.mvMatrix, degToRad( 180 ), [0,1,0] );
 
+      
       for (i = 0; i < app.shrubbery.num; i++)
       // Generate random shrubbery.  Objects defined in `globals.js`
       {
@@ -194,7 +194,7 @@ function drawPlace(){
           if (shrub.type == 0)
           {
             // drawObject( app.models.treeLrg, 0, [1, 0, 0, 1] );
-            drawObject( app.models.treeLrg, 0, [0, 1-app.intensity, 0, 1] );
+            drawObject( app.models.treeLrg, 0, [0, 1-app.intensity, app.intensity, 1] );
           }
 
           else if (shrub.type == 1)
