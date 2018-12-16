@@ -53,8 +53,10 @@ function drawPlace(){
   //mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
   gl.uniform3fv( shaderProgram.lightLocation,app.lightLocation);// app.lightLocationStatic 
   gl.uniform3fv( shaderProgram.lightVector,app.lightVector );// app.lightVectorStatic
+  gl.uniform1fv( shaderProgram.lightIntensity, app.lightSourceIntensity);
   gl.uniform1i( shaderProgram.lightCount, app.Lightcount);
   gl.uniform1f( shaderProgram.lightcone, 0.5);//90 degree
+  
   setUniforms();
 
   function getRandomInt(min, max)

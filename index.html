@@ -31,6 +31,7 @@
     uniform vec4 uColor;
     uniform vec3 uLightLocation[LIGHTNUM];
     uniform vec3 uSpotDirection[LIGHTNUM];
+    uniform float LightIntensity[LIGHTNUM];
     uniform float spotCosCutoff;
 
     uniform vec3 uLightSpecularColor;
@@ -73,7 +74,7 @@
                   specularLightWeighting = pow(rdotv, uMaterialShininess);
                   vec3 diffuseColor = texture2D(diffuseRamp, vec2(diffuseLightWeighting, 0)).xyz;
                   vec3 specularColor = texture2D(specularRamp, vec2(specularLightWeighting, 0)).xyz;
-                  lightWeighting +=attenuation*(spotEffect * diffuseColor +spotEffect * specularColor);
+                  lightWeighting +=LightIntensity[i]*attenuation*(spotEffect * diffuseColor +spotEffect * specularColor);
                 }
             }
         }

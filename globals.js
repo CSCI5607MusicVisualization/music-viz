@@ -53,14 +53,20 @@ var app = {};
   app.lightVectorStatic = new Array();
   app.lightLocation = new Array();
   app.lightVector = new Array();
+  app.lightSourceIntensity = new Array();
   /**----------------here to add light sources -------------------*/
   app.Lightcount=3;
   app.lightLocationStatic.push(0, 45, 0);
   app.lightVectorStatic.push(0, -1, 0);
+  app.lightSourceIntensity.push(10.0);
+
   app.lightLocationStatic.push(-45, 45,0 );
   app.lightVectorStatic.push(1, -1,0 );
+  app.lightSourceIntensity.push(10.0);
+
   app.lightLocationStatic.push(45, 45,0 );
   app.lightVectorStatic.push(-1, -1,0 );
+  app.lightSourceIntensity.push(10.0);
 
   // app.lightLocationStatic = [0, 45, 0];
   // app.lightVectorStatic = [0, -1, 0];
