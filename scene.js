@@ -19,7 +19,19 @@ function drawPlace(){
   // camera position and rotations
   mat4.rotate( app.mvMatrix, degToRad( app.camera.pitch ), [1,0,0] );
   // account for pitch rotation and light down vector
-  
+  app.lightVector.splice(0,app.lightVector.length);
+  var CurlightVector = new Array();
+  var lightVector = vec3.create();
+  for(var i=0;i<app.lightLocationStatic.length/3;++i)
+  {
+    CurlightVector[0] = app.lightVectorStatic[3*i];
+    CurlightVector[1] = app.lightVectorStatic[3*i+1];
+    CurlightVector[2] = app.lightVectorStatic[3*i+2];
+    mat4.multiplyVec3( app.mvMatrix, CurlightVector, lightVector );
+    app.lightVector[3*i] = lightVector[0];
+    app.lightVector[3*i+1] = lightVector[1];
+    app.lightVector[3*i+2] = lightVector[2];
+  }
   mat4.rotate( app.mvMatrix, degToRad( app.camera.heading ), [0,1,0] );
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
   
@@ -28,38 +40,31 @@ function drawPlace(){
   // To add multiple lights append to and of array of light locations
 
   var CurlightLocation = new Array();
-  var CurlightVector = new Array();
+  
   var lightLocation = vec3.create();
-  var lightVector = vec3.create();
+  
   //clear
   app.lightLocation.splice(0,app.lightLocation.length);
-  app.lightVector.splice(0,app.lightVector.length);
+ 
   for(var i=0;i<app.lightLocationStatic.length/3;++i)
   {
     CurlightLocation[0] = app.lightLocationStatic[3*i];
     CurlightLocation[1] = app.lightLocationStatic[3*i+1];
     CurlightLocation[2] = app.lightLocationStatic[3*i+2];
-    CurlightVector[0] = app.lightVectorStatic[3*i];
-    CurlightVector[1] = app.lightVectorStatic[3*i+1];
-    CurlightVector[2] = app.lightVectorStatic[3*i+2];
     mat4.multiplyVec3( app.mvMatrix, CurlightLocation, lightLocation);
-    mat4.multiplyVec3( app.mvMatrix, CurlightVector, lightVector );
     app.lightLocation[3*i] = lightLocation[0];
     app.lightLocation[3*i+1] = lightLocation[1];
     app.lightLocation[3*i+2] = lightLocation[2];
-    app.lightVector[3*i] = lightVector[0];
-    app.lightVector[3*i+1] = lightVector[1];
-    app.lightVector[3*i+2] = lightVector[2];
     //app.lightLocation =app.lightLocation.concat(lightLocation);
     //app.lightVector =app.lightVector.concat(lightVector);
   }
 
    //mat4.multiplyVec3( app.mvMatrix, app.lightVectorStatic, app.lightVector );
   //mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightLocation, app.lightLocation );//app.lightLocationStatic
-  gl.uniform3fv( shaderProgram.lightVector, app.lightVector );//app.lightVectorStatic
-  gl.uniform1i( shaderProgram.lightCount, 2);
-  gl.uniform1f( shaderProgram.lightcone, 0.5);//60 degree
+  gl.uniform3fv( shaderProgram.lightLocation,app.lightLocation);// app.lightLocationStatic 
+  gl.uniform3fv( shaderProgram.lightVector,app.lightVector );// app.lightVectorStatic
+  gl.uniform1i( shaderProgram.lightCount, app.Lightcount);
+  gl.uniform1f( shaderProgram.lightcone, 0.5);//90 degree
   setUniforms();
 
   function getRandomInt(min, max)
