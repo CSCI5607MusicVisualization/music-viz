@@ -135,10 +135,6 @@ function initTexture( object, url) {
 }
 
 function initTextures(){
-  initTexture( app.models.room_ceiling, "textures/stony_ground.jpg" );
-  initTexture( app.models.room_walls, "textures/rsz_stone-wall.jpg" );
-  // initTexture( app.models.room_floor, "textures/room_floor.jpg" );
-  // initTexture( app.models.tree01, "textures/rsz_ice.jpg" );  
   initTexture( app.specular, "textures/specular.png");  
   initTexture( app.diffuse, "textures/diffuse.png");
 
@@ -148,14 +144,6 @@ function initTextures(){
   initTexture( app.models.treeSml, "textures/cloud.jpg")
 
   initTexture( app.models.bushes, "textures/cloud.jpg")
-  // initTexture( app.models.cube, "textures/mountain.jpg")
-
-  
-  app.models.room_tunnel_walls.texture = app.models.room_walls.texture;
-  app.models.room_wall_broken.texture = app.models.room_walls.texture;
-  app.models.room_wall_unbroken.texture = app.models.room_walls.texture;
-  app.models.room_tunnel_ceiling.texture = app.models.room_ceiling.texture;
-  app.models.boulder.texture = app.models.room_ceiling.texture;
 }
 
 function initBuffers() {

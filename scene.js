@@ -1,14 +1,4 @@
-app.monkeyPositionTimer = 0;
-
-function floatMonkey(){
-  app.monkeyPositionTimer = app.monkeyPositionTimer > Math.PI * 2 ? 0 : app.monkeyPositionTimer + 0.05;
-  app.monkey.position[Y] = Math.sin( app.monkeyPositionTimer ) / 1000;
-}
-
-
-
 function drawPlace(){
-  floatMonkey();
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.01, 1000.0, app.pMatrix);
