@@ -49,10 +49,21 @@ var app = {};
   app.drawScene;
   app.scenechange = false;
   // room light
-  app.lightLocationStatic = [0, 45, 0];
-  app.lightVectorStatic = [0, -1, 0];
-  app.lightLocation = vec3.create();
-  app.lightVector = vec3.create();
+  app.lightLocationStatic = new Array();
+  app.lightVectorStatic = new Array();
+  app.lightLocation = new Array();
+  app.lightVector = new Array();
+
+  app.lightLocationStatic.push(5, 5, 0);
+  app.lightVectorStatic.push(-1, -1, 0);
+  app.lightLocationStatic.push(-5, 5,0 );
+  app.lightVectorStatic.push(1, -1,0 );
+
+  // app.lightLocationStatic = [0, 45, 0];
+  // app.lightVectorStatic = [0, -1, 0];
+  // app.lightLocation = vec3.create();
+  // app.lightVector = vec3.create();
+
   app.ambientIntensity = 1.0;
   app.diffuseIntensity = 2.0;
   app.mvMatrix = mat4.create();

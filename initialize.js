@@ -104,6 +104,8 @@ function initShaders() {
   shaderProgram.lightCount = gl.getUniformLocation(shaderProgram, "lightCount");  
   shaderProgram.lightLocation = gl.getUniformLocation(shaderProgram, "uLightLocation");
   shaderProgram.lightVector = gl.getUniformLocation(shaderProgram, "uSpotDirection");
+  shaderProgram.lightcone = gl.getUniformLocation(shaderProgram, "spotCosCutoff");
+
   shaderProgram.lightSpecularColor = gl.getUniformLocation(shaderProgram, "uLightSpecularColor");
   shaderProgram.lightDiffuseColor = gl.getUniformLocation(shaderProgram, "uLightDiffuseColor");
 }

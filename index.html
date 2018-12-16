@@ -15,18 +15,23 @@
   <!-- Main Shader -->
   
   <script id="shader-fs" type="x-shader/x-fragment">
+    #define LIGHTNUM 10
     precision mediump float;
 
     varying vec2 vTextureCoord;
     varying vec3 vTransformedNormal;
     varying vec4 vPosition;
+    //varying vec3 vLightRay[LIGHTNUM];
+    //varying vec3 vLightDirection[LIGHTNUM];
 
     uniform vec3 uAmbientColor;
 
     uniform int lightCount;
     uniform vec4 uColor;
-    uniform vec3 uLightLocation[10];
-    uniform vec3 uSpotDirection[10];
+    uniform vec3 uLightLocation[LIGHTNUM];
+    uniform vec3 uSpotDirection[LIGHTNUM];
+    uniform float spotCosCutoff;
+
     uniform vec3 uLightSpecularColor;
     uniform vec3 uLightDiffuseColor;
     uniform bool uHasTexure;
@@ -38,39 +43,39 @@
     uniform float uMaterialShininess;
 
     const float spotExponent = 40.0;
-    const float spotCosCutoff = 0.9;   // corresponds to 14 degrees
+    //const float spotCosCutoff = 0.5;   // corresponds to 14 degrees
 
     vec3 lightWeighting = vec3( 0.0, 0.0, 0.0 );
     vec4 fragmentColor;
     float spotEffect, rdotv, specularLightWeighting, diffuseLightWeighting;
-
-    void main(void) {
-      const float LOG2 = 1.442695;
+    const float lightAttenuation = 0.01;
+    void main(void) 
+    {
+      float attenuation = 1.0;
       float z = gl_FragCoord.z / gl_FragCoord.w;
-      
-      vec3 vectorToLightSource = normalize(uLightLocation[0] - vPosition.xyz / vPosition.w);
+      for(int i=0; i<LIGHTNUM; ++i)
+      {
+          if(i>=lightCount)
+            break;
+          vec3 vectorToLightSource = normalize(uLightLocation[i] - vPosition.xyz / vPosition.w);
+          diffuseLightWeighting = max(0.5 * dot(vTransformedNormal, vectorToLightSource), 0.0) + 0.5;
+          float distanceToLight = length(uLightLocation[i] - vPosition.xyz / vPosition.w);
+          attenuation = 1.0 / (1.0 + lightAttenuation * distanceToLight*distanceToLight);
 
-      diffuseLightWeighting = max(0.5 * dot(vTransformedNormal, vectorToLightSource), 0.0) + 0.5;
-
-      if (diffuseLightWeighting > 0.0) {
-        spotEffect = dot(normalize(uSpotDirection[0]), normalize(-vectorToLightSource));
-
-        if (spotEffect > spotCosCutoff) {
-          spotEffect = pow(spotEffect, spotExponent);
-
-          vec3 reflectionVector = normalize(reflect(-vectorToLightSource, vTransformedNormal));
-  
-          vec3 viewVectorEye = -normalize(vPosition.xyz / vPosition.w);
-          rdotv = max(dot(reflectionVector, viewVectorEye), 0.0);
-          specularLightWeighting = pow(rdotv, uMaterialShininess);
-          vec3 diffuseColor = texture2D(diffuseRamp, vec2(diffuseLightWeighting, 0)).xyz;
-          vec3 specularColor = texture2D(specularRamp, vec2(specularLightWeighting, 0)).xyz;
-          
-          lightWeighting =
-            spotEffect * diffuseColor +
-            spotEffect * specularColor;
+          if (diffuseLightWeighting > 0.0) {
+              spotEffect = dot(normalize(uSpotDirection[i]), normalize(-vectorToLightSource));
+              if (spotEffect > spotCosCutoff) {
+                  spotEffect = pow(spotEffect, spotExponent);
+                  vec3 reflectionVector = normalize(reflect(-vectorToLightSource, vTransformedNormal));
+                  vec3 viewVectorEye = -normalize(vPosition.xyz / vPosition.w);
+                  rdotv = max(dot(reflectionVector, viewVectorEye), 0.0);
+                  specularLightWeighting = pow(rdotv, uMaterialShininess);
+                  vec3 diffuseColor = texture2D(diffuseRamp, vec2(diffuseLightWeighting, 0)).xyz;
+                  vec3 specularColor = texture2D(specularRamp, vec2(specularLightWeighting, 0)).xyz;
+                  lightWeighting +=attenuation*(spotEffect * diffuseColor +spotEffect * specularColor);
+                }
+            }
         }
-      }
 
       
       lightWeighting += uAmbientColor;
@@ -86,6 +91,8 @@
   </script>
 
   <script id="shader-vs" type="x-shader/x-vertex">
+    #define LIGHTNUM 10
+    precision mediump float;
     attribute vec3 aVertexPosition;
     attribute vec3 aVertexNormal;
     attribute vec2 aTextureCoord;
@@ -93,18 +100,31 @@
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
     uniform mat3 uNMatrix;
-
+    //uniform vec3 uLightLocation[LIGHTNUM];
+    //uniform vec3 uSpotDirection[LIGHTNUM];
+   
     varying vec2 vTextureCoord;
     varying vec3 vTransformedNormal;
     varying vec4 vPosition;
     varying vec4 vColor;
-
+    //varying vec3 vLightRay[LIGHTNUM];
+    //varying vec3 vLightDirection[LIGHTNUM];
 
     void main(void) {
+       // for(int i=0; i < 1; i++)
+       // {
+            //vec4 lightPosition = uMVMatrix *vec4(uLightLocation[i], 1.0);
+            //vLightRay[i]=lightPosition.xyz;
+           // vec4 lightDirection =  uMVMatrix *vec4(uSpotDirection[i], 1.0);
+            //vLightDirection[i] = lightDirection.xyz;
+      //      vLightRay[i]=uLightLocation[i];
+      //      vLightDirection[i]  = uSpotDirection[i];
+      //  }
         vPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
         gl_Position = uPMatrix * vPosition;
         vTextureCoord = aTextureCoord;
         vTransformedNormal = uNMatrix * aVertexNormal;
+        
     }
   </script>
 <!-- Spectrum Shader -->
