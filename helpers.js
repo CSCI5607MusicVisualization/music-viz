@@ -100,25 +100,6 @@ function Array2Buffer(array, iSize, nSize) {
   buffer.numItems = nSize;
   return buffer;
 }
-/**------------------for spectrum--------------------------------------- */
-function Array2Buffers(gl,array)
-{
-  var positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
-  positionBuffer.numItems=array.length;
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
-  return  positionBuffer;
-}
-/**------------------end for spectrum--------------------------------------- */
-function Array2EBuffer(array, iSize, nSize) {
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(array), gl.STATIC_DRAW);
-  buffer.itemSize = iSize;
-  buffer.numItems = nSize;
-  return buffer;
-}
 
 function drawBuffer(vpbuf, vcbuf, start, nitems, gltype) {
   gl.bindBuffer(gl.ARRAY_BUFFER, vpbuf);
