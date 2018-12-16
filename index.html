@@ -7,6 +7,7 @@
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="gl-matrix.js"></script>
   <script type="text/javascript" src="webgl-utils.js"></script>
+  <script type="text/javascript" src="basic-objects-IFS.js"></script>
   <meta charset="utf-8">
   <title>Music Visualizer</title>
   <link rel="stylesheet" href="./webgl.css" type="text/css">
@@ -280,32 +281,7 @@
         }
     </script>
 
-    <!-- Background Shader -->
-    <script id="background-shader-vs" type="x-shader/x-vertex">
-        precision mediump float;
-    
-        attribute vec2 inPos;
-        varying   vec2 vertPos;
-    
-        void main()
-        {
-            vertPos     = inPos;
-            gl_Position = vec4( inPos, 0.0, 1.0 );
-        }
-    </script>
-    <script id="background-shader-fs" type="x-shader/x-fragment">
-        precision mediump float;
-    
-        varying vec2      vertPos;
-        uniform sampler2D u_texture;
-        
-        void main()
-        {
-            vec2 texCoord = vec2( vertPos.s, -vertPos.t ) * 0.5 + 0.5;
-            vec3 texColor = texture2D( u_texture, texCoord.st ).rgb;
-            gl_FragColor  = vec4( texColor.rgb, 1.0 );
-        }
-    </script> 
+
      
   <script type='text/javascript' src='webgl-obj-loader.js'></script>
   <script type='text/javascript' src='globals.js'></script>
@@ -315,6 +291,7 @@
   <script type='text/javascript' src='scene.js'></script>
   <script type='text/javascript' src='ColorUtil.js'></script>
   <script type='text/javascript' src='webgl.js'></script>
+  <script type="text/javascript" src='skybox.js'></script>
 </head>
 
 <body style='padding:0; margin:0 auto;'>

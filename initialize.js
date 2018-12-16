@@ -82,13 +82,13 @@ function initShaders() {
   gl.useProgram(shaderProgram);
 
   shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
   shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
-  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
   shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+  //gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
   shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
   shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");

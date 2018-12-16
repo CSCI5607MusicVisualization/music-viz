@@ -16,8 +16,9 @@ function animate() {
 
 function tick() {
   requestAnimFrame(tick);
+  
   app.drawScene();
-  //initBkgnd();
+  drawSkybox();
   animate();
 }
 
@@ -32,10 +33,15 @@ function webGLStart( meshes ) {
   initPointerLock();
   initTextures();
   
+  initSkyboxShaders(gl);
+  initSyboxBuffers(canvas,SkyboxProgram);
+  setupSkybox();
+
   document.onkeydown = cameraKeyDownHandler;
   document.onkeyup = cameraKeyUpHandler;
 
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
   //ctx.clearColor(0.0, 0.0, 0.0, 1.0);
