@@ -12,7 +12,8 @@ g++ main.cpp -x c glad/glad.c -g -lSDL2 -lSDL2main -lGL -ldl -I/usr/include/SDL2
 * Meeting notes: https://docs.google.com/document/d/1AsP1tqJH6Q0ZWbZ0LVifsDOLlWBOWZ6_yWT82G8zClY/edit#heading=h.sdgaewml23b5
 
 # Credit
-
+- [Boilerplate for Project] - https://github.com/YuqinShao/WebGL-Obj-Loader/tree/gh-pages
+Includes Scene graph, Obj file Loader, Texture Loader, Basic Shader (Blinn-Phong, Spot Light), Camera
 # Trees
 
 - [Cartoon Mill On Island Low Poly Free 3D Model - .obj .max .c4d .ma .blend .fbx - Free3D](https://free3d.com/3d-model/cartoon-mill-on-island-low-poly-25625.html)
