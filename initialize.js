@@ -1,9 +1,9 @@
 var redValue = 0.0;
 var greenValue = 0.0;
 var blueValue = 1.0;
-var PointredValue = 1.0;
-var PointblueValue = 0.0;
-var PointgreenValue = 1.0;
+// var PointredValue = 1.0;
+// var PointblueValue = 0.0;
+// var PointgreenValue = 1.0;
 
 var alpha = 1.0;
 /** ----------for back ground-----------*/
@@ -231,9 +231,33 @@ function initAudio()
             //console.log("frequencyBins is:",value);
             // w = WIDTH / frequencyBins.length;
                 // ctx.fillStyle = `rgb(${Math.random() * w},${Math.random() * h},${Math.random() * w})`;
+            app.spectrumR[i]=redValue;
+            app.spectrumG[i]=greenValue;
+            app.spectrumB[i]=blueValue;
+            app.spectrumA[i]=alpha;
             arr[i++]=h;
-
+            if (i< frequencyBins.length/2) //128
+            {
+              redValue=redValue+0.01;
+              if(redValue == 1)redValue=0.0;
+              greenValue = greenValue + 0.015;
+              if(greenValue == 1)greenValue=0.0;
+              blueValue=blueValue-0.04;
+              if(blueValue == 0.0)blueValue=1.0;
+            }else
+            {
+              redValue=redValue-0.01;
+              if(redValue == 0)redValue=1.0;
+              greenValue = greenValue -0.015;
+              if(greenValue == 0)greenValue=1.0;
+              blueValue=blueValue+0.04;
+              if(blueValue == 1)blueValue=0.0;
+            }
+            alpha-=0.01;
+            if(alpha < 0 )
+              alpha=1.0;
         }
+         
     }
     function animate() 
     // Generates an RMS value based on intensity
@@ -249,8 +273,9 @@ function initAudio()
             rms += dataArray[i] * dataArray[i];
         }
         rms = Math.sqrt(rms / (dataArray.length));
-        
+        //console.log("rms is:",rms);
         app.intensity = rms;
+
         // This will return the value in decibals.
         // var v = Math.abs(20 * Math.log10(rms));
         draw();

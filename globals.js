@@ -56,25 +56,25 @@ var app = {};
   app.lightSourceIntensity = new Array();
   /**----------------here to add light sources -------------------*/
   app.Lightcount=5;
-  app.lightLocationStatic.push(0, 45, 0);
+  app.lightLocationStatic.push(0, 25, 0);
   app.lightVectorStatic.push(0, -1, 0);
-  app.lightSourceIntensity.push(10.0);
+  app.lightSourceIntensity.push(2.0);
 
-  app.lightLocationStatic.push(-45, 45,45 );
-  app.lightVectorStatic.push(1, -1,-1 );
-  app.lightSourceIntensity.push(10.0);
+  app.lightLocationStatic.push(-30, 15,30 );
+  app.lightVectorStatic.push(1, -0.75,-1 );//1
+  app.lightSourceIntensity.push(5.0);
 
-  app.lightLocationStatic.push(45, 45,45 );
-  app.lightVectorStatic.push(-1, -1,-1 );
-  app.lightSourceIntensity.push(10.0);
+  app.lightLocationStatic.push(30, 15,30 );
+  app.lightVectorStatic.push(-1, -0.75,-1 );
+  app.lightSourceIntensity.push(5.0);
 
-  app.lightLocationStatic.push(45, 45,-45 );
-  app.lightVectorStatic.push(-1, -1,1 );
-  app.lightSourceIntensity.push(10.0);
+  app.lightLocationStatic.push(30, 15,-30 );
+  app.lightVectorStatic.push(-1, -0.75,1 );
+  app.lightSourceIntensity.push(5.0);
 
-  app.lightLocationStatic.push(45, 45,-45 );
-  app.lightVectorStatic.push(-1, -1,1 );
-  app.lightSourceIntensity.push(10.0);
+  app.lightLocationStatic.push(-30, 15,-30 );
+  app.lightVectorStatic.push(1, -0.75,1 );
+  app.lightSourceIntensity.push(5.0);
 
   // app.lightLocationStatic = [0, 45, 0];
   // app.lightVectorStatic = [0, -1, 0];
@@ -104,6 +104,10 @@ var app = {};
   app.monkey.position = [0,0,0]
   app.intensity = 0;
   app.spectrum = [];
+  app.spectrumR=[];
+  app.spectrumG=[];
+  app.spectrumB=[];
+  app.spectrumA=[];
   app.point = [];
   app.wave = [];
   

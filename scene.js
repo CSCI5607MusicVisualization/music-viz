@@ -8,11 +8,12 @@ function drawPlace(){
   mat4.identity( app.mvMatrix )
   // camera position and rotations
   mat4.rotate( app.mvMatrix, degToRad( app.camera.pitch ), [1,0,0] );
+  
   // account for pitch rotation and light down vector
   app.lightVector.splice(0,app.lightVector.length);
   var CurlightVector = new Array();
   var lightVector = vec3.create();
-  for(var i=0;i<app.lightLocationStatic.length/3;++i)
+  for(var i=0;i<app.lightVectorStatic.length/3;++i)
   {
     CurlightVector[0] = app.lightVectorStatic[3*i];
     CurlightVector[1] = app.lightVectorStatic[3*i+1];
@@ -22,11 +23,11 @@ function drawPlace(){
     app.lightVector[3*i+1] = lightVector[1];
     app.lightVector[3*i+2] = lightVector[2];
   }
+  /** */
   mat4.rotate( app.mvMatrix, degToRad( app.camera.heading ), [0,1,0] );
   mat4.translate( app.mvMatrix, app.camera.inversePosition );
   
   gl.useProgram( shaderProgram );
- 
   // To add multiple lights append to and of array of light locations
 
   var CurlightLocation = new Array();
@@ -48,14 +49,18 @@ function drawPlace(){
     //app.lightLocation =app.lightLocation.concat(lightLocation);
     //app.lightVector =app.lightVector.concat(lightVector);
   }
-
+ 
    //mat4.multiplyVec3( app.mvMatrix, app.lightVectorStatic, app.lightVector );
   //mat4.multiplyVec3( app.mvMatrix, app.lightLocationStatic, app.lightLocation );
-  gl.uniform3fv( shaderProgram.lightLocation,app.lightLocation);// app.lightLocationStatic 
-  gl.uniform3fv( shaderProgram.lightVector,app.lightVector );// app.lightVectorStatic
+  app.lightSourceIntensity[1] = 15*app.intensity;
+  app.lightSourceIntensity[2] = 15*(1-app.intensity);
+  app.lightSourceIntensity[3] = 15*app.intensity;
+  app.lightSourceIntensity[4] = 15*(1-app.intensity);
+  gl.uniform3fv( shaderProgram.lightLocation,app.lightLocation);//  app.lightLocationStatic
+  gl.uniform3fv( shaderProgram.lightVector,app.lightVector);// app.lightVectorStatic 
   gl.uniform1fv( shaderProgram.lightIntensity, app.lightSourceIntensity);
   gl.uniform1i( shaderProgram.lightCount, app.Lightcount);
-  gl.uniform1f( shaderProgram.lightcone, 0.5);//90 degree
+  gl.uniform1f( shaderProgram.lightcone, 0.707);//90 degree
   
   setUniforms();
 
@@ -97,9 +102,10 @@ function drawPlace(){
             mat4.scale( app.mvMatrix, [app.xwidth / 2, app.spectrum[i] * 2, app.zwidth] )       
             mat4.translate( app.mvMatrix,  [0 - i * 1.3, 0 + 1, 0] );
 
-            drawObject( app.models.cube, 0, [1, 1, 1, 1] );         
-            
-            // drawObject( app.models.cube, 0,  [.3, .3, .3, 1]);         
+            drawObject( app.models.cube, 0,  [1.0, 1.0, 1.0, 1]);
+            //drawObject( app.models.cube, 0,[app.spectrumR[i],app.spectrumG[i],app.spectrumB[i],app.spectrumA[i]] ); //[1, 1, 1, 1]        
+            //console.log("app.spectrumR[i] is:",app.spectrumR[i]);
+                     
             // Original color:
             // [(255-i)/255, 0, (255 - (255 - i)) / 255, 1]  
           
